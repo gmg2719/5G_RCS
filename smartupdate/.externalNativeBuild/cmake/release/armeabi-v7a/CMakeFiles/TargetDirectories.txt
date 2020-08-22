@@ -1,0 +1,3 @@
+/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/update-lib.dir

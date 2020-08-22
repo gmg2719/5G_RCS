@@ -1,0 +1,12 @@
+per.goweii.anylayer
+drawable anylayer_toast_bg
+id fl_container
+id fl_content_wrapper
+id iv_background
+id iv_icon
+id ll_container
+id tv_msg
+layout anylayer_dialog_layer
+layout anylayer_toast_layer
+string app_name
+style LayerActivityTheme

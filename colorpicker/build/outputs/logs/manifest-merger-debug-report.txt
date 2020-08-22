@@ -1,0 +1,37 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:16:1-21:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:16:1-21:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:16:1-21:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:16:1-21:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:16:1-21:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:16:1-21:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:16:1-21:12
+	package
+		ADDED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:17:5-38
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+	android:versionName
+		ADDED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:19:5-30
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:16:11-69
+	android:versionCode
+		ADDED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml:18:5-28
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+uses-sdk
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/colorpicker/AndroidManifest.xml

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <string msgid="1458877219699376279" name="failed">"படத்தை ஏற்ற முடியவில்லை"</string>
+    <string msgid="3466690572899800275" name="photo_view_count">"<ns1:g id="CURRENT_POS">%d</ns1:g> / <ns1:g id="COUNT">%d</ns1:g>"</string>
+    <string msgid="3319517143224679074" name="retry">"மீண்டும் முயற்சிசெய்"</string>
+    <string msgid="8072357561981153438" name="titles">"<ns1:g id="TITLE_0">%s</ns1:g>, <ns1:g id="SUBTITLE">%s</ns1:g>"</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- 连框颜色值 -->
+<item>
+    <shape>
+        <solid android:color="@color/selector_grey" />
+        <corners
+            android:bottomLeftRadius="12dp"
+            android:bottomRightRadius="12dp"/>
+    </shape>
+</item>
+<!-- 主体背景颜色值 -->
+<item
+    android:left="1dp"
+    android:bottom="1dp"
+    android:right="1dp"><!--设置只有底部和右边有边框-->
+    <shape>
+        <solid android:color="@color/google_gray" />
+        <corners
+            android:bottomLeftRadius="12dp"
+            android:bottomRightRadius="12dp"/>
+    </shape>
+</item>
+</layer-list>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_top"/>
+
+    <com.android.messaging.ui.conversation.PowerVideoView
+        android:id="@+id/mVideoView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingTop="16dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_danmaku"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="弹幕透明度："
+            android:textColor="@color/text_grey"/>
+
+        <Switch
+            android:id="@+id/switch_danmaku"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="12dp"
+            android:showText="true"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:switchTextAppearance="@style/SwitchTextColorTheme"
+            android:track="@drawable/switch_custom_track_selector"
+            android:thumb="@drawable/switch_custom_thumb_on"
+            android:textOn="弹"
+            android:textOff="弹"/>
+
+        <ImageView
+            android:id="@+id/my_divider_line"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_toLeftOf="@id/switch_danmaku"
+            android:paddingLeft="12dp"
+            android:background="@color/text_grey"/>
+        <TextView
+            android:id="@+id/tv_alphaInd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/my_divider_line"
+            android:paddingRight="12dp"
+            android:text="0%"
+            android:textStyle="bold"
+            android:textSize="12sp"/>
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/alpha_set"
+            android:layout_toLeftOf="@id/tv_alphaInd"
+            android:layout_toRightOf="@id/tv_danmaku"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:showText="true"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

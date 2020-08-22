@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <string msgid="5545766162855459747" name="accessbility_suggestion_dropdown_closed">"Nėra jokių pasiekiamų pasiūlymų."</string>
+    <string msgid="3231589819168382515" name="accessbility_suggestion_dropdown_opened">"Kontaktų pasiūlymai atidaryti"</string>
+    <string msgid="1318401633653605424" name="action_label">"Grįžti"</string>
+    <string msgid="6077877438943543501" name="chips_action_cancel">"Atšaukti"</string>
+    <string msgid="1929144660075507103" name="chips_action_copy">"Kopijuoti"</string>
+    <string msgid="1978301259208877495" name="chips_permission_text">"Leisti siūlyti kontaktus"</string>
+    <string msgid="7869435992461603532" name="copy_email">"Kopijuoti el. pašto adresą"</string>
+    <string msgid="530057841276106843" name="copy_number">"Kopijuoti telefono numerį"</string>
+    <string msgid="8506791557733906887" name="dropdown_delete_button_desc">"Pašalinti <ns1:g id="CONTACT">%s</ns1:g> iš gavėjų"</string>
+    <string msgid="8495478259330621990" name="more_string">"+ <ns1:g id="COUNT">%1$d</ns1:g>"</string>
+</resources>

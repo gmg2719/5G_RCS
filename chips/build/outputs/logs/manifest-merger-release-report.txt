@@ -1,0 +1,39 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:16:1-23:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:16:1-23:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:16:1-23:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:16:1-23:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:16:1-23:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:16:1-23:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:16:1-23:12
+	package
+		ADDED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:17:11-41
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:16:1-23:12
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:16:11-69
+	android:versionCode
+		ADDED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:18:11-34
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+application
+ADDED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml:21:5-20
+uses-sdk
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/chips/AndroidManifest.xml

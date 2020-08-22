@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="12dp">
+    <ImageView
+        android:id="@+id/title_image"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        />
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活动预约"
+        android:layout_toRightOf="@id/title_image"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:paddingLeft="8dp"
+        android:textColor="#6D7278" />
+    <TextView
+        android:id="@+id/more_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="..."
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_alignBaseline="@id/tv_title"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

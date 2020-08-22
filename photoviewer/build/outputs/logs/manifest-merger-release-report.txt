@@ -1,0 +1,39 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:18:1-24:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:18:1-24:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:18:1-24:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:18:1-24:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:18:1-24:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:18:1-24:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:18:1-24:12
+	package
+		ADDED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:19:5-35
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:18:1-24:12
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:18:11-69
+	android:versionCode
+		ADDED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:20:5-28
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+application
+ADDED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml:23:5-20
+uses-sdk
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/photoviewer/AndroidManifest.xml

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="16dp"
+    >
+    <include layout="@layout/item_news_bottom"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/card_message_style"
+        android:orientation="vertical">
+        <include layout="@layout/include_card_title"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:paddingTop="8dp">
+            <ImageView
+                android:id="@+id/activity_image"
+                android:src="@drawable/activity_subscribe_image"
+                android:layout_width="88dp"
+                android:layout_height="88dp"/>
+            <TextView
+                android:id="@+id/activity_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="云上云下共此时：北京大学2020年毕业典礼"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:maxLines="2"
+                android:layout_toRightOf="@id/activity_image"
+                android:paddingTop="8dp"
+                android:paddingLeft="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="视频直播"
+                android:textSize="13sp"
+                android:layout_toRightOf="@id/activity_image"
+                android:layout_alignLeft="@id/activity_title"
+                android:layout_alignParentBottom="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+            <ImageView
+                android:id="@+id/clock_icon"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:src="@drawable/icon_time"
+                android:paddingLeft="4dp"
+                android:layout_centerVertical="true"
+                />
+
+            <TextView
+                android:id="@+id/action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_alignBaseline="@id/clock_icon"
+                android:layout_gravity="center"
+                android:background="@drawable/border_textview"
+                android:text="预约"
+                android:textStyle="bold"
+                android:textColor="#4F7BFF" />
+
+            <TextView
+                android:id="@+id/dateView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:paddingLeft="8dp"
+                android:layout_toRightOf="@id/clock_icon"
+                android:layout_toLeftOf="@id/action_button"
+                android:text="2020/07/22 15:00"
+                android:layout_alignBaseline="@id/clock_icon"
+                android:textSize="12sp"/>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

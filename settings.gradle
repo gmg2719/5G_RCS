@@ -1,0 +1,1 @@
+include ':app', ':chips', ':photoviewer', ':colorpicker', ':media', ':library', ':RapidFloatingAction', ':floatwindow', ':anylayer', ':burred', ':smartupdate', ':common_titlebar_library', ':common_title_library', ':immersionbar', ':SwipeRecyclerView'

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <string msgid="5545766162855459747" name="accessbility_suggestion_dropdown_closed">"କୌଣସି ପରାମର୍ଶ ଉପଲବ୍ଧ ନାହିଁ"</string>
+    <string msgid="3231589819168382515" name="accessbility_suggestion_dropdown_opened">"ଯୋଗାଯୋଗ ପରାମର୍ଶ ଖୋଲାଗଲା"</string>
+    <string msgid="1318401633653605424" name="action_label">"ଫେରନ୍ତୁ"</string>
+    <string msgid="6077877438943543501" name="chips_action_cancel">"କ୍ୟାନ୍ସଲ୍‍ କରନ୍ତୁ"</string>
+    <string msgid="1929144660075507103" name="chips_action_copy">"କପୀ କରନ୍ତୁ"</string>
+    <string msgid="1978301259208877495" name="chips_permission_text">"ଯୋଗାଯୋଗ ପରାମର୍ଶର ଅନୁମତି ଦିଅନ୍ତୁ"</string>
+    <string msgid="7869435992461603532" name="copy_email">"ଇମେଲ୍ ଠିକଣା କପୀ କରନ୍ତୁ"</string>
+    <string msgid="530057841276106843" name="copy_number">"ଫୋନ୍‍ ନମ୍ବର କପୀ କରନ୍ତୁ"</string>
+    <string msgid="8506791557733906887" name="dropdown_delete_button_desc">"ପ୍ରାପ୍ତକର୍ତ୍ତାଙ୍କଠାରୁ <ns1:g id="CONTACT">%s</ns1:g>ଙ୍କୁ ବାହାର କରନ୍ତୁ"</string>
+    <string msgid="8495478259330621990" name="more_string">"+<ns1:g id="COUNT">%1$d</ns1:g>"</string>
+</resources>

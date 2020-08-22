@@ -1,0 +1,42 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.wuhenzhizao.titlebar.test" >
+4
+5    <uses-sdk
+5-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:5:5-74
+6        android:minSdkVersion="17"
+6-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:5:15-41
+7        android:targetSdkVersion="29" />
+7-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:5:42-71
+8
+9    <instrumentation
+9-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:11:5-15:79
+10        android:name="androidx.test.runner.AndroidJUnitRunner"
+10-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:11:22-76
+11        android:functionalTest="false"
+11-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:14:22-52
+12        android:handleProfiling="false"
+12-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:13:22-53
+13        android:label="Tests for com.wuhenzhizao.titlebar.test"
+13-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:15:22-77
+14        android:targetPackage="com.wuhenzhizao.titlebar.test" />
+14-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:12:22-75
+15
+16    <application
+16-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:7:5-9:19
+17        android:allowBackup="true"
+17-->[__tested_artifact__::library] /Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-35
+18        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+18-->[androidx.core:core:1.1.0] /Users/wjmbp/.gradle/caches/transforms-2/files-2.1/aad420e35d39b42d983a7ba9b98e33a9/core-1.1.0/AndroidManifest.xml:24:18-86
+19        android:debuggable="true"
+19-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:7:18-43
+20        android:label="@string/app_name"
+20-->[__tested_artifact__::library] /Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-41
+21        android:supportsRtl="true" >
+21-->[__tested_artifact__::library] /Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/library_manifest/debug/AndroidManifest.xml:14:9-35
+22        <uses-library android:name="android.test.runner" />
+22-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:8:9-60
+22-->/Users/wjmbp/Downloads/android-titlebar-master/library/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger7722068249874046871.xml:8:23-57
+23    </application>
+24
+25</manifest>

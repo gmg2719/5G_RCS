@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <include layout="@layout/item_news_bottom"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/selector_bg"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+
+            <include layout="@layout/include_news_title"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                >
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/iv_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_default"/>
+
+            <LinearLayout
+                android:id="@+id/ll_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/shape_rectangle_translucent"
+                android:padding="5dp"
+                android:gravity="center"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/iv_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_video_play"
+                    android:layout_gravity="center"
+                    android:visibility="visible"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="04:20"
+                    android:textColor="@color/white"
+                    android:textSize="8sp"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/google_gray"/>
+
+    <ViewStub
+        android:id="@+id/collapse_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/expandable_list"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/expand_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <RelativeLayout
+        android:id="@+id/ll_tag_btn"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:background="@drawable/selector_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:text="查看更多" />
+        <ImageView
+            android:id="@+id/iv_expand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/icon_btn_expand"/>
+    </RelativeLayout>
+</LinearLayout>
+

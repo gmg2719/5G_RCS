@@ -1,0 +1,67 @@
+[
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/patchUtils.c.o   -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/patchUtils.c",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/patchUtils.c"
+},
+
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security -stdlib=libc++  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/update-lib.cpp.o -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/update-lib.cpp",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/update-lib.cpp"
+},
+
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/bzip2/blocksort.c.o   -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/blocksort.c",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/blocksort.c"
+},
+
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/bzip2/bzip2.c.o   -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/bzip2.c",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/bzip2.c"
+},
+
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/bzip2/bzip2recover.c.o   -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/bzip2recover.c",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/bzip2recover.c"
+},
+
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/bzip2/bzlib.c.o   -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/bzlib.c",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/bzlib.c"
+},
+
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/bzip2/compress.c.o   -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/compress.c",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/compress.c"
+},
+
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/bzip2/crctable.c.o   -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/crctable.c",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/crctable.c"
+},
+
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/bzip2/decompress.c.o   -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/decompress.c",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/decompress.c"
+},
+
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/bzip2/huffman.c.o   -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/huffman.c",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/huffman.c"
+},
+
+{
+  "directory": "/Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/release/x86",
+  "command": "/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=i686-none-linux-android16 --gcc-toolchain=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wjmbp/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dupdate_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/update-lib.dir/bzip2/randtable.c.o   -c /Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/randtable.c",
+  "file": "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/bzip2/randtable.c"
+}
+]

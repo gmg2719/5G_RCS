@@ -1,0 +1,55 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:1:1-15:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:1:1-15:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:1:1-15:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:1:1-15:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:1:1-15:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:1:1-15:12
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:1:1-15:12
+	package
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:2:5-34
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:1:1-15:12
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:1:1-15:12
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:1:11-69
+application
+ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:4:5-13:19
+activity#per.goweii.anylayer.LayerActivity
+ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:5:9-7:57
+	android:theme
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:7:13-54
+	android:name
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:6:13-42
+provider#per.goweii.anylayer.ActivityProvider
+ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:8:9-12:43
+	android:authorities
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:10:13-68
+	android:multiprocess
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:12:13-40
+	android:exported
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:11:13-37
+	android:name
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml:9:13-45
+uses-sdk
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+		ADDED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml
+		INJECTED from /Users/wjmbp/Downloads/Devpmms/anylayer/src/main/AndroidManifest.xml

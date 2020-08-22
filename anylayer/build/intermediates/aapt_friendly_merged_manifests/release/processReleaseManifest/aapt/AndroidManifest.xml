@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="per.goweii.anylayer"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="28" />
+
+    <application>
+        <activity
+            android:name="per.goweii.anylayer.LayerActivity"
+            android:theme="@style/LayerActivityTheme" />
+
+        <provider
+            android:name="per.goweii.anylayer.ActivityProvider"
+            android:authorities="dollar_openBracket_applicationId_closeBracket.activityprovider"
+            android:exported="false"
+            android:multiprocess="true" />
+    </application>
+
+</manifest>

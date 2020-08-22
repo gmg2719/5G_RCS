@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>HTML5页面如何在手机端浏览器调用相机、相册功能</title>
+</head>
+<body>
+
+<div>
+   <input type="file" accept="image/*" value="相机" capture="camera">
+   <input type="file" accept="video/*" value="录像"    capture="camcorder">
+   <input type="file" accept="audio/*" value="录音"    capture="microphone">
+</div>
+<script>
+        判断ios，如果是ios就去掉capture属性.
+
+       var file = document.querySelector('input');
+    if (getIos()) {
+        file.removeAttribute("capture");
+    }
+    function getIos() {
+        var ua=navigator.userAgent.toLowerCase();
+        if (ua.match(/iPhone\sOS/i) == "iphone os") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+                window.onload = function() {
+                $("img").on("click", function() {
+                    window.android.nativeMethod();
+                }
+
+            }
+ </script>
+</body>
+</html>

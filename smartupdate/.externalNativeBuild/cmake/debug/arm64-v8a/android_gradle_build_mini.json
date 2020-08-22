@@ -1,0 +1,18 @@
+{
+  "buildFiles": [
+    "/Users/wjmbp/Library/Android/sdk/ndk-bundle/build/cmake/platforms.cmake",
+    "/Users/wjmbp/Downloads/Devpmms/smartupdate/src/main/cpp/CMakeLists.txt",
+    "/Users/wjmbp/Library/Android/sdk/ndk-bundle/build/cmake/android.toolchain.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/wjmbp/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake --build /Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/debug/arm64-v8a --target clean"
+  ],
+  "libraries": {
+    "update-lib-Debug-arm64-v8a": {
+      "artifactName": "update-lib",
+      "buildCommand": "/Users/wjmbp/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake --build /Users/wjmbp/Downloads/Devpmms/smartupdate/.externalNativeBuild/cmake/debug/arm64-v8a --target update-lib",
+      "abi": "arm64-v8a",
+      "output": "/Users/wjmbp/Downloads/Devpmms/smartupdate/build/intermediates/cmake/debug/obj/arm64-v8a/libupdate-lib.so"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="28dp"
+    android:padding="0.5dp">
+
+    <ProgressBar
+        android:id="@+id/progress_view"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/select_bg"
+        android:progressDrawable="@drawable/select_progress_view_bg" />
+
+    <TextView
+        android:id="@+id/name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:drawablePadding="5dp"
+        android:layout_marginLeft="12dp"
+        android:ellipsize="end"
+        android:maxLength="17"
+        android:maxLines="1"
+        android:textColor="#0D1333"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/number_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:layout_gravity="right|center_vertical"
+        android:alpha="0.0"
+        android:layout_marginRight="10dp" />
+    <ImageView
+        android:id="@+id/selected_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/vote_selected"
+        android:layout_gravity="right|center_vertical"
+        android:visibility="gone"
+        android:layout_marginRight="10dp" />
+
+</FrameLayout>
