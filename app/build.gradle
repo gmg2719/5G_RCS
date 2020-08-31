@@ -160,4 +160,5 @@ dependencies {
 
     implementation 'com.jude:swipebackhelper:2.1.5'
     //implementation 'com.yanzhenjie.recyclerview:support:1.3.2'
+    implementation 'cn.yipianfengye.android:zxing-library:2.2'
 }

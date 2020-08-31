@@ -3,7 +3,8 @@
     android:id="@+id/text_suggestion_layout"
     android:layout_width="120dp"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="10dp">
     <TextView
         android:id="@+id/hor_title"
         android:layout_width="match_parent"
@@ -22,19 +23,20 @@
         android:text="卡片内容"/>
     <TextView
         android:id="@+id/suggestion1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        />
     <TextView
         android:id="@+id/suggestion2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:visibility="gone"/>
     <TextView
         android:id="@+id/suggestion3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:visibility="gone"/>

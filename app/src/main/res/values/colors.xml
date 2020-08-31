@@ -21,6 +21,7 @@
     <!--  Action bar -->
     <color name="action_bar_title_text_color">#0D1333</color>
     <color name="action_bar_background_color">#FFFFFF</color>
+    <color name="action_bar_contact_picker_fragment">#e2e2e2</color>
     <color name="action_bar_background_color_dark">#FFFFFF</color>
     <color name="contextual_action_bar_background_color">#ffffff</color>
     <color name="archived_conversation_action_bar_background_color">#9D9D9D</color>
@@ -83,7 +84,7 @@
     <color name="contact_list_text_primary">#4d4d4d</color>
     <color name="contact_list_text_secondary">#999999</color>
 
-    <color name="compose_contact_text">@android:color/white</color>
+    <color name="compose_contact_text">@android:color/black</color>
     <color name="compose_contact_faint_text">#a0ffffff</color>
     <color name="compose_contact_divider">#44000000</color>
     <color name="contact_picker_tab_pressed">#ddffffff</color>

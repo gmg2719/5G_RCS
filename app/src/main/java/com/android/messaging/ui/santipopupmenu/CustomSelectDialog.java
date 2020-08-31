@@ -222,6 +222,24 @@ public class CustomSelectDialog extends Dialog {
         super.show();
     }
 
+//    @Override
+//    public boolean onTouchEvent(@NonNull MotionEvent event) {
+//        LogUtil.i("Junwang", "CustomSelectDialog onTouchEvent RawX="+event.getRawX()+
+//                ", x="+event.getX()+", RawY="+event.getRawY()+", y="+event.getY());
+//
+//        if (MotionEvent.ACTION_OUTSIDE == event.getAction()) {
+//            LogUtil.i("Junwang", "CustomSelectDialog ACTION_OUTSIDE");
+//            dismiss();
+//            return true;
+//        }
+//
+//        // Delegate everything else to Activity.
+//        return super.onTouchEvent(event);
+////        return true;
+//    }
+
+
+
     private void initViews() {
         DialogAdapter dialogAdapter = new DialogAdapter(mName);
         /*ListView*/ dialogList= findViewById(R.id.dialog_list);

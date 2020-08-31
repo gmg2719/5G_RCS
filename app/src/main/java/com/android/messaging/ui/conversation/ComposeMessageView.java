@@ -235,6 +235,8 @@ public class ComposeMessageView extends LinearLayout
                 boolean shown = mInputManager.toggleSimSelector(true /* animate */,
                         getSelfSubscriptionListEntry());
                 hideAttachmentsWhenShowingSims(shown);
+                //add by junwang
+                hideAllComposeInputs(false);
             }
         });
         mSelfSendIcon.setOnLongClickListener(new OnLongClickListener() {
@@ -279,6 +281,8 @@ public class ComposeMessageView extends LinearLayout
             @Override
             public void onClick(final View clickView) {
                 sendMessageInternal(true /* checkMessageSize */);
+                //add by junwang
+                hideAllComposeInputs(false);
             }
         });
         mSendButton.setOnLongClickListener(new OnLongClickListener() {
@@ -935,7 +939,9 @@ public class ComposeMessageView extends LinearLayout
     }
 
     public boolean updateActionBar(final ActionBar actionBar) {
+        LogUtil.i("Junwang", "Compose MessageView updateActionBar");
         return mInputManager != null ? mInputManager.updateActionBar(actionBar) : false;
+//        return true;
     }
 
     public static boolean shouldShowSimSelector(final ConversationData convData) {

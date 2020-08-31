@@ -53,8 +53,8 @@
             android:layout_marginBottom="16dp">
             <ImageView
                 android:id="@+id/clock_icon"
-                android:layout_width="13dp"
-                android:layout_height="13dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/icon_time"
                 android:paddingLeft="4dp"
                 android:layout_centerVertical="true"

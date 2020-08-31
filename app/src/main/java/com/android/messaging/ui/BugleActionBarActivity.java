@@ -258,6 +258,7 @@ public class BugleActionBarActivity extends AppCompatActivity implements ImeUtil
     }
 
     protected void updateActionBar(final ActionBar actionBar) {
+        LogUtil.i("Junwang", "BugleActionBarActivity updateActionBar");
         actionBar.setHomeAsUpIndicator(null);
     }
 

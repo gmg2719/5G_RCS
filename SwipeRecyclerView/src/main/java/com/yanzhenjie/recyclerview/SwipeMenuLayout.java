@@ -521,7 +521,7 @@ public class SwipeMenuLayout extends FrameLayout implements Controller {
             int top = getPaddingTop() + lp.topMargin;
 
             int parentViewWidth = getMeasuredWidthAndState();
-            rightMenu.layout(parentViewWidth, top, parentViewWidth + menuViewWidth, top + menuViewHeight);
+            rightMenu.layout(parentViewWidth+60, top, parentViewWidth + menuViewWidth+150, top + menuViewHeight);
         }
     }
 

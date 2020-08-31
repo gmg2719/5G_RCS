@@ -8,6 +8,7 @@ import com.android.messaging.ui.chatbotservice.ChatbotMenuRetrofitService;
 import com.android.messaging.ui.chatbotservice.GetChatbotMenuApi;
 import com.android.messaging.ui.conversation.chatbot.ChatbotFavoriteEntity;
 import com.android.messaging.util.LogUtil;
+import com.google.gson.Gson;
 import com.microfountain.rcs.aidl.database.contract.RcsChatbotInfoTable;
 import com.microfountain.rcs.support.model.chatbot.ChatbotInfoQueryResult;
 import com.microfountain.rcs.support.model.chatbot.ChatbotInfoQueryResultParser;
@@ -188,107 +189,107 @@ public class ChatbotInfoTableUtils {
                     return;
                 }
                 LogUtil.i("Junwang", "code="+getChatbotMenuApi.getRet_code()+", msg="+getChatbotMenuApi.getMessage());
-//                String json = new Gson().toJson(getChatbotMenuApi.getData());
+                String json = new Gson().toJson(getChatbotMenuApi.getData());
 //                String json = getChatbotMenuApi.getData().toString();
-                String json = "{\n" +
-                        "    \"menu\":{\n" +
-                        "        \"entries\":[\n" +
-                        "            {\n" +
-                        "                \"menu\":{\n" +
-                        "                    \"displayText\":\"现场云\",\n" +
-                        "                    \"entries\":[\n" +
-                        "                        {\n" +
-                        "                            \"reply\":{\n" +
-                        "                                \"displayText\":\"央企服务\",\n" +
-                        "                                \"postback\":{\n" +
-                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
-                        "                                }\n" +
-                        "                            }\n" +
-                        "                        },\n" +
-                        "                        {\n" +
-                        "                            \"reply\":{\n" +
-                        "                                \"displayText\":\"民族品牌\",\n" +
-                        "                                \"postback\":{\n" +
-                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
-                        "                                }\n" +
-                        "                            }\n" +
-                        "                        },\n" +
-                        "                        {\n" +
-                        "                            \"reply\":{\n" +
-                        "                                \"displayText\":\"区县融媒体\",\n" +
-                        "                                \"postback\":{\n" +
-                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
-                        "                                }\n" +
-                        "                            }\n" +
-                        "                        },\n" +
-                        "                        {\n" +
-                        "                            \"reply\":{\n" +
-                        "                                \"displayText\":\"中纪委专刊\",\n" +
-                        "                                \"postback\":{\n" +
-                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
-                        "                                }\n" +
-                        "                            }\n" +
-                        "                        },\n" +
-                        "                        {\n" +
-                        "                            \"reply\":{\n" +
-                        "                                \"displayText\":\"现场云直播\",\n" +
-                        "                                \"postback\":{\n" +
-                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
-                        "                                }\n" +
-                        "                            }\n" +
-                        "                        }\n" +
-                        "                    ]\n" +
-                        "                }\n" +
-                        "            },\n" +
-                        "            {\n" +
-                        "                \"menu\":{\n" +
-                        "                    \"displayText\":\"新华99\",\n" +
-                        "                    \"entries\":[\n" +
-                        "                        {\n" +
-                        "                            \"reply\":{\n" +
-                        "                                \"displayText\":\"厂直优品\",\n" +
-                        "                                \"postback\":{\n" +
-                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
-                        "                                }\n" +
-                        "                            }\n" +
-                        "                        },\n" +
-                        "                        {\n" +
-                        "                            \"reply\":{\n" +
-                        "                                \"displayText\":\"地标特产\",\n" +
-                        "                                \"postback\":{\n" +
-                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
-                        "                                }\n" +
-                        "                            }\n" +
-                        "                        }\n" +
-                        "                    ]\n" +
-                        "                }\n" +
-                        "            },\n" +
-                        "            {\n" +
-                        "                \"menu\":{\n" +
-                        "                    \"displayText\":\"我的\",\n" +
-                        "                    \"entries\":[\n" +
-                        "                        {\n" +
-                        "                            \"reply\":{\n" +
-                        "                                \"displayText\":\"我的服务\",\n" +
-                        "                                \"postback\":{\n" +
-                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
-                        "                                }\n" +
-                        "                            }\n" +
-                        "                        },\n" +
-                        "                        {\n" +
-                        "                            \"reply\":{\n" +
-                        "                                \"displayText\":\"我的订单\",\n" +
-                        "                                \"postback\":{\n" +
-                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
-                        "                                }\n" +
-                        "                            }\n" +
-                        "                        }\n" +
-                        "                    ]\n" +
-                        "                }\n" +
-                        "            }\n" +
-                        "        ]\n" +
-                        "    }\n" +
-                        "}";
+//                String json = "{\n" +
+//                        "    \"menu\":{\n" +
+//                        "        \"entries\":[\n" +
+//                        "            {\n" +
+//                        "                \"menu\":{\n" +
+//                        "                    \"displayText\":\"现场云\",\n" +
+//                        "                    \"entries\":[\n" +
+//                        "                        {\n" +
+//                        "                            \"reply\":{\n" +
+//                        "                                \"displayText\":\"央企服务\",\n" +
+//                        "                                \"postback\":{\n" +
+//                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
+//                        "                                }\n" +
+//                        "                            }\n" +
+//                        "                        },\n" +
+//                        "                        {\n" +
+//                        "                            \"reply\":{\n" +
+//                        "                                \"displayText\":\"民族品牌\",\n" +
+//                        "                                \"postback\":{\n" +
+//                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
+//                        "                                }\n" +
+//                        "                            }\n" +
+//                        "                        },\n" +
+//                        "                        {\n" +
+//                        "                            \"reply\":{\n" +
+//                        "                                \"displayText\":\"区县融媒体\",\n" +
+//                        "                                \"postback\":{\n" +
+//                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
+//                        "                                }\n" +
+//                        "                            }\n" +
+//                        "                        },\n" +
+//                        "                        {\n" +
+//                        "                            \"reply\":{\n" +
+//                        "                                \"displayText\":\"中纪委专刊\",\n" +
+//                        "                                \"postback\":{\n" +
+//                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
+//                        "                                }\n" +
+//                        "                            }\n" +
+//                        "                        },\n" +
+//                        "                        {\n" +
+//                        "                            \"reply\":{\n" +
+//                        "                                \"displayText\":\"现场云直播\",\n" +
+//                        "                                \"postback\":{\n" +
+//                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
+//                        "                                }\n" +
+//                        "                            }\n" +
+//                        "                        }\n" +
+//                        "                    ]\n" +
+//                        "                }\n" +
+//                        "            },\n" +
+//                        "            {\n" +
+//                        "                \"menu\":{\n" +
+//                        "                    \"displayText\":\"新华99\",\n" +
+//                        "                    \"entries\":[\n" +
+//                        "                        {\n" +
+//                        "                            \"reply\":{\n" +
+//                        "                                \"displayText\":\"厂直优品\",\n" +
+//                        "                                \"postback\":{\n" +
+//                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
+//                        "                                }\n" +
+//                        "                            }\n" +
+//                        "                        },\n" +
+//                        "                        {\n" +
+//                        "                            \"reply\":{\n" +
+//                        "                                \"displayText\":\"地标特产\",\n" +
+//                        "                                \"postback\":{\n" +
+//                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
+//                        "                                }\n" +
+//                        "                            }\n" +
+//                        "                        }\n" +
+//                        "                    ]\n" +
+//                        "                }\n" +
+//                        "            },\n" +
+//                        "            {\n" +
+//                        "                \"menu\":{\n" +
+//                        "                    \"displayText\":\"我的\",\n" +
+//                        "                    \"entries\":[\n" +
+//                        "                        {\n" +
+//                        "                            \"reply\":{\n" +
+//                        "                                \"displayText\":\"我的服务\",\n" +
+//                        "                                \"postback\":{\n" +
+//                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
+//                        "                                }\n" +
+//                        "                            }\n" +
+//                        "                        },\n" +
+//                        "                        {\n" +
+//                        "                            \"reply\":{\n" +
+//                        "                                \"displayText\":\"我的订单\",\n" +
+//                        "                                \"postback\":{\n" +
+//                        "                                    \"data\":\"http://testxhs.supermms.cn/api/sms5g/my/viewProduct?msgId=1572676328973&option=1\"\n" +
+//                        "                                }\n" +
+//                        "                            }\n" +
+//                        "                        }\n" +
+//                        "                    ]\n" +
+//                        "                }\n" +
+//                        "            }\n" +
+//                        "        ]\n" +
+//                        "    }\n" +
+//                        "}";
                 ContentValues cv = new ContentValues();
                 cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_MENU, json);
                 LogUtil.i("Junwang", "chatbot menu json="+json);

@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +40,10 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
     private String mButtonMenuAction[];
     private float mOffsetX;
     private int mOffsetY;
+    private CustomSelectDialog mDialog1;
+    private CustomSelectDialog mDialog2;
+    private CustomSelectDialog mDialog3;
+    private CustomSelectDialog mPopupDialog;
 //    private Activity mActivity;
 
     public ThreeButtonPopupMenuView(Context context, @Nullable AttributeSet attrs) {
@@ -83,7 +89,7 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
 
     @Override
     protected void onFinishInflate() {
-        LogUtil.i("PopupMenuView", "PopupMenuView onFinishInflate");
+        LogUtil.i("Junwang", "PopupMenuView onFinishInflate");
         mSwitchBt = (ImageView)findViewById(R.id.switch_to_composemsg);
         mSwitchBt.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -103,7 +109,7 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
         /*mMenuButton1*/((LinearLayout)findViewById(R.id.menu_button1_layout)).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                LogUtil.i("PopupMenuView", "PopupMenuView onClick");
+                LogUtil.i("Junwang", "PopupMenuView onClick");
                 mOffsetX = -0.2143f; //-3/14
                 mOffsetY = ThreeButtonPopupMenuView.this.getHeight();
 //                final ArrayList<String> menuItem = new ArrayList<String>(){};
@@ -116,8 +122,18 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
                 if(mButtonMenuAction[0] != null){
                     Toast.makeText(getContext(), /*names.get(position)*/mButtonMenuAction[0], Toast.LENGTH_SHORT).show();
                 }else if((mBusnMenuItem[0] != null) && (mBusnMenuItem[0].size() != 0)) {
-                    showCustomDialog(mMenuItem1, 0);
+                    if(mDialog1 != null && mDialog1.isShowing()){
+                        mDialog1.dismiss();
+                    }else {
+//                        if(mPopupDialog != null && mPopupDialog.isShowing()){
+//                            mPopupDialog.dismiss();
+//                        }
+                        mDialog1 = showCustomDialog(mMenuItem1, 0);
+                    }
                 }else{
+                    if(mPopupDialog != null && mPopupDialog.isShowing()){
+                        mPopupDialog.dismiss();
+                    }
                     LogUtil.i("Junwang", "error! button1 menu action is null and menuitem is null");
                 }
             }
@@ -125,14 +141,24 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
         mMenuButton1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                LogUtil.i("PopupMenuView", "PopupMenuView onClick");
+                LogUtil.i("Junwang", "PopupMenuView onClick");
                 mOffsetX = -0.2143f; //-3/14
                 mOffsetY = ThreeButtonPopupMenuView.this.getHeight();
                 if(mButtonMenuAction[0] != null){
                     Toast.makeText(getContext(), /*names.get(position)*/mButtonMenuAction[0], Toast.LENGTH_SHORT).show();
                 }else if((mBusnMenuItem[0] != null) && (mBusnMenuItem[0].size() != 0)) {
-                    showCustomDialog(mMenuItem1, 0);
+                    if(mDialog1 != null && mDialog1.isShowing()){
+                        mDialog1.dismiss();
+                    }else {
+//                        if(mPopupDialog != null && mPopupDialog.isShowing()){
+//                            mPopupDialog.dismiss();
+//                        }
+                        mDialog1 = showCustomDialog(mMenuItem1, 0);
+                    }
                 }else{
+                    if(mPopupDialog != null && mPopupDialog.isShowing()){
+                        mPopupDialog.dismiss();
+                    }
                     LogUtil.i("Junwang", "error! button1 menu action is null and menuitem is null");
                 }
             }
@@ -140,15 +166,25 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
         ((LinearLayout)findViewById(R.id.menu_button2_layout)).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                LogUtil.i("PopupMenuView", "PopupMenuView onClick");
+                LogUtil.i("Junwang", "PopupMenuView onClick");
                 mOffsetX = 0.0714f; // 1/14
                 mOffsetY = ThreeButtonPopupMenuView.this.getHeight();
 
                 if(mButtonMenuAction[1] != null){
                     Toast.makeText(getContext(), /*names.get(position)*/mButtonMenuAction[1], Toast.LENGTH_SHORT).show();
                 }else if((mBusnMenuItem[1] != null) && (mBusnMenuItem[1].size() != 0)) {
-                    showCustomDialog(mMenuItem2, 1);
+                    if(mDialog2 != null && mDialog2.isShowing()){
+                        mDialog2.dismiss();
+                    }else {
+//                        if(mPopupDialog != null && mPopupDialog.isShowing()){
+//                            mPopupDialog.dismiss();
+//                        }
+                        mDialog2 = showCustomDialog(mMenuItem2, 1);
+                    }
                 }else{
+                    if(mPopupDialog != null && mPopupDialog.isShowing()){
+                        mPopupDialog.dismiss();
+                    }
                     LogUtil.i("Junwang", "error! button2 menu action is null and menuitem is null");
                 }
             }
@@ -157,15 +193,25 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
         mMenuButton2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                LogUtil.i("PopupMenuView", "PopupMenuView onClick");
+                LogUtil.i("Junwang", "PopupMenuView onClick");
                 mOffsetX = 0.0714f; // 1/14
                 mOffsetY = ThreeButtonPopupMenuView.this.getHeight();
 
                 if(mButtonMenuAction[1] != null){
                     Toast.makeText(getContext(), /*names.get(position)*/mButtonMenuAction[1], Toast.LENGTH_SHORT).show();
                 }else if((mBusnMenuItem[1] != null) && (mBusnMenuItem[1].size() != 0)) {
-                    showCustomDialog(mMenuItem2, 1);
+                    if(mDialog2 != null && mDialog2.isShowing()){
+                        mDialog2.dismiss();
+                    }else {
+//                        if(mPopupDialog != null && mPopupDialog.isShowing()){
+//                            mPopupDialog.dismiss();
+//                        }
+                        mDialog2 = showCustomDialog(mMenuItem2, 1);
+                    }
                 }else{
+                    if(mPopupDialog != null && mPopupDialog.isShowing()){
+                        mPopupDialog.dismiss();
+                    }
                     LogUtil.i("Junwang", "error! button2 menu action is null and menuitem is null");
                 }
             }
@@ -173,15 +219,25 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
         ((LinearLayout)findViewById(R.id.menu_button3_layout)).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                LogUtil.i("PopupMenuView", "PopupMenuView onClick");
+                LogUtil.i("Junwang", "PopupMenuView onClick");
                 mOffsetX = 0.357f; // 5/14
                 mOffsetY = ThreeButtonPopupMenuView.this.getHeight();
 
                 if(mButtonMenuAction[2] != null){
                     Toast.makeText(getContext(), /*names.get(position)*/mButtonMenuAction[2], Toast.LENGTH_SHORT).show();
                 }else if((mBusnMenuItem[2] != null) && (mBusnMenuItem[2].size() != 0)) {
-                    showCustomDialog(mMenuItem3, 2);
+                    if(mDialog3 != null && mDialog3.isShowing()){
+                        mDialog3.dismiss();
+                    }else {
+//                        if(mPopupDialog != null && mPopupDialog.isShowing()){
+//                            mPopupDialog.dismiss();
+//                        }
+                        mDialog3 = showCustomDialog(mMenuItem3, 2);
+                    }
                 }else{
+                    if(mPopupDialog != null && mPopupDialog.isShowing()){
+                        mPopupDialog.dismiss();
+                    }
                     LogUtil.i("Junwang", "error! button3 menu action is null and menuitem is null");
                 }
             }
@@ -190,15 +246,25 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
         mMenuButton3.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                LogUtil.i("PopupMenuView", "PopupMenuView onClick");
+                LogUtil.i("Junwang", "PopupMenuView onClick");
                 mOffsetX = 0.357f; // 5/14
                 mOffsetY = ThreeButtonPopupMenuView.this.getHeight();
 
                 if(mButtonMenuAction[2] != null){
                     Toast.makeText(getContext(), /*names.get(position)*/mButtonMenuAction[2], Toast.LENGTH_SHORT).show();
                 }else if((mBusnMenuItem[2] != null) && (mBusnMenuItem[2].size() != 0)) {
-                    showCustomDialog(mMenuItem3, 2);
+                    if(mDialog3 != null && mDialog3.isShowing()){
+                        mDialog3.dismiss();
+                    }else {
+                        if(mPopupDialog != null && mPopupDialog.isShowing()){
+                            mPopupDialog.dismiss();
+                        }
+                        mDialog3 = showCustomDialog(mMenuItem3, 2);
+                    }
                 }else{
+                    if(mPopupDialog != null && mPopupDialog.isShowing()){
+                        mPopupDialog.dismiss();
+                    }
                     LogUtil.i("Junwang", "error! button3 menu action is null and menuitem is null");
                 }
             }
@@ -328,7 +394,7 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
      * 展示对话框视图，构造方法创建对象
      */
     private CustomSelectDialog showDialog(CustomSelectDialog.SelectDialogListener listener, List<String> names) {
-        CustomSelectDialog dialog = new CustomSelectDialog(ConversationMessageView.getActivityFromView(this),
+        mPopupDialog = new CustomSelectDialog(ConversationMessageView.getActivityFromView(this),
                 R.style.transparentFrameWindowStyle, listener, names);
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int width = dm.widthPixels;         // 屏幕宽度（像素）
@@ -336,31 +402,48 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
         // 屏幕宽度算法:屏幕宽度（像素）/屏幕密度
         int screenWidth = (int) (width / density);  // 屏幕宽度(dp)
         LogUtil.i("Junwang", "width="+width+", density="+density+", screenWidth="+screenWidth+", ll="+(int)(screenWidth/3.5));
-        dialog.setPopupMenuLayoutParams(mOffsetX, /*mMenuButton1.getWidth()*/(int)(width/3.1), mOffsetY);
+        mPopupDialog.setPopupMenuLayoutParams(mOffsetX, /*mMenuButton1.getWidth()*/(int)(width/3.1), mOffsetY);
         LogUtil.i("Junwang", "CustomSelectDialog left="+mMenuButton1.getLeft()+", x="+ mMenuButton1.getX()+", right="
                 +mMenuButton1.getRight()+", top="+mMenuButton1.getTop()+", height="+mMenuButton1.getY()+", parent_height="+this.getHeight());
-        dialog.setItemColor(R.color.colorAccent,R.color.colorPrimary);
+        mPopupDialog.setItemColor(R.color.colorAccent,R.color.colorPrimary);
+        Window window = mPopupDialog.getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         //判断activity是否finish
         if (/*!this.isFinishing()*/true) {
-            dialog.show();
+            mPopupDialog.show();
         }
-        return dialog;
+
+        return mPopupDialog;
     }
 
-    private void showCustomDialog(ArrayList<String> menuItem, int buttonNo) {
+    private CustomSelectDialog showCustomDialog(ArrayList<String> menuItem, int buttonNo) {
         final List<String> names = new ArrayList<>(menuItem);
-//        names.add("拍照");
-//        names.add("相册");
-//        names.add("其他");
-//        names.add("查看历史记录");
-//        names.add("看看");
-        showDialog(new CustomSelectDialog.SelectDialogListener() {
+
+        if(mPopupDialog != null && mPopupDialog.isShowing()){
+            mPopupDialog.dismiss();
+        }
+        return showDialog(new CustomSelectDialog.SelectDialogListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LogUtil.i("Junwang", "showCustomDialog onItemClick position="+position);
                 onMenuItemClick(mBusnMenuItem[buttonNo].get(position), view);
 //                Toast.makeText(getContext(), /*names.get(position)*/mBusnMenuItem[buttonNo].get(position).getAction_url(), Toast.LENGTH_SHORT).show();
             }
         }, names);
+    }
+
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        LogUtil.i("Junwang", "Three Button Menu onTouchEvent");
+//        return super.onTouchEvent(event);
+//    }
+
+    public void closeMenu(){
+        if(mPopupDialog != null && mPopupDialog.isShowing()){
+            mPopupDialog.dismiss();
+        }
     }
 }
 

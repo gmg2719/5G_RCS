@@ -4,13 +4,17 @@
     android:layout_height="wrap_content"
     android:paddingTop="4dp"
     android:background="#FFFFFF">
-    <ImageView
-        android:id="@+id/actionbar_arrow"
+    <TextView
+        android:id="@+id/actionbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/back_normal"
         android:gravity="center_vertical"
+        android:layout_alignParentLeft="true"
         android:paddingRight="8dp"
+        android:text="5G消息"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#0D1333"
         />
     <ImageView
         android:id="@+id/option_image"
@@ -19,17 +23,5 @@
         android:layout_alignParentRight="true"
         android:gravity="center_vertical"
         android:src="@drawable/icon_more"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/actionbar_title"
-        android:layout_centerInParent="true"
-        android:textSize="18sp"
-        android:text="10086"
-        android:ellipsize="end"
-        android:textColor="#0D1333"
-        android:lines="1"
-        android:maxLength="15"
-        android:paddingRight="8dp"
-        android:textStyle="bold"/>
+
 </RelativeLayout>

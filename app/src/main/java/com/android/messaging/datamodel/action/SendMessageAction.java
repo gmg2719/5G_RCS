@@ -34,12 +34,14 @@ import com.android.messaging.datamodel.DatabaseWrapper;
 import com.android.messaging.datamodel.MessagingContentProvider;
 import com.android.messaging.datamodel.SyncManager;
 import com.android.messaging.datamodel.data.MessageData;
+import com.android.messaging.datamodel.data.MessagePartData;
 import com.android.messaging.datamodel.data.ParticipantData;
 import com.android.messaging.datamodel.microfountain.sms.SendRcsMsgUtils;
 import com.android.messaging.sms.MmsUtils;
 import com.android.messaging.util.Assert;
 import com.android.messaging.util.LogUtil;
 import com.android.messaging.util.PhoneUtils;
+import com.android.messaging.util.UriUtil;
 import com.microfountain.rcs.aidl.database.types.RcsMessageContactIdentityType;
 
 import java.util.ArrayList;
@@ -144,11 +146,36 @@ public class SendMessageAction extends Action implements Parcelable {
                 LogUtil.i("Junwang", "recipients = "+recipients.get(0));
             }
             if((recipients != null) && (recipients.size() == 1) && (recipients.get(0).startsWith("sip:"))){
-                SendRcsMsgUtils.sendTextMessage(BugleApplication.getContext(), recipients.get(0),
-                        UUID.randomUUID().toString(), UUID.randomUUID().toString(),
-                        message.getMessageText(), RcsMessageContactIdentityType.CHATBOT, PhoneUtils.getDefault()
-                                .getDefaultSmsSubscriptionId(), messageId);
-                return true;
+                if(isSms) {
+                    SendRcsMsgUtils.sendTextMessage(BugleApplication.getContext(), recipients.get(0),
+                            UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+                            message.getMessageText(), RcsMessageContactIdentityType.CHATBOT, PhoneUtils.getDefault()
+                                    .getDefaultSmsSubscriptionId(), messageId);
+                    return true;
+                }else{
+                    for (final MessagePartData partData : message.getParts()) {
+                        if (partData.isAttachment()) {
+                            final Uri uri = partData.getContentUri();
+                            if (partData.isImage()) {
+                                SendRcsMsgUtils.sendImageMessage(BugleApplication.getContext(), recipients.get(0),
+                                        UUID.randomUUID().toString(), UUID.randomUUID().toString(), uri, "imageName",
+                                        "image/jpeg", RcsMessageContactIdentityType.CHATBOT, PhoneUtils.getDefault()
+                                                .getDefaultSmsSubscriptionId(), messageId);
+                            }else if(partData.isAudio()){
+                                SendRcsMsgUtils.sendVoiceMessage(BugleApplication.getContext(), recipients.get(0),
+                                        UUID.randomUUID().toString(), UUID.randomUUID().toString(), uri, "audioName", UriUtil.getMediaDurationMs(uri),
+                                        "audio/*", RcsMessageContactIdentityType.CHATBOT, PhoneUtils.getDefault()
+                                                .getDefaultSmsSubscriptionId(), messageId);
+                            }else if(partData.isVideo()){
+                                SendRcsMsgUtils.sendVoiceMessage(BugleApplication.getContext(), recipients.get(0),
+                                        UUID.randomUUID().toString(), UUID.randomUUID().toString(), uri, "videoName", UriUtil.getMediaDurationMs(uri),
+                                        "video/*", RcsMessageContactIdentityType.CHATBOT, PhoneUtils.getDefault()
+                                                .getDefaultSmsSubscriptionId(), messageId);
+                            }
+                        }
+                    }
+                    return true;
+                }
             }
             else if (isSms) {
                 final String smsc = BugleDatabaseOperations.getSmsServiceCenterForConversation(

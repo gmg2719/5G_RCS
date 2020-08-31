@@ -40,7 +40,7 @@ class RightHorizontal extends Horizontal {
 
     @Override
     public void autoOpenMenu(OverScroller scroller, int scrollX, int duration) {
-        scroller.startScroll(Math.abs(scrollX), 0, getMenuView().getWidth() - Math.abs(scrollX), 0, duration);
+        scroller.startScroll(Math.abs(scrollX), 0, getMenuView().getWidth() - Math.abs(scrollX)+150, 0, duration);
     }
 
     @Override

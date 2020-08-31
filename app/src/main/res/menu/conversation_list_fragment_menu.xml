@@ -19,27 +19,20 @@
     xmlns:tools="http://schemas.android.com/tools" >
 
     <item android:id="@+id/action_start_new_conversation"
+        android:orderInCategory="300"
         android:title="@string/start_new_conversation"
         android:icon="@drawable/icon_more"
-        android:visible="false"
-        appcompat:showAsAction="always" />
-
-    <item
-        android:id="@+id/action_show_blocked_contacts"
-        android:orderInCategory="300"
-        android:title="@string/blocked_contacts_title"
+        android:visible="true"
+        appcompat:showAsAction="never" />
+    <item android:id="@+id/my_favorite"
+        android:orderInCategory="9900"
+        android:title="我的收藏"
         appcompat:showAsAction="never"/>
 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="400"
         android:title="@string/action_settings"
-        appcompat:showAsAction="never"/>
-
-    <item
-        android:id="@+id/action_debug_options"
-        android:orderInCategory="9900"
-        android:title="@string/action_debug_options"
         appcompat:showAsAction="never"/>
 
 </menu>

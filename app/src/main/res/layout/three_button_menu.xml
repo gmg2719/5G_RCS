@@ -10,21 +10,21 @@
     <View
         android:id="@+id/top_margin"
         android:layout_width="match_parent"
-        android:layout_height="4dp" />
+        android:layout_height="2dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="14dp"
-        android:paddingBottom="16dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
         android:background="@color/white"
         android:weightSum="3.5">
 
         <ImageView
             android:id="@+id/switch_to_composemsg"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:src="@drawable/icon_keyboard"
             android:layout_gravity="center"/>
@@ -37,15 +37,15 @@
             android:id="@+id/menu_button1_layout"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center">
             <TextView
                 android:id="@+id/menu_button1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="按钮1"
                 android:clickable="true"
-                android:layout_gravity="center"
+                android:gravity="center"
                 />
         </LinearLayout>
 
@@ -59,15 +59,15 @@
             android:id="@+id/menu_button2_layout"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center">
             <TextView
                 android:id="@+id/menu_button2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="按钮2"
                 android:clickable="true"
-                android:layout_gravity="center"
+                android:gravity="center"
                 />
         </LinearLayout>
 
@@ -80,7 +80,7 @@
             android:id="@+id/menu_button3_layout"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center">
             <TextView
                 android:id="@+id/menu_button3"
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:text="按钮3"
                 android:clickable="true"
-                android:layout_gravity="center"
+                android:gravity="center"
                 />
         </LinearLayout>
     </LinearLayout>

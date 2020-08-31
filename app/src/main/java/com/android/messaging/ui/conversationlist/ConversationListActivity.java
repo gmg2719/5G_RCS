@@ -49,6 +49,8 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +63,7 @@ import com.android.messaging.datamodel.microfountain.sms.ChatbotUtils;
 import com.android.messaging.receiver.XYRCSMsgReceiver;
 import com.android.messaging.ui.ConversationDrawables;
 import com.android.messaging.ui.UIIntents;
+import com.android.messaging.ui.conversation.chatbot.ChatbotFavoriteActivity;
 import com.android.messaging.util.DebugUtils;
 import com.android.messaging.util.LogUtil;
 import com.android.messaging.util.PhoneUtils;
@@ -79,6 +82,7 @@ import com.microfountain.rcs.support.config.RcsServiceConfigXMLHelper;
 import com.microfountain.rcs.support.model.chatbot.Chatbot;
 import com.microfountain.rcs.support.model.chatbot.ChatbotInfoQueryResult;
 import com.microfountain.rcs.support.model.chatbot.ChatbotInfoQueryResultParser;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
@@ -86,7 +90,7 @@ import java.net.HttpURLConnection;
 import static com.microfountain.rcs.rcskit.service.RcsSubscriptionManager.getEnabledSubscriptionId;
 
 
-public class ConversationListActivity extends AbstractConversationListActivity implements View.OnClickListener{
+public class  ConversationListActivity extends AbstractConversationListActivity implements View.OnClickListener{
     //add by junwang start
     ConversationListFragment mNormalConListFragment;
     ConversationListFragment mH5ConListFragment;
@@ -381,6 +385,7 @@ public class ConversationListActivity extends AbstractConversationListActivity i
         //add by junwang
         SDKInitializer.initialize(getApplicationContext());
         SDKInitializer.setCoordType(CoordType.BD09LL);
+        ZXingLibrary.initDisplayOpinion(this);
         judgePermission();
         initRCSSDK();
         mQueryHandler = new QueryHandler(getApplication().getContentResolver(), this);
@@ -431,12 +436,12 @@ public class ConversationListActivity extends AbstractConversationListActivity i
                 TypedValue.COMPLEX_UNIT_DIP, 1, dm));
         // 设置Tab Indicator的高度
         tabs.setIndicatorHeight((int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 4, dm));
+                TypedValue.COMPLEX_UNIT_DIP, 2, dm));
         // 设置Tab标题文字的大小
         tabs.setTextSize((int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_SP, 16, dm));
         // 设置Tab Indicator的颜色
-        tabs.setIndicatorColor(Color.parseColor("#45c01a"));
+        tabs.setIndicatorColor(Color.parseColor("#4F7BFF"));
         // 设置选中Tab文字的颜色 (这是我自定义的一个方法)
 //        tabs.setSelectedTextColor(Color.parseColor("#45c01a"));
         // 取消点击Tab时的背景色
@@ -449,7 +454,7 @@ public class ConversationListActivity extends AbstractConversationListActivity i
             super(fm);
         }
 
-        private final String[] titles = { "个人", "通知"};
+        private final String[] titles = { "通知", "个人"};
 
         @Override
         public CharSequence getPageTitle(int position) {
@@ -640,24 +645,24 @@ public class ConversationListActivity extends AbstractConversationListActivity i
     @Override
     protected void updateActionBar(final ActionBar actionBar) {
 //        actionBar.setTitle(getString(R.string.app_name));
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setBackgroundDrawable(new ColorDrawable(
-                getResources().getColor(R.color.action_bar_background_color)));
-        actionBar.show();
+//        actionBar.setDisplayShowTitleEnabled(true);
+//        actionBar.setDisplayHomeAsUpEnabled(false);
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//        actionBar.setBackgroundDrawable(new ColorDrawable(
+//                getResources().getColor(R.color.action_bar_background_color)));
+//        actionBar.show();
 //        super.updateActionBar(actionBar);
         updateActionAndStatusBarColor(actionBar);
         // We update this regardless of whether or not the action bar is showing so that we
         // don't get a race when it reappears.
 //        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-//        View customView = ((LayoutInflater)
-//                this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.favorite_actionbar, null);
-//        ActionBar.LayoutParams lp =new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
-//        actionBar.setCustomView(customView, lp);
+        View customView = ((LayoutInflater)
+                this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.action_bar_conversation, null);
+        ActionBar.LayoutParams lp =new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+        actionBar.setCustomView(customView, lp);
 //        actionBar.setDisplayShowHomeEnabled(false);
 //        actionBar.setDisplayShowTitleEnabled(false);
-//        actionBar.setHomeAsUpIndicator(null);
+        actionBar.setHomeAsUpIndicator(null);
     }
 
     @Override
@@ -716,12 +721,15 @@ public class ConversationListActivity extends AbstractConversationListActivity i
             case R.id.action_settings:
                 onActionBarSettings();
                 return true;
-            case R.id.action_debug_options:
-                onActionBarDebug();
+            case R.id.my_favorite:
+                ChatbotFavoriteActivity.start(this);
                 return true;
-            case R.id.action_show_blocked_contacts:
-                onActionBarBlockedParticipants();
-                return true;
+//            case R.id.action_debug_options:
+//                onActionBarDebug();
+//                return true;
+//            case R.id.action_show_blocked_contacts:
+//                onActionBarBlockedParticipants();
+//                return true;
         }
         return super.onOptionsItemSelected(menuItem);
     }

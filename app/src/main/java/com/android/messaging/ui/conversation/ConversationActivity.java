@@ -20,6 +20,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -30,8 +31,8 @@ import android.webkit.ValueCallback;
 import com.android.messaging.R;
 import com.android.messaging.datamodel.MessagingContentProvider;
 import com.android.messaging.datamodel.data.MessageData;
-import com.android.messaging.product.utils.StatusBarUtil;
 import com.android.messaging.ui.BugleActionBarActivity;
+import com.android.messaging.ui.ConversationDrawables;
 import com.android.messaging.ui.UIIntents;
 import com.android.messaging.ui.contact.ContactPickerFragment;
 import com.android.messaging.ui.contact.ContactPickerFragment.ContactPickerFragmentHost;
@@ -83,9 +84,14 @@ public class ConversationActivity extends BugleActionBarActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.conversation_activity);
+        AndroidBug5497Workaround.assistActivity(this);
 //        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        StatusBarUtil.setStatusBarColor(this,R.color.white);
+//        StatusBarUtil.setStatusBarColor(this,R.color.white);
+        final int actionBarColor = ConversationDrawables.get().getActionbarColor();
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(actionBarColor));
+
+        UiUtils.setStatusBarColor(this, actionBarColor);
         final Intent intent = getIntent();
 
         //add by junwang
@@ -261,7 +267,8 @@ public class ConversationActivity extends BugleActionBarActivity
 
     @Override
     public void updateActionBar(final ActionBar actionBar) {
-        super.updateActionBar(actionBar);
+        LogUtil.i("Junwang", "ConversationActivity updateActionBar");
+//        super.updateActionBar(actionBar);
         final ConversationFragment conversation = getConversationFragment();
         final ContactPickerFragment contactPicker = getContactPicker();
         if (contactPicker != null && mUiState.shouldShowContactPickerFragment()) {
@@ -313,7 +320,7 @@ public class ConversationActivity extends BugleActionBarActivity
                 ContactPickerFragment.FRAGMENT_TAG);
     }
 
-    private ConversationFragment getConversationFragment() {
+    public ConversationFragment getConversationFragment() {
         return (ConversationFragment) getFragmentManager().findFragmentByTag(
                 ConversationFragment.FRAGMENT_TAG);
     }

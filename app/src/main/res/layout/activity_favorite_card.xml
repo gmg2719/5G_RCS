@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:background="#F0F0F0 "
     android:orientation="vertical"
-    android:paddingTop="50dp">
+    android:fitsSystemWindows="true"
+
+    >
     <com.yanzhenjie.recyclerview.SwipeRecyclerView
         android:id="@+id/fav_recycler_view"
         android:layout_width="match_parent"

@@ -32,6 +32,7 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
@@ -197,6 +198,12 @@ import com.google.common.base.Predicate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -220,6 +227,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -389,7 +397,22 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
 
         mMessageImageView = (AsyncImageView) findViewById(R.id.message_image);
         mMessageImageView.setOnClickListener(this);
-        mMessageImageView.setOnLongClickListener(this);
+//        mMessageImageView.setOnLongClickListener(this);
+//        mMessageImageView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View arg0) {
+//                Bitmap bitmap = ((BitmapDrawable)mMessageImageView.getDrawable()).getBitmap();
+//                Result ret = parsePic(bitmap);
+//                if (null == ret) {
+//                    Toast.makeText(getActivityFromView(mMessageImageView), "解析结果：null",
+//                            Toast.LENGTH_LONG).show();
+//                } else {
+//                    Toast.makeText(getActivityFromView(mMessageImageView),
+//                            "解析结果：" + ret.toString(), Toast.LENGTH_LONG).show();
+//                }
+//                return false;
+//            }
+//        });
 
         mMessageTextView = (TextView) findViewById(R.id.message_text);
         mMessageTextView.setOnClickListener(this);
@@ -414,6 +437,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         mLocationButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                closeButtonMenu();
 //                mMessageWebView.getContext().startActivity(new Intent(mMessageWebView.getContext(), BaiduMapTestActivity.class));
                 mMessageWebView.getContext().startActivity(new Intent(mMessageWebView.getContext(), FullScreenVideoPlayActivity.class));
             }
@@ -465,6 +489,32 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
 //                LogUtil.i("Junwang", "ProvisioningStatus="+rsi.getProvisioningStatus()+", SubscriptionStatus="+rsi.getSubscriptionStatus());
 //            }
 //        });
+    }
+
+    public Result parsePic(Bitmap bitmap) {
+        // 解析转换类型UTF-8
+        Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
+        hints.put(DecodeHintType.CHARACTER_SET, "utf-8");
+        // 新建一个RGBLuminanceSource对象，将bitmap图片传给此对象
+        int lWidth = bitmap.getWidth();
+        int lHeight = bitmap.getHeight();
+        int[] lPixels = new int[lWidth * lHeight];
+        bitmap.getPixels(lPixels, 0, lWidth, 0, 0, lWidth, lHeight);
+        RGBLuminanceSource rgbLuminanceSource = new RGBLuminanceSource(lWidth,
+                lHeight, lPixels);
+        // 将图片转换成二进制图片
+        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(
+                rgbLuminanceSource));
+        // 初始化解析对象
+        QRCodeReader reader = new QRCodeReader();
+        // 开始解析
+        Result result = null;
+        try {
+            result = reader.decode(binaryBitmap, hints);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -1327,6 +1377,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
 //            bundle.putString("content", content);
 //            intent.putExtra("bundle", bundle);
 //            startActivity(intent);
+            closeButtonMenu();
             mMessageWebView.getContext().startActivity(new Intent(mMessageWebView.getContext(),
                     BaiduMapTestActivity.class));
 //            mMessageWebView.getContext().startActivity(new Intent(mMessageWebView.getContext(),
@@ -1696,11 +1747,13 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     .setMessage(message)
                     .setPositiveButton("确定",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int which) {
+                            closeButtonMenu();
                             result.confirm();
                         }
                     })
                     .setNeutralButton("取消", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            closeButtonMenu();
                             result.cancel();
                         }
                     });
@@ -1725,12 +1778,14 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             builder.setView(et)
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            closeButtonMenu();
                             result.confirm(et.getText().toString());
                         }
 
                     })
                     .setNeutralButton("取消", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            closeButtonMenu();
                             result.cancel();
                         }
                     });
@@ -2176,7 +2231,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             TextView tv = (TextView)view.findViewById(R.id.product_description);
 //            tv.setText(lists.get(position).getTitle());
             tv.setText("橙子脐橙新鲜甜伦晚助农水果当季夏橙5斤");
-            RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(new RoundedCornerCenterCrop(20));//图片圆角为30
+            RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(new RoundedCornerCenterCrop(30));//图片圆角为30
             Glide.with(context).load(lists.get(position).getMediaUr())
                     .apply(options)
                     .into(img);
@@ -2234,6 +2289,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             banner.setOnBannerClickListener(new BannerView.OnBannerClickListener() {
                 @Override
                 public void onItemClick(int position) {
+                    closeButtonMenu();
                     if(mData.getmChatbotCardInvalid() ){
                         LogUtil.i("Junwang", "Card is invalid.");
                         popupCardInvalidPrompt();
@@ -2294,6 +2350,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         mH5_content.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                closeButtonMenu();
 //                    showBottomPop(null);
             }
         });
@@ -2388,9 +2445,50 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             @Override
             public void onClick(View v) {
                 LogUtil.i("Junwang", "click ... more action");
+                closeButtonMenu();
                 showBottomPop(view, cardContent);
             }
         });
+    }
+
+    private boolean loadPictureCardChatbotMessage(int resource, CardContent cardContent){
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        View view = layoutInflater.inflate(resource, null);
+        if(view != null) {
+            ImageView iv = (ImageView) view.findViewById(R.id.chatbot_image);
+            RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(new RoundedCornerCenterCrop(30));//图片圆角为30
+            Glide.with(this).load(/*cardContent.getMedia().getThumbnailUrl()*//*"http://vsms-material.eos-hunan-1.cmecloud.cn/vsms_api/2/5e41089ac63f0.jpg"*/"/sdcard/DCIM/Camera/qrcode.jpg")
+                    .apply(options)
+                    .into(iv);
+//            iv.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View arg0) {
+//                    BitmapDrawable drawable = (BitmapDrawable)iv.getDrawable();
+//                    if(drawable == null)
+//                    {   Toast.makeText(getActivityFromView(iv), "二维码不能解析成BitmapDrawable",
+//                            Toast.LENGTH_LONG).show();
+//                        return false;
+//                    }
+//                    Bitmap bitmap = drawable.getBitmap();
+//                    Result ret = parsePic(bitmap);
+//                    if (null == ret) {
+//                        Toast.makeText(getActivityFromView(iv), "解析结果：null",
+//                                Toast.LENGTH_LONG).show();
+//                    } else {
+//                        LogUtil.i("Junwang", "qrcode="+ret.toString());
+//                        WebViewNewsActivity.start(getContext(), ret.toString());
+//                        Toast.makeText(getActivityFromView(iv),
+//                                "解析结果：" + ret.toString(), Toast.LENGTH_LONG).show();
+//                    }
+//                    return false;
+//                }
+//            });
+            mH5_content.removeAllViews();
+            mH5_content.addView(view);
+            setTimeText(view);
+            return true;
+        }
+        return false;
     }
 
     private boolean loadVoteCardChatbotMessage(int resource, CardContent cardcontent){
@@ -2482,6 +2580,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             tvRefresh.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+                    closeButtonMenu();
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -2542,6 +2641,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             tvVoteAction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    closeButtonMenu();
                     if(mData.getmChatbotCardInvalid() ){
                         LogUtil.i("Junwang", "Card is invalid.");
                         popupCardInvalidPrompt();
@@ -2638,7 +2738,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             mH5_content.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-
+                    closeButtonMenu();
                 }
             });
             setTimeText(view);
@@ -2678,6 +2778,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             mH5_content.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+                    closeButtonMenu();
                     WebViewNewsActivity.start(getContext(), cardcontent.getExtraData1());
                 }
             });
@@ -2695,6 +2796,11 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 Toast.makeText(getContext(), "消息已失效，已停止访问改内容", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void closeButtonMenu(){
+        ConversationFragment fm = ((ConversationActivity)getActivityFromView(mMessageTextView)).getConversationFragment();
+        fm.closeButtonMenu();
     }
 
     private boolean loadVideoNewsChatbotMessage(int resource, CardContent cardcontent){
@@ -2725,6 +2831,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             mH5_content.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+                    closeButtonMenu();
                     if(mData.getmChatbotCardInvalid()){
                         LogUtil.i("Junwang", "Card is invalid.");
                         popupCardInvalidPrompt();
@@ -2742,6 +2849,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                                             LogUtil.i("Junwang", "video card is valid");
                                             ChatbotVideoNewsDetailsActivity.start(getContext(), cardcontent.getMedia().getMediaUrl(),
                                                     cardcontent.getTitle(), cardcontent.getDescription());
+//                                            ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/seeVideo", params, "utf-8");
                                         }else{
                                             LogUtil.i("Junwang", "video card is invalid");
                                             ChatbotInfoTableUtils.updateChatbotCardInvalidStatus(mData.getmChatbotRcsdbMsgId());
@@ -2848,7 +2956,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             mH5_content.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-
+                    closeButtonMenu();
                 }
             });
             setTimeText(view);
@@ -2858,6 +2966,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 ((TextView) findViewById(R.id.action_button)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        closeButtonMenu();
                         updateSubscribeButton();
                         BugleNotifications.markMessageAsSubscribedStatus(mData.getmChatbotRcsdbMsgId());
                         if(mData.getmChatbotCardInvalid()){
@@ -2997,6 +3106,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 tv_action.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        closeButtonMenu();
                         onActionButtonClicked(lab.get(0), tv_action);
                     }
                 });
@@ -3011,6 +3121,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 tv_action1.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        closeButtonMenu();
                         onActionButtonClicked(lab.get(0), tv_action1);
                     }
                 });
@@ -3018,6 +3129,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 tv_action2.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        closeButtonMenu();
                         onActionButtonClicked(lab.get(1), tv_action2);
                     }
                 });
@@ -3035,18 +3147,21 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 tv_action1.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        closeButtonMenu();
                         onActionButtonClicked(lab.get(0), tv_action1);
                     }
                 });
                 tv_action2.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        closeButtonMenu();
                         onActionButtonClicked(lab.get(1), tv_action2);
                     }
                 });
                 tv_action3.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        closeButtonMenu();
                         onActionButtonClicked(lab.get(2), tv_action3);
                     }
                 });
@@ -3258,6 +3373,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 ((StandardVideoController)(vv_video.getController())).getStartPlayButton().setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        closeButtonMenu();
                         if(vv_video != null){
                             DanmuVideoPlayActivity.start(mMessageWebView.getContext(), news.getVideo_path(), news.getTitle());
                         }
@@ -3375,6 +3491,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         mLLTagBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                closeButtonMenu();
                 LogUtil.d("junwang", "点击事件");
                 expandList(news);
             }
@@ -3621,6 +3738,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                         iv.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                closeButtonMenu();
                                 DanmuVideoPlayActivity.start(mMessageWebView.getContext(), news.getVideo_path(), news.getTitle());
                             }
                         });
@@ -3640,6 +3758,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     zhiboImg.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            closeButtonMenu();
 //                            getContext().startActivity(new Intent(getContext(), ProductDetailsActivity.class));
                             DanmuVideoPlayActivity.start(mMessageWebView.getContext(), news.getVideo_path(), news.getTitle());
                         }
@@ -3658,6 +3777,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     btn1.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
+                            closeButtonMenu();
                             WebViewNewsActivity.start(getContext(), news.getBae_list().get(0).getBusnWebUrl());
                         }
                     });
@@ -3666,6 +3786,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     btn2.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
+                            closeButtonMenu();
                             WebViewNewsActivity.start(getContext(), /*news.bae_list.get(1).getBusnWebUrl()*/"https://common.diditaxi.com.cn/general/webEntry?wx=true&bizid=257&channel=70365#");
 //                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(/*"https://common.diditaxi.com.cn/general/webEntry?wx=true&bizid=257&channel=70365"*/news.bae_list.get(1).getBusnWebUrl()));
 ////                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://common.diditaxi.com.cn/general/webEntry?channel=74113&maptype=wgs"));
@@ -3678,6 +3799,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     backImg.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            closeButtonMenu();
                             WebViewNewsActivity.start(getContext(), news.getUrl());
                         }
                     });
@@ -3693,6 +3815,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     btn1.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
+                            closeButtonMenu();
                             WebViewNewsActivity.start(getContext(), news.getBae_list().get(0).getBusnWebUrl());
                         }
                     });
@@ -3700,6 +3823,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     btn2.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
+                            closeButtonMenu();
                             WebViewNewsActivity.start(getContext(), news.getBae_list().get(1).getBusnWebUrl());
                         }
                     });
@@ -3708,6 +3832,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     backImg.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            closeButtonMenu();
                             getContext().startActivity(new Intent(getContext(), ProductDetailsActivity.class));
                         }
                     });
@@ -3725,6 +3850,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         mH5_content.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                closeButtonMenu();
                 switch (v.getId()){
                     case R.id.vv_video:
                         break;
@@ -3991,21 +4117,29 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             for(; i<saw.length; i++){
                 if(saw[i].action != null) {
                     tv1 = new TextView(getContext());
-                    tv1.setPadding(0,4,0,0);
+//                    tv1.setPadding(0,4,0,0);
                     tv1.setText(saw[i].action.displayText);
-                    tv1.setWidth(120);
+//                    tv1.setWidth(120);
                     tv1.setTextColor(Color.GREEN);
-                    tv1.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
-                    ll1.addView(tv1, j);
+                    tv1.setGravity(Gravity.CENTER);
+                    tv1.setPadding(0, 15, 0, 0);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    ll1.addView(tv1, j, lp);
 //                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(120, ViewGroup.LayoutParams.WRAP_CONTENT);
 //                        tv1.setLayoutParams(lp);
                     SuggestionAction sa = saw[i].action;
                     if ((sa != null) && (sa.urlAction != null)) {
-
+                        tv1.setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View v) {
+                                WebViewNewsActivity.start(getContext(), sa.urlAction.openUrl.url);
+                            }
+                        });
                     }else if((sa != null) && (sa.dialerAction != null)){
                         tv1.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View v) {
+                                closeButtonMenu();
                                 NativeFunctionUtil.callNativeFunction(CardTemplate.NativeActionType.PHONE_CALL, getActivityFromView(mMessageTextView),
                                         null, null, sa.dialerAction.dialPhoneNumber.phoneNumber);
                             }
@@ -4014,6 +4148,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                         tv1.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View v) {
+                                closeButtonMenu();
                                 NativeFunctionUtil.openLocation(sa.mapAction.showLocation.location.label, sa.mapAction.showLocation.location.latitude,
                                         sa.mapAction.showLocation.location.longitude, getActivityFromView(mMessageTextView));
                             }
@@ -4022,13 +4157,14 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 }
                 if(saw[i].reply != null){
                     tv1 = new TextView(getContext());
-                    tv1.setPadding(0,4,0,0);
+//                    tv1.setPadding(0,4,0,0);
                     tv1.setText(saw[i].reply.displayText);
-                    ll1.addView(tv1, j);
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    tv1.setLayoutParams(lp);
                     tv1.setTextColor(Color.GREEN);
-                    tv1.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
+                    tv1.setGravity(Gravity.CENTER);
+                    tv1.setPadding(0, 15, 0, 0);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    ll1.addView(tv1, j, lp);
+//                    tv1.setLayoutParams(lp);
                 }
             }
         }
@@ -4067,6 +4203,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             mH5_content.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+                    closeButtonMenu();
 //                    showBottomPop(null);
                 }
             });
@@ -4085,12 +4222,12 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             View text_suggestion_view = layoutInflater.inflate(R.layout.item_chatbot_text_suggestions_layout, null);
             TextView tv_title = (TextView)text_suggestion_view.findViewById(R.id.hor_title);
             TextView tv_description = (TextView)text_suggestion_view.findViewById(R.id.hor_description);
-//            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             LinearLayout ll = (LinearLayout)view.findViewById(R.id.hori_relativelayout);
             if(isImageTop){
-                ll.addView(text_suggestion_view,1);
+                ll.addView(text_suggestion_view,1, lp);
             }else{
-                ll.addView(text_suggestion_view,0);
+                ll.addView(text_suggestion_view,0, lp);
             }
             setSuggestionsView(cardcontent, text_suggestion_view);
 
@@ -4109,6 +4246,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             mH5_content.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+                    closeButtonMenu();
 //                    showBottomPop(null);
                 }
             });
@@ -4266,7 +4404,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             case ACTIVITY_SUB:
                 return loadActivitySubscribeChatbotMessage(R.layout.item_activity_subscribe_card, cc);
             case VOTE:
-                return loadVoteCardChatbotMessage(R.layout.item_vote_card, cc);
+                return /*loadPictureCardChatbotMessage(R.layout.item_chatbot_pic_card, cc);*/loadVoteCardChatbotMessage(R.layout.item_vote_card, cc);
             case VIDEO_NEWS:
                 return loadVideoNewsChatbotMessage(R.layout.item_chatbot_video_news_card,cc);
 //            case PRODUCT_RECOMMEND:
@@ -4276,6 +4414,9 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             case PRODUCT_ORDER:
                 return loadOrderInfoPushChatbotMessage(R.layout.item_order_info_push_card, cc);
             default:
+                if(RcsContant.RcsTypes.MIME_IMAGE.equals(mData.getmContentType())){
+                    return loadPictureCardChatbotMessage(R.layout.item_chatbot_pic_card, cc);
+                }
                 return loadSingelCardChatbotMsg(cbc);
         }
 //        return false;
@@ -4849,6 +4990,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
 
     @Override
     public void onClick(final View view) {
+        closeButtonMenu();
         final Object tag = view.getTag();
         if (tag instanceof MessagePartData) {
             final Rect bounds = UiUtils.getMeasuredBoundsOnScreen(view);

@@ -55,10 +55,11 @@
             android:contentDescription="@null"/>
     </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/swipeableContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:importantForAccessibility="no" >
         <LinearLayout
             android:id="@+id/swipeableContent"
@@ -105,6 +106,7 @@
                     android:contentDescription="@null"
                     android:background="@android:color/transparent" />
                 <TextView
+                    android:id="@+id/read_indicator"
                     android:layout_width="20dp"
                     android:layout_height="48dp"
                     android:gravity="center"
@@ -226,7 +228,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="80dp"
-            android:layout_marginTop="94dp"
+            android:layout_marginTop="25dp"
             android:background="#F0F0F0"/>
-    </FrameLayout>
+    </LinearLayout>
 </com.android.messaging.ui.conversationlist.ConversationListItemView>

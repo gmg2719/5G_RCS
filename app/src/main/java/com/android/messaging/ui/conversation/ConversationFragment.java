@@ -39,10 +39,12 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -55,6 +57,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.ActionMode;
 import android.view.Display;
@@ -65,8 +68,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -149,7 +152,7 @@ import retrofit2.http.Path;
  */
 public class ConversationFragment extends Fragment implements ConversationDataListener,
         IComposeMessageViewHost, ConversationMessageViewHost, ConversationInputHost,
-        DraftMessageDataListener,RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener  {
+        DraftMessageDataListener,RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener , View.OnClickListener {
 
     public interface ConversationFragmentHost extends ImeUtil.ImeStateHost {
         void onStartComposeMessage();
@@ -329,6 +332,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
 
             @Override
             public void onScrolled(final RecyclerView view, final int dx, final int dy) {
+                closeButtonMenu();
                 if (mScrollState == RecyclerView.SCROLL_STATE_DRAGGING &&
                         !mScrollToDismissHandled) {
                     mCumulativeScrollDelta += dy;
@@ -564,6 +568,14 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
         }
     };
 
+    public void closeButtonMenu(){
+        if(mTwoButtonMenu != null){
+
+        }else if(mThreeButtonMenu != null){
+            mThreeButtonMenu.closeMenu();
+        }
+    }
+
     /**
      * {@inheritDoc} from Fragment
      */
@@ -589,6 +601,8 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
                 new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
+                        closeButtonMenu();
+                        LogUtil.i("Junwang", "ConversationMessageAdapter onClick");
                         final ConversationMessageView messageView = (ConversationMessageView) v;
                         handleMessageClick(messageView);
                     }
@@ -602,6 +616,8 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
                 }
         );
     }
+
+
 
     /**
      * setConversationInfo() may be called before or after onCreate(). When a user initiate a
@@ -979,6 +995,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
                 mSwitchButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View clickView) {
+                        closeButtonMenu();
                         LogUtil.i("junwang", "mAttachMediaButton onClicked.");
                         ConversationInputManager cim = mComposeMessageView.getInputManager();
                         if(cim != null){
@@ -1006,6 +1023,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
                     mTwoBtnSwitchButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View clickView) {
+                            closeButtonMenu();
                             LogUtil.i("junwang", "mAttachMediaButton onClicked.");
                             startMenuSwitchAnimation(mTwoButtonMenu, mComposeMessageView);
                         }
@@ -1021,6 +1039,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
                     mThreeBtnSwitchButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View clickView) {
+                            closeButtonMenu();
                             LogUtil.i("junwang", "mAttachMediaButton onClicked.");
                             startMenuSwitchAnimation(mThreeButtonMenu, mComposeMessageView);
                         }
@@ -1313,6 +1332,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
 
     @Override
     public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        closeButtonMenu();
         if (mHost.getActionMode() != null) {
             return;
         }
@@ -1397,7 +1417,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
 
             case R.id.action_delete:
                 if (isReadyForAction()) {
-                    new AlertDialog.Builder(getActivity())
+                    new AlertDialog.Builder(getActivity(), android.R.style.Theme_Material_Light_Dialog_Alert)
                             .setTitle(getResources().getQuantityString(
                                     R.plurals.delete_conversations_confirmation_dialog_title, 1))
                             .setPositiveButton(R.string.delete_conversation_confirmation_button,
@@ -1819,7 +1839,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
 
     void deleteMessage(final String messageId) {
         if (isReadyForAction()) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), /*AlertDialog.THEME_DEVICE_DEFAULT_DARK*/android.R.style.Theme_Material_Light_Dialog_Alert)
                     .setTitle(R.string.delete_message_confirmation_dialog_title)
                     .setMessage(R.string.delete_message_confirmation_dialog_text)
                     .setPositiveButton(R.string.delete_message_confirmation_button,
@@ -2239,22 +2259,59 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
                 conversationId, REQUEST_CHOOSE_ATTACHMENTS);
     }
 
+    protected boolean useThemestatusBarColor = true;//是否使用特殊的标题栏背景颜色，android5.0以上可以设置状态栏背景色，如果不使用则使用透明色值
+    protected boolean useStatusBarColor = true;//是否使用状态栏文字和图标为暗色，如果状态栏采用了白色系，则需要使状态栏和图标为暗色，android6.0以上可以设置
+
+    protected void setStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0及以上
+            View decorView = getActivity().getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            //根据上面设置是否对状态栏单独设置颜色
+            if (useThemestatusBarColor) {
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.action_bar_background_color));
+            } else {
+                getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//4.4到5.0
+            WindowManager.LayoutParams localLayoutParams = getActivity().getWindow().getAttributes();
+            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && useStatusBarColor) {//android6.0以后可以对状态栏文字颜色和图标进行修改
+            getActivity().getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
+
     private void updateActionAndStatusBarColor(final ActionBar actionBar) {
         final int actionBarColor = ConversationDrawables.get().getActionbarColor();
-        actionBar.setBackgroundDrawable(new ColorDrawable(actionBarColor));
+//        actionBar.setBackgroundDrawable(new ColorDrawable(actionBarColor));
 
         UiUtils.setStatusBarColor(getActivity(), actionBarColor);
+//        setStatusBar();
     }
 
     public void updateActionBar(final ActionBar actionBar) {
+        LogUtil.i("Junwang", "Conversation Fragment update ActionBar");
         if (mComposeMessageView == null || !mComposeMessageView.updateActionBar(actionBar)) {
+//            actionBar.setDisplayHomeAsUpEnabled(true);
             updateActionAndStatusBarColor(actionBar);
             // We update this regardless of whether or not the action bar is showing so that we
             // don't get a race when it reappears.
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             View customView = ((LayoutInflater)
                     getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.actionbar_message_view, null);
-            actionBar.setCustomView(customView);
+
+//            actionBar.setDisplayShowCustomEnabled(true);
+//            actionBar.setDisplayShowTitleEnabled(false);
+//            ActionBar.LayoutParams layoutParams =new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+//                    ActionBar.LayoutParams.MATCH_PARENT);
+            actionBar.setHomeAsUpIndicator(R.drawable.back_normal);
+            actionBar.setCustomView(customView/*, layoutParams*/);
+//            Toolbar parent =(Toolbar) customView.getParent();
+//            parent.getOverflowIcon().setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+//            parent.setOverflowIcon(getResources().getDrawable(R.drawable.icon_more));
+//            parent.setContentInsetsAbsolute(0,0);
             final TextView conversationNameView =
                     (TextView) customView.findViewById(R.id.actionbar_title);
             final ImageView back_icon = (ImageView)customView.findViewById(R.id.actionbar_arrow);
@@ -2383,5 +2440,10 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
     @Override
     public int getAttachmentsClearedFlags() {
         return DraftMessageData.ATTACHMENTS_CHANGED;
+    }
+
+    @Override
+    public void onClick(View v) {
+        closeButtonMenu();
     }
 }

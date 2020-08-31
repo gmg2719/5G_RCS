@@ -227,6 +227,7 @@ public class ConversationInputManager implements ConversationInput.ConversationI
     }
 
     public boolean updateActionBar(final ActionBar actionBar) {
+        LogUtil.i("Junwang", "Conversation Input Manager updateActionbar");
         for (int i = 0; i < mInputs.length; i++) {
             if (mInputs[i].mShowing) {
                 return mInputs[i].updateActionBar(actionBar);

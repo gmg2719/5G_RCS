@@ -24,6 +24,7 @@ import com.android.messaging.videoplayer.listener.OnVideoViewStateChangeListener
 import com.android.messaging.videoplayer.player.DanmuVideoView;
 import com.android.messaging.videoplayer.player.PlayerFactory;
 import com.android.messaging.videoplayer.ui.StandardVideoController;
+import com.bumptech.glide.Glide;
 import com.gyf.immersionbar.ImmersionBar;
 
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
@@ -39,6 +40,9 @@ public class ChatbotVideoNewsDetailsActivity extends AppCompatActivity implement
     SantiVideoView mVideoView;
     private TextView mTVDetails;
     private String mDetails;
+    private ImageView mCloseImage;
+    private ImageView mCoverImage;
+    private ImageView mShareVideo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,6 +124,17 @@ public class ChatbotVideoNewsDetailsActivity extends AppCompatActivity implement
         mVideoView.setVideoController(standardVideoController);
 //        mVideoView.getController().setOnTouchListener(this);
         mVideoView.setUrl(/*"rtmp://58.200.131.2:1935/livetv/hunantv"*/mUrl);
+//        FutureTarget<Bitmap> bitmap = Glide.with(this)
+//                .asBitmap()
+//                .load("http://sms-agent.oss-cn-hangzhou.aliyuncs.com/sms_agent_temp/100001040/5f22963bad14f.jpg")
+//                .submit();
+//        try{
+//            Bitmap bitmap1 = bitmap.get();
+//            mVideoView.setVideoCover(bitmap1);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+
         mVideoView.setPlayerFactory(new PlayerFactory<IjkPlayer>() {
             @Override
             public IjkPlayer createPlayer() {
@@ -179,7 +194,33 @@ public class ChatbotVideoNewsDetailsActivity extends AppCompatActivity implement
         mTVTitle = (TextView)findViewById(R.id.video_title);
         mTVDetails = (TextView)findViewById(R.id.video_details);
         mTVTitle.setText(mTitle);
-//        mTVDetails.setText(mDetails);
+        mTVDetails.setText(mDetails);
+        mCloseImage = (ImageView)findViewById(R.id.close_img);
+        mCloseImage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        mShareVideo = (ImageView)findViewById(R.id.share_video);
+        mShareVideo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                final Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, mUrl);
+                shareIntent.setType("text/plain");
+                final CharSequence title = getResources().getText(R.string.action_share);
+                startActivity(Intent.createChooser(shareIntent, title));
+            }
+        });
+
+        mCoverImage = (ImageView)findViewById(R.id.iv_img);
+        mCoverImage.setAlpha(0.5f);
+                    Glide.with(this).load("http://sms-agent.oss-cn-hangzhou.aliyuncs.com/sms_agent_temp/100001040/5f22963bad14f.jpg")
+                    .centerCrop()
+                    .into(mCoverImage);
 //        mTVTitle.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
 //            @Override
 //            public void onSystemUiVisibilityChange(int i) {

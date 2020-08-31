@@ -354,10 +354,10 @@ public class ConversationListFragment extends Fragment implements ConversationLi
             return;
         }
 
-        mShowBlockedMenuItem = menu.findItem(R.id.action_show_blocked_contacts);
-        if (mShowBlockedMenuItem != null) {
-            mShowBlockedMenuItem.setVisible(mBlockedAvailable);
-        }
+//        mShowBlockedMenuItem = menu.findItem(R.id.action_show_blocked_contacts);
+//        if (mShowBlockedMenuItem != null) {
+//            mShowBlockedMenuItem.setVisible(mBlockedAvailable);
+//        }
     }
 
     /**

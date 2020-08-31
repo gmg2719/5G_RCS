@@ -20,6 +20,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,9 +40,11 @@ import com.android.messaging.datamodel.data.SettingsData;
 import com.android.messaging.datamodel.data.SettingsData.SettingsDataListener;
 import com.android.messaging.datamodel.data.SettingsData.SettingsItem;
 import com.android.messaging.ui.BugleActionBarActivity;
+import com.android.messaging.ui.ConversationDrawables;
 import com.android.messaging.ui.UIIntents;
 import com.android.messaging.util.Assert;
 import com.android.messaging.util.PhoneUtils;
+import com.android.messaging.util.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +60,7 @@ public class SettingsActivity extends BugleActionBarActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Directly open the detailed settings page as the top-level settings activity if this is
         // not a multi-SIM device.
@@ -68,6 +72,37 @@ public class SettingsActivity extends BugleActionBarActivity {
                     .replace(android.R.id.content, new SettingsFragment())
                     .commit();
         }
+    }
+
+    private void updateActionAndStatusBarColor(final ActionBar actionBar) {
+        final int actionBarColor = ConversationDrawables.get().getActionbarColor();
+        UiUtils.setStatusBarColor(this, actionBarColor);
+        View customView = ((LayoutInflater)
+                this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.actionbar_message_view, null);
+        actionBar.setCustomView(customView);
+        actionBar.setHomeAsUpIndicator(R.drawable.back_normal);
+        final TextView title =
+                (TextView) customView.findViewById(R.id.actionbar_title);
+        title.setText("设置");
+        final ImageView back_icon = (ImageView)customView.findViewById(R.id.actionbar_arrow);
+        back_icon.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    @Override
+    protected void updateActionBar(ActionBar actionBar) {
+//        super.updateActionBar(actionBar);
+        updateActionAndStatusBarColor(actionBar);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        invalidateActionBar();
     }
 
     @Override

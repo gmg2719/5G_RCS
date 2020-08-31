@@ -16,8 +16,8 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:color="@android:color/white"
+        android:color="@android:color/black"
         android:state_selected="true"/>
     <item
-        android:color="@color/translucent_white" />
+        android:color="@color/text_grey" />
 </selector>

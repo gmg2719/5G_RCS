@@ -6,18 +6,23 @@
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray"
     >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        app:titleTextColor="@android:color/white" />
     <ImageView
         android:id="@+id/iv_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_sms"
         android:layout_centerInParent="true"/>
     <com.android.messaging.ui.conversation.SantiVideoView
         android:id="@+id/vv_video"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
         />
     <ImageView
         android:id="@+id/iv_play"
@@ -40,15 +45,30 @@
         android:id="@+id/video_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="90dp"
         android:paddingLeft="18dp"
         android:paddingRight="12dp"
         android:textColor="#FFFFFF"
         android:layout_alignParentBottom="true"
         android:textSize="15sp"/>
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:titleTextColor="@android:color/white" />
+    <ImageView
+        android:id="@+id/close_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/ic_cancel_small_light"
+        android:layout_marginLeft="16dp"/>
+    <ImageView
+        android:id="@+id/share_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/ic_share_light"
+        android:layout_marginRight="16dp"/>
 </RelativeLayout>

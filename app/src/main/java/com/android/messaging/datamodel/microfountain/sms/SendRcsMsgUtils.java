@@ -6,6 +6,11 @@ import android.net.Uri;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import com.android.messaging.datamodel.BugleDatabaseOperations;
+import com.android.messaging.datamodel.DataModel;
+import com.android.messaging.datamodel.DatabaseWrapper;
+import com.android.messaging.datamodel.data.MessageData;
+import com.android.messaging.datamodel.data.ParticipantData;
 import com.android.messaging.util.LogUtil;
 import com.google.gson.Gson;
 import com.microfountain.rcs.aidl.database.contract.RcsMessageTable;
@@ -46,13 +51,14 @@ public class SendRcsMsgUtils {
         //当前登录RCS的手机号码
         TelephonyManager phoneManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String phoneNumber="";
-        try{
-            phoneNumber = phoneManager.getLine1Number();
-        }catch(SecurityException e){
-            LogUtil.i("Junwang", "No permission to get phone number");
-        }finally {
-
-        }
+//        try{
+//            phoneNumber = phoneManager.getLine1Number();
+//        }catch(SecurityException e){
+//            LogUtil.i("Junwang", "No permission to get phone number");
+//        }finally {
+//
+//        }
+        phoneNumber = getSelfNumber(nativeAppDBMsgId);
         if(phoneNumber == null || phoneNumber.length() == 0){
             phoneNumber = "+8613777496301";
         }
@@ -98,6 +104,17 @@ public class SendRcsMsgUtils {
         values.put(RcsMessageTable.Columns.EXTRA_3, new byte[]{});
 
         return values;
+    }
+
+    public static String getSelfNumber(String messageId){
+        final DatabaseWrapper db = DataModel.get().getDatabase();
+        final MessageData message = BugleDatabaseOperations.readMessage(db, messageId);
+        if(message != null){
+            final ParticipantData self = BugleDatabaseOperations.getExistingParticipant(
+                    db, message.getSelfId());
+            return self.getNormalizedDestination();
+        }
+        return null;
     }
 
     public static int insertMessage(Context context, ContentValues values) {

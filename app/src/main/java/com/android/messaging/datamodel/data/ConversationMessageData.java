@@ -60,6 +60,7 @@ public class ConversationMessageData {
     private boolean mSeen;
     private boolean mRead;
     //add by junwang for chatbot subscribe activity card type and vote card type
+    private String mContentType;
     private boolean mChatbotSubscribeStatus;
     private boolean mChatbotVoteStatus;
     private int mChatbotVotedItemPosition;
@@ -97,6 +98,8 @@ public class ConversationMessageData {
         mConversationId = cursor.getString(INDEX_CONVERSATION_ID);
         mParticipantId = cursor.getString(INDEX_PARTICIPANT_ID);
         mPartsCount = cursor.getInt(INDEX_PARTS_COUNT);
+        //add by junwang
+        mContentType = cursor.getString(INDEX_PARTS_CONTENT_TYPES);
 
         mParts = makeParts(
                 cursor.getString(INDEX_PARTS_IDS),
@@ -372,6 +375,10 @@ public class ConversationMessageData {
 
     public List<MessagePartData> getParts() {
         return mParts;
+    }
+
+    public String getmContentType() {
+        return mContentType;
     }
 
     public boolean hasText() {

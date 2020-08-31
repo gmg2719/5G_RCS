@@ -175,7 +175,7 @@ public class ContactPickerFragment extends Fragment implements ContactPickerData
         mCustomHeaderViewPager.setViewHolders(viewHolders);
         mCustomHeaderViewPager.setViewPagerTabHeight(CustomHeaderViewPager.DEFAULT_TAB_STRIP_SIZE);
         mCustomHeaderViewPager.setBackgroundColor(getResources()
-                .getColor(R.color.contact_picker_background));
+                .getColor(R.color.action_bar_contact_picker_fragment/*contact_picker_background*/));
 
         // The view pager defaults to the frequent contacts page.
         mCustomHeaderViewPager.setCurrentItem(0);
