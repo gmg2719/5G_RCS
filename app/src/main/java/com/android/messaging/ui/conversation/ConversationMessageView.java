@@ -2123,6 +2123,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             @Override
             public void onClick(View v) {
                 DeleteMessageAction.deleteMessage(mData.getMessageId());
+                ChatbotFavoriteTableUtils.deleteChatbotFavoriteInfo(null, mData.getMessageId());
                 mPopWindow.dismiss();
             }
         });
@@ -2177,7 +2178,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                                     content_pre = "[活动订阅]";
                             }
                             ChatbotFavoriteTableUtils.insertChatbotFavoriteTable(mData.getSenderNormalizedDestination(), fav_name, fav_logo,
-                                    content_pre+cardContent.getTitle(), imageUrl, date, null, mData.getMessageId());
+                                    content_pre+cardContent.getTitle(), imageUrl, date, null, mData.getMessageId(), mData.getConversationId());
                         }
                     }
                 }).start();
@@ -2214,7 +2215,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         popView.startAnimation(animationSet);
     }
 
-    private class ImageNormalAdapter extends AbsStaticPagerAdapter {
+    public class ImageNormalAdapter extends AbsStaticPagerAdapter {
         List<MultiCardItemDataBean> lists;
         Context context;
 
@@ -2963,7 +2964,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             if(mData.getIsChatbotSubscribed()){
                 updateSubscribeButton();
             }else {
-                ((TextView) findViewById(R.id.action_button)).setOnClickListener(new View.OnClickListener() {
+                ((TextView) view.findViewById(R.id.action_button)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         closeButtonMenu();

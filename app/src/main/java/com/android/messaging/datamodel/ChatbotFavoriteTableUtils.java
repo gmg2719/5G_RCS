@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class ChatbotFavoriteTableUtils {
     public static void insertChatbotFavoriteTable(String favSipUri, String favName, String favLogo, String favDescription,
-                                                  String favImageUrl, String favSaveDate, String favChannelId, String favMsgId) {
+                                                  String favImageUrl, String favSaveDate, String favChannelId, String favMsgId, String favConversationId) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -33,6 +33,7 @@ public class ChatbotFavoriteTableUtils {
                 cv.put(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_SAVED_DATE, favSaveDate);
                 cv.put(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_CHANNEL_ID, favChannelId);
                 cv.put(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_MSG_ID, favMsgId);
+                cv.put(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_CONVERSATION_ID, favConversationId);
 
                 DatabaseWrapper mdbWrapper = DataModel.get().getDatabase();
                 mdbWrapper.insert(DatabaseHelper.CHATBOT_FAVORITE_TABLE, null, cv);
@@ -111,6 +112,22 @@ public class ChatbotFavoriteTableUtils {
         }).start();
     }
 
+    public static void deleteChatbotFavoriteInfoByConversationId(String colletId, String conversationId) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DatabaseWrapper mdbWrapper = DataModel.get().getDatabase();
+                mdbWrapper.delete(DatabaseHelper.CHATBOT_FAVORITE_TABLE, DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_CONVERSATION_ID
+                        + " = ?", new String[]{conversationId});
+                Map<String, String> params = new HashMap<String, String>();
+//                params.put("collect_id", colletId);
+//                params.put("msgId", msgId);
+//                String result = postRequest("http://testback.stvision.cn/xinhua/sms5g/my/delCollect", params, "utf-8");
+//                LogUtil.i("Junwang", "post delete chatbot favorite response " + result);
+            }
+        }).start();
+    }
+
     public static List<ChatbotFavoriteEntity> queryChatbotFavorite() {
         DatabaseWrapper mdbWrapper = DataModel.get().getDatabase();
         Cursor cursor = mdbWrapper.rawQuery("SELECT * FROM " + DatabaseHelper.CHATBOT_FAVORITE_TABLE, null);
@@ -128,6 +145,7 @@ public class ChatbotFavoriteTableUtils {
                 favEnt.setChatbot_fav_saved_date(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_SAVED_DATE)));
                 favEnt.setChatbot_fav_channel_id(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_CHANNEL_ID)));
                 favEnt.setChatbot_fav_msg_id(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_MSG_ID)));
+                favEnt.setChatbot_fav_conversation_id(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_CONVERSATION_ID)));
                 favEntityList.add(favEnt);
             }
             cursor.close();

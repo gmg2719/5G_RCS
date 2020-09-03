@@ -58,8 +58,8 @@ public class ThreeButtonPopupMenuView extends LinearLayout {
             switch (actionType){
                 case 1:
                     //load url
-                    LogUtil.i("Junwang", "action type == 1");
-                    NativeFunctionUtil.loadUrl(getContext(), actionUrl);
+                    LogUtil.i("Junwang", "action type == 1"+", menu item name="+bmi.getItem_name());
+                    NativeFunctionUtil.loadUrl(getContext(), actionUrl, bmi.getItem_name());
                     break;
                 case 2:
                     //call native function

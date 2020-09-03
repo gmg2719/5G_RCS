@@ -3,9 +3,9 @@ package com.android.messaging.ui.santipopupmenu;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
@@ -16,7 +16,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -243,8 +242,8 @@ public class CustomSelectDialog extends Dialog {
     private void initViews() {
         DialogAdapter dialogAdapter = new DialogAdapter(mName);
         /*ListView*/ dialogList= findViewById(R.id.dialog_list);
-        Button mMBtnCancel = findViewById(R.id.mBtn_Cancel);
-        TextView mTvTitle = findViewById(R.id.mTv_Title);
+//        Button mMBtnCancel = findViewById(R.id.mBtn_Cancel);
+//        TextView mTvTitle = findViewById(R.id.mTv_Title);
 
         dialogList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -254,22 +253,22 @@ public class CustomSelectDialog extends Dialog {
             }
         });
         dialogList.setAdapter(dialogAdapter);
-        mMBtnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mCancelListener != null){
-                    mCancelListener.onCancelClick(v);
-                }
-                dismiss();
-            }
-        });
-
-        if(!TextUtils.isEmpty(mTitle)){
-            mTvTitle.setVisibility(View.VISIBLE);
-            mTvTitle.setText(mTitle);
-        }else{
-            mTvTitle.setVisibility(View.GONE);
-        }
+//        mMBtnCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(mCancelListener != null){
+//                    mCancelListener.onCancelClick(v);
+//                }
+//                dismiss();
+//            }
+//        });
+//
+//        if(!TextUtils.isEmpty(mTitle)){
+//            mTvTitle.setVisibility(View.VISIBLE);
+//            mTvTitle.setText(mTitle);
+//        }else{
+//            mTvTitle.setVisibility(View.GONE);
+//        }
     }
 
     private class DialogAdapter extends BaseAdapter {
@@ -310,9 +309,9 @@ public class CustomSelectDialog extends Dialog {
             }
             viewholder.tvDialog.setText(mStrings.get(position));
             viewholder.tvDialog.setTextSize(14);
-            if (!mUseCustomColor) {
-                mFirstItemColor = mActivity.getResources().getColor(R.color.grayText);
-                mOtherItemColor = mActivity.getResources().getColor(R.color.grayText);
+            /*if (!mUseCustomColor)*/ {
+                mFirstItemColor = Color.parseColor("#0D1333");//mActivity.getResources().getColor(R.color.grayText);
+                mOtherItemColor = Color.parseColor("#0D1333");//mActivity.getResources().getColor(R.color.grayText);
             }
             if (1 == mStrings.size()) {
                 viewholder.tvDialog.setTextColor(mFirstItemColor);

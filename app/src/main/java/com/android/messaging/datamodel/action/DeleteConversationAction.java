@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import com.android.messaging.Factory;
 import com.android.messaging.datamodel.BugleDatabaseOperations;
 import com.android.messaging.datamodel.BugleNotifications;
+import com.android.messaging.datamodel.ChatbotFavoriteTableUtils;
 import com.android.messaging.datamodel.DataModel;
 import com.android.messaging.datamodel.DataModelException;
 import com.android.messaging.datamodel.DatabaseHelper;
@@ -94,6 +95,8 @@ public class DeleteConversationAction extends Action implements Parcelable {
                 WidgetConversationProvider.notifyConversationDeleted(
                         Factory.get().getApplicationContext(),
                         conversationId);
+                //add by junwang
+                ChatbotFavoriteTableUtils.deleteChatbotFavoriteInfoByConversationId(null, conversationId);
             } else {
                 LogUtil.w(TAG, "DeleteConversationAction: Could not delete local conversation "
                         + conversationId);

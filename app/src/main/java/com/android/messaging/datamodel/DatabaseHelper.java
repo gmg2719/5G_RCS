@@ -201,7 +201,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + ChatbotFavoriteColumns.CHATBOT_FAV_IMAGE_URL + " TEXT DEFAULT(NULL), "
             + ChatbotFavoriteColumns.CHATBOT_FAV_SAVED_DATE + " TEXT DEFAULT(NULL), "
             + ChatbotFavoriteColumns.CHATBOT_FAV_CHANNEL_ID + " TEXT DEFAULT(NULL), "
-            + ChatbotFavoriteColumns.CHATBOT_FAV_MSG_ID + " TEXT DEFAULT(NULL)"
+            + ChatbotFavoriteColumns.CHATBOT_FAV_MSG_ID + " TEXT DEFAULT(NULL), "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_CONVERSATION_ID + " TEXT DEFAULT(NULL)"
             + ")";
 
     private static final String CREATE_CUSTOMERS_TABLE_SQL = "CREATE TABLE " + CUSTOMERS_TABLE +" ("
@@ -569,6 +570,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         public static final String CHATBOT_FAV_SAVED_DATE = "chatbot_fav_saved_date";
         public static final String CHATBOT_FAV_CHANNEL_ID = "chatbot_fav_channel_id";
         public static final String CHATBOT_FAV_MSG_ID = "chatbot_fav_msg_id";
+        public static final String CHATBOT_FAV_CONVERSATION_ID = "chatbot_fav_conversation_id";
     }
 
     public static class CustomerColumns implements BaseColumns{

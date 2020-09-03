@@ -10,18 +10,19 @@
             <!-- 矩形的圆角半径 -->
             <corners android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp"
-                android:topLeftRadius="5dp"
-                android:topRightRadius="5dp" />
+                android:topLeftRadius="2dp"
+                android:topRightRadius="2dp" />
         </shape>
     </item>
 
     <item>
         <shape>
-            <solid android:color="#EBEBEB" />
+            <solid android:color="#FFFFFF" />
+            <stroke android:color="#FFFFFF" />
             <corners android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp"
-                android:topLeftRadius="5dp"
-                android:topRightRadius="5dp" />
+                android:topLeftRadius="2dp"
+                android:topRightRadius="2dp" />
         </shape>
     </item>
 

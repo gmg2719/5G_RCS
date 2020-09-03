@@ -8,10 +8,12 @@
     <TextView
         android:id="@+id/dialog_item_bt"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="44dp"
         android:gravity="center"
-        android:textColor="#0073FF"
+        android:textColor="#0D1333"
+        android:textStyle="bold"
         android:maxLines="1"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        />
 
 </RelativeLayout>

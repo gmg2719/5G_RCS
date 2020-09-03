@@ -192,22 +192,21 @@
 
             <!-- The attachment preview on the right side of the view -->
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="48dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
                 android:background="@android:color/transparent">
                 <TextView
                     android:id="@+id/conversation_timestamp"
                     style="@style/ConversationListItemViewTextStyle"
                     android:textSize="12sp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical|right"
                     android:paddingBottom="10dp"/>
                 <com.android.messaging.ui.AsyncImageView
                     android:id="@+id/conversation_image_preview"
                     android:layout_below="@id/conversation_timestamp"
-                    android:layout_alignRight="@id/conversation_timestamp"
-
+                    android:layout_alignParentRight="true"
                     app:cornerRadius="@dimen/conversation_list_image_preview_corner_radius"
                     android:layout_width="@dimen/conversation_list_image_preview_size"
                     android:layout_height="@dimen/conversation_list_image_preview_size"

@@ -17,5 +17,15 @@
         android:padding="4dp"
         android:scaleType="center"
         />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="现场云"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#0D1333"
+        android:visibility="gone"/>
 
 </RelativeLayout>

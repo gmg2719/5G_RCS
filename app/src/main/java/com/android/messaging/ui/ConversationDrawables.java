@@ -113,18 +113,18 @@ public class ConversationDrawables {
     public Drawable getBubbleDrawable(final boolean selected, final boolean incoming,
             final boolean needArrow, final boolean isError) {
         final Drawable protoDrawable;
-        if (needArrow) {
+        if (/*needArrow*/true) {
             if (incoming) {
                 protoDrawable = isError && !selected ?
                         mIncomingErrorBubbleDrawable : mIncomingBubbleDrawable;
             } else {
                 protoDrawable = mOutgoingBubbleDrawable;
             }
-        } else if (incoming) {
+        } /*else if (incoming) {
             protoDrawable = mIncomingBubbleNoArrowDrawable;
         } else {
             protoDrawable = mOutgoingBubbleNoArrowDrawable;
-        }
+        }*/
 
         int color;
         if (selected) {

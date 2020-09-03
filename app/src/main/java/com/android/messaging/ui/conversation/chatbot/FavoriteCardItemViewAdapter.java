@@ -78,12 +78,12 @@ public class FavoriteCardItemViewAdapter extends FavoriteBaseAdapter<FavoriteCar
 //            Glide.with(context).load(imgUrl)
 //                    .centerCrop()
 //                    .into(((MyHolder) holder).iv);
-            ((MyHolder) holder).view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                WebViewNewsActivity.start(BugleApplication.getContext(),lists.get(position).getButtonAction());
-                }
-            });
+//            ((MyHolder) holder).view.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                WebViewNewsActivity.start(BugleApplication.getContext(),lists.get(position).getButtonAction());
+//                }
+//            });
         }
 
     }

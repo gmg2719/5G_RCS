@@ -11,6 +11,7 @@ public class ChatbotFavoriteEntity {
     private String chatbot_fav_saved_date;
     private String chatbot_fav_channel_id;
     private String chatbot_fav_msg_id;
+    private String chatbot_fav_conversation_id;
 
     public String getChatbot_fav_sip_uri() {
         return chatbot_fav_sip_uri;
@@ -75,5 +76,13 @@ public class ChatbotFavoriteEntity {
 
     public void setChatbot_fav_msg_id(String chatbot_fav_msg_id) {
         this.chatbot_fav_msg_id = chatbot_fav_msg_id;
+    }
+
+    public String getChatbot_fav_conversation_id() {
+        return chatbot_fav_conversation_id;
+    }
+
+    public void setChatbot_fav_conversation_id(String chatbot_fav_conversation_id) {
+        this.chatbot_fav_conversation_id = chatbot_fav_conversation_id;
     }
 }

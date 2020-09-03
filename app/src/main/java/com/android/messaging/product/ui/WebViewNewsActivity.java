@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.android.messaging.R;
 import com.android.messaging.product.utils.StatusBarUtil;
 import com.android.messaging.ui.santiwebview.SantiWebChromeClient;
 import com.android.messaging.util.LogUtil;
+import com.android.messaging.util.UiUtils;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -47,10 +49,13 @@ import java.util.Map;
 
 public class WebViewNewsActivity extends Activity implements View.OnClickListener{
     public static final String URL = "url";
+    public static final String TITLE= "title";
 
     private ImageView mIVBack;
     private WebView mWebView;
+    private TextView mTVTitle;
     private String mUrl;
+    private String mTitle;
     private ProgressBar mPbLoading;
 //    private boolean mUpdatedText;
 
@@ -58,11 +63,13 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview_news_activity);
+        mTitle = getIntent().getStringExtra(TITLE);
         initView();
         mUrl = getIntent().getStringExtra(URL);
         if(mUrl != null){
             initWebViewSetting();
         }
+        UiUtils.setStatusBarColor(this, Color.parseColor("#FFFFFF"));
     }
 
     /**
@@ -97,6 +104,11 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
         StatusBarUtil.setStatusBarColor(this, R.color.color_BDBDBD);
         mIVBack = (ImageView) findViewById(R.id.iv_back);
         mIVBack.setOnClickListener(this);
+        if(mTitle != null && mTitle.length() > 0){
+            mTVTitle = (TextView)findViewById(R.id.tv_title);
+            mTVTitle.setText(mTitle);
+            mTVTitle.setVisibility(View.VISIBLE);
+        }
         mPbLoading = (ProgressBar)findViewById(R.id.pb_loading);
 //        mUpdatedText = true;
         mWebView = (WebView)findViewById(R.id.wv_content);
@@ -451,7 +463,17 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
 
     public static void start(Context context, String url) {
         Intent intent = new Intent(context, WebViewNewsActivity.class);
+        LogUtil.i("Junwang", "WebViewNewsActivity url="+url);
         intent.putExtra(URL, url);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    public static void start(Context context, String url, String title){
+        Intent intent = new Intent(context, WebViewNewsActivity.class);
+        LogUtil.i("Junwang", "WebViewNewsActivity url="+url);
+        intent.putExtra(URL, url);
+        intent.putExtra(TITLE, title);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

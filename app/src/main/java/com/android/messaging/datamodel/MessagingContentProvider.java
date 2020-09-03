@@ -67,7 +67,11 @@ public class MessagingContentProvider extends ContentProvider {
     // Messages query
     private static final String MESSAGES_QUERY = "messages";
 
-    static final Uri MESSAGES_URI = Uri.parse(CONTENT_AUTHORITY + MESSAGES_QUERY);
+    public static final Uri MESSAGES_URI = Uri.parse(CONTENT_AUTHORITY + MESSAGES_QUERY);
+
+    private static final String CHATBOT_FAVORITE_QUERY = "chatbot_favorite";
+
+    public static final Uri CHATBOT_FAVORITE_URI = Uri.parse(CONTENT_AUTHORITY + CHATBOT_FAVORITE_QUERY);
 
     public static final Uri CONVERSATION_MESSAGES_URI = Uri.parse(CONTENT_AUTHORITY +
             MESSAGES_QUERY + "/conversation");
@@ -133,6 +137,11 @@ public class MessagingContentProvider extends ContentProvider {
     public static void notifyAllMessagesChanged() {
         final ContentResolver cr = Factory.get().getApplicationContext().getContentResolver();
         cr.notifyChange(CONVERSATION_MESSAGES_URI, null);
+    }
+
+    public static void notifyChatbotFavoritesChanged(){
+        final ContentResolver cr = Factory.get().getApplicationContext().getContentResolver();
+        cr.notifyChange(CHATBOT_FAVORITE_URI, null);
     }
 
     public static void notifyAllParticipantsChanged() {

@@ -22,6 +22,7 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
+import com.android.messaging.datamodel.DataModel;
 import com.android.messaging.datamodel.DatabaseHelper;
 import com.android.messaging.datamodel.DatabaseHelper.MessageColumns;
 import com.android.messaging.datamodel.DatabaseHelper.PartColumns;
@@ -509,6 +510,14 @@ public class ConversationMessageData {
         return mChatbotRcsdbMsgId;
     }
 
+    public void setmChatbotVoteStatus(boolean mChatbotVoteStatus) {
+        this.mChatbotVoteStatus = mChatbotVoteStatus;
+    }
+
+    public void setmChatbotVotedItemPosition(int mChatbotVotedItemPosition) {
+        this.mChatbotVotedItemPosition = mChatbotVotedItemPosition;
+    }
+
     public boolean getmChatbotCardInvalid() {
         return mChatbotCardInvalid;
     }
@@ -667,6 +676,18 @@ public class ConversationMessageData {
     @Override
     public String toString() {
         return MessageData.toString(mMessageId, mParts);
+    }
+
+    //add by junwang
+    public static final Cursor getMessage(String messageId){
+        return DataModel.get().getDatabase().rawQuery(
+                ConversationMessageData.getMessageDataQuerySql(),
+                new String [] { messageId });
+    }
+    public static final String getMessageDataQuerySql(){
+        return "SELECT "
+                + CONVERSATION_MESSAGES_QUERY_PROJECTION_SQL
+                + CONVERSATION_MESSAGE_QUERY_FROM_WHERE_SQL;
     }
 
     // Data definitions
@@ -841,6 +862,19 @@ public class ConversationMessageData {
             + DatabaseHelper.PARTICIPANTS_TABLE + '.' + ParticipantColumns.LOOKUP_KEY
             + " as " + ConversationMessageViewColumns.SENDER_CONTACT_LOOKUP_KEY + " ";
 
+    //add by junwang
+    private static final String CONVERSATION_MESSAGE_QUERY_FROM_WHERE_SQL =
+            " FROM " + DatabaseHelper.MESSAGES_TABLE
+                    + " LEFT JOIN " + DatabaseHelper.PARTS_TABLE
+                    + " ON (" + DatabaseHelper.MESSAGES_TABLE + "." + MessageColumns._ID
+                    + "=" + DatabaseHelper.PARTS_TABLE + "." + PartColumns.MESSAGE_ID + ") "
+                    + " LEFT JOIN " + DatabaseHelper.PARTICIPANTS_TABLE
+                    + " ON (" + DatabaseHelper.MESSAGES_TABLE + '.' +  MessageColumns.SENDER_PARTICIPANT_ID
+                    + '=' + DatabaseHelper.PARTICIPANTS_TABLE + '.' + ParticipantColumns._ID + ")"
+                    // Exclude draft messages from main view
+                    + " WHERE (" + DatabaseHelper.MESSAGES_TABLE + "." + MessageColumns._ID
+                    + " = ? )";
+
     private static final String CONVERSATION_MESSAGES_QUERY_FROM_WHERE_SQL =
             " FROM " + DatabaseHelper.MESSAGES_TABLE
             + " LEFT JOIN " + DatabaseHelper.PARTS_TABLE
@@ -945,12 +979,12 @@ public class ConversationMessageData {
     private static final int INDEX_SEEN                          = sIndexIncrementer++;
     private static final int INDEX_READ                          = sIndexIncrementer++;
     //add by junwang for chatbot subscribe activity card type and vote card type
-    private static final int INDEX_CHATBOT_SUBSCRIBE_STATUS      = sIndexIncrementer++;
-    private static final int INDEX_CHATBOT_VOTE_STATUS           = sIndexIncrementer++;
-    private static final int INDEX_CHATBOT_VOTED_ITEM_POSITION   = sIndexIncrementer++;
-    private static final int INDEX_CHATBOT_RCSDB_MSGID           = sIndexIncrementer++;
-    private static final int INDEX_CHATBOT_CARD_INVALID          = sIndexIncrementer++;
-    private static final int INDEX_CHATBOT_CARD_INVALID_PROMPT   = sIndexIncrementer++;
+    public static final int INDEX_CHATBOT_SUBSCRIBE_STATUS      = sIndexIncrementer++;
+    public static final int INDEX_CHATBOT_VOTE_STATUS           = sIndexIncrementer++;
+    public static final int INDEX_CHATBOT_VOTED_ITEM_POSITION   = sIndexIncrementer++;
+    public static final int INDEX_CHATBOT_RCSDB_MSGID           = sIndexIncrementer++;
+    public static final int INDEX_CHATBOT_CARD_INVALID          = sIndexIncrementer++;
+    public static final int INDEX_CHATBOT_CARD_INVALID_PROMPT   = sIndexIncrementer++;
     private static final int INDEX_PROTOCOL                      = sIndexIncrementer++;
     private static final int INDEX_STATUS                        = sIndexIncrementer++;
     private static final int INDEX_SMS_MESSAGE_URI               = sIndexIncrementer++;

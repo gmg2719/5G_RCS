@@ -29,6 +29,7 @@ import static com.android.messaging.ui.conversation.ConversationMessageView.SDK_
 
 public class NativeFunctionUtil {
     public static final String URL = "url";
+    public static final String TITLE = "title";
 
     public static void callNativeFunction(int functionNo, Activity activity, String copyText, View targetView, String phoneNumber){
         switch (functionNo){
@@ -70,6 +71,14 @@ public class NativeFunctionUtil {
     public static void loadUrl(Context context, String url) {
         Intent intent = new Intent(context, WebViewNewsActivity.class);
         intent.putExtra(URL, url);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    public static void loadUrl(Context context, String url, String title) {
+        Intent intent = new Intent(context, WebViewNewsActivity.class);
+        intent.putExtra(URL, url);
+        intent.putExtra(TITLE, title);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

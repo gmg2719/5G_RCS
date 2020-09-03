@@ -2,6 +2,7 @@ package com.android.messaging.ui.conversation.chatbot;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -24,6 +25,7 @@ import com.android.messaging.datamodel.ChatbotFavoriteTableUtils;
 import com.android.messaging.ui.BugleActionBarActivity;
 import com.android.messaging.ui.ConversationDrawables;
 import com.android.messaging.util.LogUtil;
+import com.yanzhenjie.recyclerview.OnItemClickListener;
 import com.yanzhenjie.recyclerview.OnItemMenuClickListener;
 import com.yanzhenjie.recyclerview.SwipeMenu;
 import com.yanzhenjie.recyclerview.SwipeMenuBridge;
@@ -34,12 +36,21 @@ import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import java.util.HashMap;
 import java.util.List;
 
-public class ChatbotFavoriteActivity extends BugleActionBarActivity implements View.OnClickListener{
+import static com.android.messaging.datamodel.MessagingContentProvider.CHATBOT_FAVORITE_URI;
+
+public class ChatbotFavoriteActivity extends BugleActionBarActivity{
     private SwipeRecyclerView mRecyclerView;
     protected FavoriteCardItemViewAdapter mAdapter;
     protected List<ChatbotFavoriteEntity> mDataList;
     protected RecyclerView.LayoutManager mLayoutManager;
-    private Handler mHandler;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            mRecyclerView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged(mDataList);
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,30 +66,16 @@ public class ChatbotFavoriteActivity extends BugleActionBarActivity implements V
 
         mRecyclerView.setSwipeMenuCreator(swipeMenuCreator);
         mRecyclerView.setOnItemMenuClickListener(mMenuItemClickListener);
-
-        mHandler = new Handler(){
+        mRecyclerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                mRecyclerView.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged(mDataList);
+            public void onItemClick(View view, int adapterPosition) {
+                LogUtil.i("Junwang", "ChatbotFavoriteActivity adapterPosition "+ adapterPosition+" clicked.");
+                ChatbotFavoriteDetailsActivity.start(ChatbotFavoriteActivity.this, null, mDataList.get(adapterPosition).getChatbot_fav_msg_id());
             }
-        };
+        });
 
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                mDataList = ChatbotFavoriteTableUtils.queryChatbotFavorite();
-//                for(int i=0; i<mDataList.size(); i++){
-//                    LogUtil.i("Junwang", "favority activity "+mDataList.get(i).getChatbot_fav_card_description()+" "+mDataList.get(i).getChatbot_fav_msg_id());
-//                }
-                Message msg = new Message();
-                msg.arg1 = 1;
-                mHandler.sendMessage(msg);
-            }
-        }).start();
-
-
+        queryChatbotFavorite();
+        getContentResolver().registerContentObserver(CHATBOT_FAVORITE_URI, true, mContentObserver);
         if(mDataList == null || mDataList.size() == 0){
             LogUtil.i("Junwang", "ChatbotFavoriteActivity mDataList == null");
         }
@@ -92,6 +89,28 @@ public class ChatbotFavoriteActivity extends BugleActionBarActivity implements V
 
 //        UiUtils.setStatusBarColor(this, actionBarColor);
     }
+
+    private void queryChatbotFavorite(){
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                mDataList = ChatbotFavoriteTableUtils.queryChatbotFavorite();
+                Message msg = new Message();
+                msg.arg1 = 1;
+                mHandler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    private ContentObserver mContentObserver = new ContentObserver(mHandler) {
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            LogUtil.i("Junwang", "contentObserver onChange");
+            queryChatbotFavorite();
+        }
+    };
 
     @Override
     protected void onResume() {
@@ -225,26 +244,13 @@ public class ChatbotFavoriteActivity extends BugleActionBarActivity implements V
         }
     };
 
-    @Override
-    public void onClick(View v) {
-//        final Intent convIntent = UIIntents.get().getLaunchConversationActivityIntent(this);
-//        // Copy the important items from the original intent to the new intent.
-//        convIntent.putExtras(intent);
-//        convIntent.setAction(Intent.ACTION_VIEW);
-//        convIntent.setDataAndType(intent.getData(), intent.getType());
-//        // We have to fire off the intent and finish before trying to show the fragment,
-//        // otherwise we get some flashing.
-//        startActivity(convIntent);
-//        finish();
-//        return;
-    }
-
     /**
      * RecyclerView的Item的Menu点击监听。
      */
     private OnItemMenuClickListener mMenuItemClickListener = new OnItemMenuClickListener() {
         @Override
         public void onItemClick(SwipeMenuBridge menuBridge, int position) {
+            LogUtil.i("Junwang", "ChatbotFavoriteActivity OnItemMenuClickListener position "+ position+" clicked.");
             menuBridge.closeMenu();
 
             int direction = menuBridge.getDirection(); // 左侧还是右侧菜单。

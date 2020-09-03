@@ -8,20 +8,21 @@
             <!-- 线的宽度，颜色灰色 -->
             <stroke android:width="0dp" android:color="#f5f5f7"></stroke>
             <!-- 矩形的圆角半径 -->
-            <corners android:bottomLeftRadius="5dp"
-                android:bottomRightRadius="5dp"
-                android:topLeftRadius="5dp"
-                android:topRightRadius="5dp" />
+            <corners android:bottomLeftRadius="2dp"
+                android:bottomRightRadius="2dp"
+                android:topLeftRadius="2dp"
+                android:topRightRadius="2dp" />
         </shape>
     </item>
 
     <item>
         <shape>
-            <solid android:color="#EBEBEB" />
-            <corners android:bottomLeftRadius="5dp"
-                android:bottomRightRadius="5dp"
-                android:topLeftRadius="5dp"
-                android:topRightRadius="5dp" />
+            <solid android:color="#FFFFFF" />
+            <stroke android:color="#FFFFFF" />
+            <corners android:bottomLeftRadius="2dp"
+                android:bottomRightRadius="2dp"
+                android:topLeftRadius="2dp"
+                android:topRightRadius="2dp" />
         </shape>
     </item>
 
