@@ -178,7 +178,9 @@ public class ConversationMessageAdapter extends
 
     public void setSelectedMessage(final String messageId) {
         mSelectedMessageId = messageId;
-        notifyDataSetChanged();
+        if(messageId != null) {
+            notifyDataSetChanged();
+        }
     }
 
     public void setOneOnOne(final boolean oneOnOne, final boolean invalidate) {

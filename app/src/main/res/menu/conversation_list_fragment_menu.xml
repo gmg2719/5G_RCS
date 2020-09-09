@@ -21,7 +21,7 @@
     <item android:id="@+id/action_start_new_conversation"
         android:orderInCategory="300"
         android:title="@string/start_new_conversation"
-        android:icon="@drawable/icon_more"
+        android:icon="@drawable/icon_more1"
         android:visible="true"
         appcompat:showAsAction="never" />
     <item android:id="@+id/my_favorite"

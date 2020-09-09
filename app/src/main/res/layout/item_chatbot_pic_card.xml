@@ -6,8 +6,11 @@
     <include layout="@layout/item_news_bottom"/>
     <ImageView
         android:id="@+id/chatbot_image"
-        android:layout_width="315dp"
-        android:layout_height="315dp"
-        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:maxWidth="140dp"
+        android:maxHeight="140dp"
         />
 </LinearLayout>

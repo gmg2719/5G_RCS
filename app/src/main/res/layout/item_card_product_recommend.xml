@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="10dp"
+    android:background="@drawable/card_message_style"
+    android:orientation="vertical">
+    <include layout="@layout/include_card_title"/>
+    <com.yc.cn.ycbannerlib.banner.BannerView
+        android:id="@+id/multicard_chatbot_banner"
+        android:layout_width="306dp"
+        android:layout_height="214dp"
+        />
+</LinearLayout>
+
+
+

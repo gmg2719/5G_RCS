@@ -107,7 +107,7 @@
         <item name="actionOverflowButtonStyle">@style/OverflowStyle</item>
     </style>
     <style name="OverflowStyle">
-        <item name="android:src">@drawable/icon_more</item>
+        <item name="android:src">@drawable/icon_more1</item>
     </style>
 
     <style name="BugleActionBarTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">

@@ -22,6 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:gravity="center_vertical"
-        android:src="@drawable/icon_more"/>
+        android:src="@drawable/icon_more1"/>
 
 </RelativeLayout>

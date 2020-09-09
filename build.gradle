@@ -17,6 +17,7 @@ allprojects {
         jcenter()
         google()
         maven {url 'http://developer.huawei.com/repo/'}
+        maven { url 'https://jitpack.io' }
     }
     ext {
         // ************** app configuration ************** //

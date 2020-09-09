@@ -34,7 +34,6 @@ import com.android.messaging.ui.chatbotservice.ChatbotMultiCard;
 import com.android.messaging.ui.chatbotservice.GeneralPurposeCardCarousel;
 import com.android.messaging.ui.chatbotservice.SuggestionActionWrapper;
 import com.android.messaging.ui.conversation.chatbot.BannerHintView;
-import com.android.messaging.ui.conversation.chatbot.ChatbotFavoriteDetailsActivity;
 import com.android.messaging.ui.conversation.chatbot.ChatbotVideoNewsDetailsActivity;
 import com.android.messaging.ui.conversation.chatbot.MultiCardItemDataBean;
 import com.android.messaging.ui.conversation.chatbot.vote.VoteListener;
@@ -203,7 +202,7 @@ public class ChatbotMsgParseUtils {
 
     private static void loadProductRecommendCard(CardContent[] cardcontents, Activity activity, LinearLayout contentParent, ConversationMessageData cmd){
         LayoutInflater layoutInflater = LayoutInflater.from(activity);
-        View view = layoutInflater.inflate(R.layout.item_product_recommend_card, null);
+        View view = layoutInflater.inflate(R.layout.item_card_product_recommend, null);
         ((TextView)view.findViewById(R.id.tv_title)).setText("商品推荐");
         ((ImageView)view.findViewById(R.id.title_image)).setImageResource(R.drawable.icon_shopping);
         BannerView mMultiCardChatbotBanner = view.findViewById(R.id.multicard_chatbot_banner);
@@ -260,11 +259,11 @@ public class ChatbotMsgParseUtils {
     private static boolean loadTypeCard(RcsContant.CardType type, ChatbotCard cbc, CardContent cc, Activity activity, LinearLayout contentParent, ConversationMessageData cmd){
         switch (type){
             case ACTIVITY_SUB:
-                return loadActivitySubscribeChatbotMessage(R.layout.item_activity_subscribe_card, cc, activity, contentParent, cmd);
+                return loadActivitySubscribeChatbotMessage(R.layout.item_card_activity_subscribe, cc, activity, contentParent, cmd);
             case VOTE:
-                return /*loadPictureCardChatbotMessage(R.layout.item_chatbot_pic_card, cc);*/loadVoteCardChatbotMessage(R.layout.item_vote_card, cc, activity,contentParent, cmd);
+                return /*loadPictureCardChatbotMessage(R.layout.item_chatbot_pic_card, cc);*/loadVoteCardChatbotMessage(R.layout.item_card_vote, cc, activity,contentParent, cmd);
             case VIDEO_NEWS:
-                return loadVideoNewsChatbotMessage(R.layout.item_chatbot_video_news_card,cc, activity, contentParent, cmd);
+                return loadVideoNewsChatbotMessage(R.layout.item_card_chatbot_video_news,cc, activity, contentParent, cmd);
 //            case PRODUCT_RECOMMEND:
 //                return loadProductRecommendChatbotMessage(cbc.getMessage().getGeneralPurposeCard().getContent());
 //            case SUB_ACTIVITY_START:
@@ -639,14 +638,17 @@ public class ChatbotMsgParseUtils {
                 mPopWindow.dismiss();
             }
         });
-        ((TextView)popView.findViewById(R.id.deleteMsg)).setOnClickListener(new View.OnClickListener(){
+        TextView delete = ((TextView)popView.findViewById(R.id.deleteMsg));
+        delete.setText("移除收藏");
+        delete.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
 //                DeleteMessageAction.deleteMessage(cmd.getMessageId());
-                ChatbotFavoriteDetailsActivity.refresh(activity);
+//                ChatbotFavoriteDetailsActivity.refresh(activity);
                 MessagingContentProvider.notifyChatbotFavoritesChanged();
                 ChatbotFavoriteTableUtils.deleteChatbotFavoriteInfo(null, cmd.getMessageId());
                 mPopWindow.dismiss();
+                activity.finish();
             }
         });
         ((TextView)popView.findViewById(R.id.insertFav)).setVisibility(View.GONE);

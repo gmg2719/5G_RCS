@@ -32,7 +32,6 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
@@ -216,6 +215,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -234,6 +234,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cc.shinichi.library.ImagePreview;
 import io.reactivex.functions.Consumer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -2346,8 +2347,9 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         loadMoreAction(view, cardcontents[0]);
         mH5_content.removeAllViews();
         mH5_content.addView(view);
-        mChatbotTime.setVisibility(View.VISIBLE);
-        mChatbotTime.setText(mData.getFormattedReceivedTimeStamp());
+        setTimeText(view);
+//        mChatbotTime.setVisibility(View.VISIBLE);
+//        mChatbotTime.setText(mData.getFormattedReceivedTimeStamp());
         mH5_content.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -2452,15 +2454,75 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         });
     }
 
+    private void loadCornerTransformPicture(Context context, ImageView iv){
+        CornerTransform transformation = new CornerTransform(context, dip2px(context, 10), dip2px(context, 140));
+//只是绘制左上角和右上角圆角
+        transformation.setExceptCorner(false, false, false, false);
+
+        Glide.with(context)
+                .load("/sdcard/DCIM/Camera/WechatIMG238.jpeg")
+                .skipMemoryCache(true)
+                .error(R.drawable.msg_bubble_error)
+                .transform(transformation)
+                .into(iv);
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+
     private boolean loadPictureCardChatbotMessage(int resource, CardContent cardContent){
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View view = layoutInflater.inflate(resource, null);
         if(view != null) {
             ImageView iv = (ImageView) view.findViewById(R.id.chatbot_image);
-            RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(new RoundedCornerCenterCrop(30));//图片圆角为30
-            Glide.with(this).load(/*cardContent.getMedia().getThumbnailUrl()*//*"http://vsms-material.eos-hunan-1.cmecloud.cn/vsms_api/2/5e41089ac63f0.jpg"*/"/sdcard/DCIM/Camera/qrcode.jpg")
-                    .apply(options)
+//            loadCornerTransformPicture(getContext(), iv);
+//            RoundedCornerFitCenter rcf = new RoundedCornerFitCenter(60);
+//            RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(rcf);//图片圆角为30
+//
+//            RequestBuilder<Drawable> rb = Glide.with(this).load(/*cardContent.getMedia().getThumbnailUrl()*//*"http://vsms-material.eos-hunan-1.cmecloud.cn/vsms_api/2/5e41089ac63f0.jpg"*/"/sdcard/DCIM/Camera/WechatIMG238.jpeg")
+//                    .transform(rcf);
+//            float ratio = rcf.getRatio();
+//            LogUtil.i("Junwang", "ratio="+ratio);
+//            int width = 0;
+//            int height = 0;
+//            if(ratio >= 1.0f){
+//                width = dip2px(getContext(), 140);
+//                height = (int)(width/ratio);
+//            }else{
+//                height = dip2px(getContext(), 140);
+//                width = (int)(height*ratio);
+//            }
+            RoundedCornerFitCenter rcf = new RoundedCornerFitCenter(60);
+            RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(rcf);//图片圆角为30
+
+            Glide.with(this).load(/*cardContent.getMedia().getThumbnailUrl()*/
+//                                        "http://vsms-material.eos-hunan-1.cmecloud.cn/vsms_api/2/5e41089ac63f0.jpg"
+//                                        "/sdcard/DCIM/Camera/WechatIMG238.jpeg"
+                                        "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
+//                                        "https://img-blog.csdnimg.cn/20200908155036276.jpg"
+//                                          "/sdcard/DCIM/Camera/qrcode.jpg"
+                                        )
+                    .transform(new RoundedCornerFitCenter(60))
+//                    .apply(options)
+//                    .fitCenter()
                     .into(iv);
+            iv.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    ImagePreview.getInstance().setContext(getContext())
+                            .setImage(
+//                                    "https://img-blog.csdnimg.cn/20200908155036276.jpg"
+                                    "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
+                                    /*"/sdcard/DCIM/Camera/qrcode.jpg"*/)
+                            .setZoomTransitionDuration(300)
+                            .setShowCloseButton(true)
+                            .start();
+//                    WebViewNewsActivity.start(getContext(), "https://img-blog.csdnimg.cn/20200907142854223.jpeg");
+                }
+            });
 //            iv.setOnLongClickListener(new View.OnLongClickListener() {
 //                @Override
 //                public boolean onLongClick(View arg0) {
@@ -4405,7 +4467,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             case ACTIVITY_SUB:
                 return loadActivitySubscribeChatbotMessage(R.layout.item_activity_subscribe_card, cc);
             case VOTE:
-                return /*loadPictureCardChatbotMessage(R.layout.item_chatbot_pic_card, cc);*/loadVoteCardChatbotMessage(R.layout.item_vote_card, cc);
+                return loadPictureCardChatbotMessage(R.layout.item_chatbot_pic_card, cc);/*loadVoteCardChatbotMessage(R.layout.item_vote_card, cc);*/
             case VIDEO_NEWS:
                 return loadVideoNewsChatbotMessage(R.layout.item_chatbot_video_news_card,cc);
 //            case PRODUCT_RECOMMEND:

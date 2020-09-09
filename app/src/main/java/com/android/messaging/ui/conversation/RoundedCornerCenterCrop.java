@@ -3,6 +3,7 @@ package com.android.messaging.ui.conversation;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.android.messaging.util.LogUtil;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.load.resource.bitmap.TransformationUtils;
@@ -18,6 +19,7 @@ public class RoundedCornerCenterCrop extends BitmapTransformation {
 
     @Override
     protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
+        LogUtil.i("Junwang", "RoundedCornerCenterCrop transform enter");
         Bitmap bitmap = TransformationUtils.centerCrop(pool, toTransform, outWidth, outHeight);
         return TransformationUtils.roundedCorners(pool, bitmap, radius);
     }

@@ -82,6 +82,6 @@
         <item name="android:actionOverflowButtonStyle">@style/OverflowStyle</item>
     </style>
     <style name="OverflowStyle">
-        <item name="android:src">@drawable/icon_more</item>
+        <item name="android:src">@drawable/icon_more1</item>
     </style>
 </resources>

@@ -442,7 +442,7 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
 
         mSnippetTextView.setMaxLines(maxLines);
         mSnippetTextView.setTextColor(color);
-        ((TextView)findViewById(R.id.read_indicator)).setVisibility((color == mListItemReadColor) ? View.GONE : View.VISIBLE);
+        ((ImageView)findViewById(R.id.read_indicator)).setVisibility((color == mListItemReadColor) ? View.GONE : View.VISIBLE);
         mSnippetTextView.setTypeface(typeface, typefaceStyle);
         mSubjectTextView.setTextColor(color);
         mSubjectTextView.setTypeface(typeface, typefaceStyle);

@@ -38,7 +38,7 @@
         android:id="@+id/selected_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/vote_selected"
+        android:src="@drawable/icon_selected"
         android:layout_gravity="right|center_vertical"
         android:visibility="gone"
         android:layout_marginRight="10dp" />

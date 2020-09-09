@@ -22,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -265,6 +266,7 @@ public class SwipeRecyclerView extends RecyclerView {
 
         @Override
         public void onItemClick(View itemView, int position) {
+            Log.i("Junwang", "Swipe RecyclerView setOnItemClickListener onItemClick position="+position);
             position -= mRecyclerView.getHeaderCount();
             if (position >= 0) mListener.onItemClick(itemView, position);
         }
@@ -326,6 +328,7 @@ public class SwipeRecyclerView extends RecyclerView {
 
         @Override
         public void onItemClick(SwipeMenuBridge menuBridge, int position) {
+            Log.i("Junwang", "Swipe RecyclerView onItemClick position="+position);
             position -= mRecyclerView.getHeaderCount();
             if (position >= 0) {
                 mListener.onItemClick(menuBridge, position);
