@@ -629,6 +629,8 @@
             android:theme="@style/BugleTheme.ConversationActivity"/>
         <activity android:name=".ui.conversation.chatbot.ChatbotFavoriteDetailsActivity"
             android:theme="@style/BugleTheme.ConversationActivity"/>
+        <activity android:name=".ui.conversation.chatbot.ChatbotIntroduceActivity"
+            android:theme="@style/AppTheme"/>
 
         <!-- 微信支付 -->
         <activity

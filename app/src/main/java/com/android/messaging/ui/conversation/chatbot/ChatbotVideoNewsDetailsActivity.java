@@ -2,6 +2,7 @@ package com.android.messaging.ui.conversation.chatbot;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -181,7 +182,7 @@ public class ChatbotVideoNewsDetailsActivity extends AppCompatActivity implement
 
     //    @Override
     protected void initView(){
-        StatusBarUtil.setStatusBarColor(this, R.color.color_BDBDBD);
+        StatusBarUtil.setStatusBarColor(this, /*R.color.color_BDBDBD*/Color.parseColor("#FFFFFF"));
 //        mIVBack = (ImageView) findViewById(R.id.danmu_title_iv_back);
 //        mIVBack.setOnClickListener(new View.OnClickListener() {
 //            @Override

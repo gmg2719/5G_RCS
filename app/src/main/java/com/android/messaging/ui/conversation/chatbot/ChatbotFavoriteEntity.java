@@ -8,7 +8,7 @@ public class ChatbotFavoriteEntity {
     private String chatbot_fav_logo;
     private String chatbot_fav_card_description;
     private String chatbot_fav_image_url;
-    private String chatbot_fav_saved_date;
+    private long chatbot_fav_saved_date;
     private String chatbot_fav_channel_id;
     private String chatbot_fav_msg_id;
     private String chatbot_fav_conversation_id;
@@ -53,12 +53,12 @@ public class ChatbotFavoriteEntity {
         this.chatbot_fav_image_url = chatbot_fav_image_url;
     }
 
-    public String getChatbot_fav_saved_date() {
+    public long getChatbot_fav_saved_date() {
         LogUtil.i("Junwang", "saved date "+chatbot_fav_saved_date);
         return chatbot_fav_saved_date;
     }
 
-    public void setChatbot_fav_saved_date(String chatbot_fav_saved_date) {
+    public void setChatbot_fav_saved_date(long chatbot_fav_saved_date) {
         this.chatbot_fav_saved_date = chatbot_fav_saved_date;
     }
 

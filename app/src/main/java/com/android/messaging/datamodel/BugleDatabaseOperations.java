@@ -313,6 +313,35 @@ public class BugleDatabaseOperations {
         return conversationId;
     }
 
+    //add by junwang
+    @DoesNotRunOnMainThread
+    public static String getConversationId(
+                                                 final String phoneNumber) {
+        Assert.isNotMainThread();
+        String conversationId = null;
+        final DatabaseWrapper db = DataModel.get().getDatabase();
+
+        Cursor cursor = null;
+        try {
+            // Look for an existing conversation in the db with this thread id
+            cursor = db.rawQuery("SELECT " + ConversationColumns._ID
+                            + " FROM " + DatabaseHelper.CONVERSATIONS_TABLE
+                            + " WHERE " + ConversationColumns.NAME + " = ?" ,
+                   new String[]{phoneNumber} );
+
+            if (cursor.moveToFirst()) {
+                Assert.isTrue(cursor.getCount() == 1);
+                conversationId = cursor.getString(0);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return conversationId;
+    }
+
     /**
      * Get the thread id for an existing conversation from the local DB.
      *

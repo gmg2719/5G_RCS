@@ -495,7 +495,7 @@ public class ImagePreviewActivity extends AppCompatActivity implements Handler.C
         popView.startAnimation(animationSet);
     }
 
-    public Result parsePic(Bitmap bitmap) {
+    public static Result parsePic(Bitmap bitmap) {
         // 解析转换类型UTF-8
         Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
         hints.put(DecodeHintType.CHARACTER_SET, "utf-8");

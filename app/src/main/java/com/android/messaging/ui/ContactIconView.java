@@ -33,6 +33,7 @@ import com.android.messaging.datamodel.data.ParticipantData;
 import com.android.messaging.datamodel.media.AvatarGroupRequestDescriptor;
 import com.android.messaging.datamodel.media.AvatarRequestDescriptor;
 import com.android.messaging.datamodel.media.FileImageRequestDescriptor;
+import com.android.messaging.ui.conversation.chatbot.ChatbotIntroduceActivity;
 import com.android.messaging.util.Assert;
 import com.android.messaging.util.AvatarUriUtil;
 import com.android.messaging.util.ContactUtil;
@@ -226,8 +227,12 @@ public class ContactIconView extends AsyncImageView {
                 setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View view) {
-                        ContactUtil.showOrAddContact(view, mContactId, mContactLookupKey,
-                                mAvatarUri, mNormalizedDestination);
+                        if(mNormalizedDestination.startsWith("sip:")){
+                            ChatbotIntroduceActivity.start(getContext(), mNormalizedDestination);
+                        }else {
+                            ContactUtil.showOrAddContact(view, mContactId, mContactLookupKey,
+                                    mAvatarUri, mNormalizedDestination);
+                        }
                     }
                 });
             }

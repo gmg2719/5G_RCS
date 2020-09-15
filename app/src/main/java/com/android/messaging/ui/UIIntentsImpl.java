@@ -87,7 +87,7 @@ public class UIIntentsImpl extends UIIntents {
     /**
      * Get an intent which takes you to a conversation
      */
-    private Intent getConversationActivityIntent(final Context context,
+    public static Intent getConversationActivityIntent(final Context context,
             final String conversationId, final MessageData draft,
             final boolean withCustomTransition) {
         final Intent intent = new Intent(context, ConversationActivity.class);

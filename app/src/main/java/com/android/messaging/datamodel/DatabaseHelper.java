@@ -199,7 +199,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + ChatbotFavoriteColumns.CHATBOT_FAV_LOGO + " TEXT DEFAULT(NULL), "
             + ChatbotFavoriteColumns.CHATBOT_FAV_CARD_DESCRIPTION + " TEXT DEFAULT(NULL), "
             + ChatbotFavoriteColumns.CHATBOT_FAV_IMAGE_URL + " TEXT DEFAULT(NULL), "
-            + ChatbotFavoriteColumns.CHATBOT_FAV_SAVED_DATE + " TEXT DEFAULT(NULL), "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_SAVED_DATE + " INT DEFAULT(0), "
             + ChatbotFavoriteColumns.CHATBOT_FAV_CHANNEL_ID + " TEXT DEFAULT(NULL), "
             + ChatbotFavoriteColumns.CHATBOT_FAV_MSG_ID + " TEXT DEFAULT(NULL), "
             + ChatbotFavoriteColumns.CHATBOT_FAV_CONVERSATION_ID + " TEXT DEFAULT(NULL)"

@@ -50,8 +50,8 @@
                 android:id="@android:id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingTop="48dp"
                 android:listSelector="@android:color/transparent"
-                android:paddingTop="@dimen/action_bar_height"
                 android:clipToPadding="false" />
 
             <View

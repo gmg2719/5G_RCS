@@ -185,6 +185,7 @@
                         android:layout_width="@dimen/conversation_message_send_icon_size"
                         android:layout_height="@dimen/conversation_message_send_icon_size"
                         android:src="@drawable/ic_send_light"
+                        android:layout_gravity="center_vertical"
                         android:background="@drawable/send_arrow_background"
                         android:contentDescription="@string/sendButtonContentDescription"
                         android:visibility="gone" />

@@ -1725,6 +1725,10 @@ public class SubsamplingScaleImageViewDragClose extends View {
         }
     }
 
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
     /**
      * Called by worker task when full size image bitmap is ready (tiling is disabled).
      */

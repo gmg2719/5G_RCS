@@ -15,6 +15,8 @@ import com.android.messaging.util.LogUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class FavoriteCardItemViewAdapter extends FavoriteBaseAdapter<FavoriteCardItemViewAdapter.MyHolder> {
@@ -68,7 +70,10 @@ public class FavoriteCardItemViewAdapter extends FavoriteBaseAdapter<FavoriteCar
             ((MyHolder) holder).title_image.setImageResource(R.drawable.icon_news);
         }
         ((MyHolder)holder).tv_description.setText(lists.get(position).getChatbot_fav_card_description());
-        ((MyHolder)holder).tv_date.setText(lists.get(position).getChatbot_fav_saved_date());
+        Date date = new Date(lists.get(position).getChatbot_fav_saved_date());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateString = sdf.format(date);
+        ((MyHolder)holder).tv_date.setText(dateString);
         String imgUrl = lists.get(position).getChatbot_fav_image_url();
         if(imgUrl != null) {
             RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(new RoundedCornerCenterCrop(15));//图片圆角为30

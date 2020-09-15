@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class ChatbotFavoriteTableUtils {
     public static void insertChatbotFavoriteTable(String favSipUri, String favName, String favLogo, String favDescription,
-                                                  String favImageUrl, String favSaveDate, String favChannelId, String favMsgId, String favConversationId) {
+                                                  String favImageUrl, long favSaveDate, String favChannelId, String favMsgId, String favConversationId) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -130,7 +130,8 @@ public class ChatbotFavoriteTableUtils {
 
     public static List<ChatbotFavoriteEntity> queryChatbotFavorite() {
         DatabaseWrapper mdbWrapper = DataModel.get().getDatabase();
-        Cursor cursor = mdbWrapper.rawQuery("SELECT * FROM " + DatabaseHelper.CHATBOT_FAVORITE_TABLE, null);
+        Cursor cursor = mdbWrapper.rawQuery("SELECT * FROM " + DatabaseHelper.CHATBOT_FAVORITE_TABLE + " ORDER BY "
+                + DatabaseHelper.CHATBOT_FAVORITE_TABLE + '.' + DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_SAVED_DATE + " DESC", null);
         List<ChatbotFavoriteEntity> favEntityList = new ArrayList<>();
         ChatbotFavoriteEntity favEnt;
         if (cursor != null) {
@@ -142,7 +143,7 @@ public class ChatbotFavoriteTableUtils {
                 favEnt.setChatbot_fav_logo(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_LOGO)));
                 favEnt.setChatbot_fav_card_description(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_CARD_DESCRIPTION)));
                 favEnt.setChatbot_fav_image_url(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_IMAGE_URL)));
-                favEnt.setChatbot_fav_saved_date(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_SAVED_DATE)));
+                favEnt.setChatbot_fav_saved_date(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_SAVED_DATE)));
                 favEnt.setChatbot_fav_channel_id(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_CHANNEL_ID)));
                 favEnt.setChatbot_fav_msg_id(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_MSG_ID)));
                 favEnt.setChatbot_fav_conversation_id(cursor.getString(cursor.getColumnIndex(DatabaseHelper.ChatbotFavoriteColumns.CHATBOT_FAV_CONVERSATION_ID)));

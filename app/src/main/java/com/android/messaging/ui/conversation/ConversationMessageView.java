@@ -160,6 +160,7 @@ import com.android.messaging.ui.chatbotservice.SuggestionAction;
 import com.android.messaging.ui.chatbotservice.SuggestionActionWrapper;
 import com.android.messaging.ui.conversation.chatbot.BannerHintView;
 import com.android.messaging.ui.conversation.chatbot.ChatbotFavoriteEntity;
+import com.android.messaging.ui.conversation.chatbot.ChatbotIntroduceActivity;
 import com.android.messaging.ui.conversation.chatbot.ChatbotVideoNewsDetailsActivity;
 import com.android.messaging.ui.conversation.chatbot.MultiCardItemDataBean;
 import com.android.messaging.ui.conversation.chatbot.MultiCardItemViewAdapter;
@@ -866,7 +867,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
 
     private void updateMessageAttachments() {
         // Bind video, audio, and VCard attachments. If there are multiple, they stack vertically.
-        bindAttachmentsOfSameType(sVideoFilter,
+                bindAttachmentsOfSameType(sVideoFilter,
                 R.layout.message_video_attachment, mVideoViewBinder, VideoThumbnailView.class);
         bindAttachmentsOfSameType(sAudioFilter,
                 R.layout.message_audio_attachment, mAudioViewBinder, AudioAttachmentView.class);
@@ -2131,12 +2132,13 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         ((TextView)popView.findViewById(R.id.insertFav)).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH)+1;
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                String date = year+"/"+month+"/"+day;
-                LogUtil.i("Junwang", "date="+date);
+//                Calendar calendar = Calendar.getInstance();
+//                int year = calendar.get(Calendar.YEAR);
+//                int month = calendar.get(Calendar.MONTH)+1;
+//                int day = calendar.get(Calendar.DAY_OF_MONTH);
+//                String date = year+"/"+month+"/"+day;
+//                LogUtil.i("Junwang", "date="+date);
+                final long date = System.currentTimeMillis();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -2495,17 +2497,17 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
 //                height = dip2px(getContext(), 140);
 //                width = (int)(height*ratio);
 //            }
-            RoundedCornerFitCenter rcf = new RoundedCornerFitCenter(60);
+            RoundedCornerFitCenter rcf = new RoundedCornerFitCenter(30);
             RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(rcf);//图片圆角为30
 
             Glide.with(this).load(/*cardContent.getMedia().getThumbnailUrl()*/
 //                                        "http://vsms-material.eos-hunan-1.cmecloud.cn/vsms_api/2/5e41089ac63f0.jpg"
 //                                        "/sdcard/DCIM/Camera/WechatIMG238.jpeg"
-                                        "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
-//                                        "https://img-blog.csdnimg.cn/20200908155036276.jpg"
+//                                        "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
+                                        "https://img-blog.csdnimg.cn/20200908155036276.jpg"
 //                                          "/sdcard/DCIM/Camera/qrcode.jpg"
                                         )
-                    .transform(new RoundedCornerFitCenter(60))
+                    .transform(new RoundedCornerFitCenter(30))
 //                    .apply(options)
 //                    .fitCenter()
                     .into(iv);
@@ -2514,8 +2516,8 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 public void onClick(View v) {
                     ImagePreview.getInstance().setContext(getContext())
                             .setImage(
-//                                    "https://img-blog.csdnimg.cn/20200908155036276.jpg"
-                                    "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
+                                    "https://img-blog.csdnimg.cn/20200908155036276.jpg"
+//                                    "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
                                     /*"/sdcard/DCIM/Camera/qrcode.jpg"*/)
                             .setZoomTransitionDuration(300)
                             .setShowCloseButton(true)
@@ -2910,6 +2912,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                                     if(sr != null){
                                         if(sr.getData().getIsValid() != 0){
                                             LogUtil.i("Junwang", "video card is valid");
+//                                            ChatbotIntroduceActivity.start(getContext());
                                             ChatbotVideoNewsDetailsActivity.start(getContext(), cardcontent.getMedia().getMediaUrl(),
                                                     cardcontent.getTitle(), cardcontent.getDescription());
 //                                            ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/seeVideo", params, "utf-8");
