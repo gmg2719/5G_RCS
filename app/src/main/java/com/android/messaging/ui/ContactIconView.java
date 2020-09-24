@@ -228,7 +228,7 @@ public class ContactIconView extends AsyncImageView {
                     @Override
                     public void onClick(final View view) {
                         if(mNormalizedDestination.startsWith("sip:")){
-                            ChatbotIntroduceActivity.start(getContext(), mNormalizedDestination);
+                            ChatbotIntroduceActivity.start(getContext(), mNormalizedDestination, /*"https://img-blog.csdnimg.cn/2020091515144423.jpg"*/null);
                         }else {
                             ContactUtil.showOrAddContact(view, mContactId, mContactLookupKey,
                                     mAvatarUri, mNormalizedDestination);

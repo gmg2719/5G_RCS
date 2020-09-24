@@ -320,7 +320,7 @@ public class ChatbotMsgParseUtils {
                                     String result = ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/seeVideo", params, "utf-8");
                                     ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                     if(sr != null){
-                                        if(sr.getData().getIsValid() != 0){
+                                        if(sr.getData() != null && sr.getData().getIsValid() != 0){
                                             LogUtil.i("Junwang", "video card is valid");
                                             ChatbotVideoNewsDetailsActivity.start(activity, cardcontent.getMedia().getMediaUrl(),
                                                     cardcontent.getTitle(), cardcontent.getDescription());
@@ -796,7 +796,7 @@ public class ChatbotMsgParseUtils {
                                         String result = ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/doAppoint", params, "utf-8");
                                         ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                         if(sr != null){
-                                            if(sr.getData().getIsValid() != 0){
+                                            if(sr.getData() != null && sr.getData().getIsValid() != 0){
                                                 LogUtil.i("Junwang", "subscribe card is valid");
                                             }else{
                                                 LogUtil.i("Junwang", "subscribe card is invalid");

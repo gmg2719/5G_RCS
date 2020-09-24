@@ -263,7 +263,12 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
                             mWebView.loadUrl(url);
                             return false;
                         } else {
-                            view.loadUrl(url, extraHeaders);
+                            if(url.startsWith("http://") || url.startsWith("https://") || url.startsWith("rtsp://")) {
+                                view.loadUrl(url, extraHeaders);
+                            }else{
+                                startThirdpartyApp(url);
+                                return true;
+                            }
                         }
                     }
                     // ------- 处理结束 -------

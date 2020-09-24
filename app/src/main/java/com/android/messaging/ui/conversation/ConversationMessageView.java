@@ -44,6 +44,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.text.util.LinkifyCompat;
 import android.support.v4.view.ViewPager;
@@ -160,7 +161,6 @@ import com.android.messaging.ui.chatbotservice.SuggestionAction;
 import com.android.messaging.ui.chatbotservice.SuggestionActionWrapper;
 import com.android.messaging.ui.conversation.chatbot.BannerHintView;
 import com.android.messaging.ui.conversation.chatbot.ChatbotFavoriteEntity;
-import com.android.messaging.ui.conversation.chatbot.ChatbotIntroduceActivity;
 import com.android.messaging.ui.conversation.chatbot.ChatbotVideoNewsDetailsActivity;
 import com.android.messaging.ui.conversation.chatbot.MultiCardItemDataBean;
 import com.android.messaging.ui.conversation.chatbot.MultiCardItemViewAdapter;
@@ -193,7 +193,12 @@ import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.common.base.Predicate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -224,7 +229,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -236,6 +240,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cc.shinichi.library.ImagePreview;
+import cc.shinichi.library.glide.FileTarget;
 import io.reactivex.functions.Consumer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -2233,15 +2238,24 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             View view = layoutInflater.inflate(R.layout.item_single_product_view, null);
             ImageView img = (ImageView)view.findViewById(R.id.product_image);
             TextView tv = (TextView)view.findViewById(R.id.product_description);
-//            tv.setText(lists.get(position).getTitle());
-            tv.setText("橙子脐橙新鲜甜伦晚助农水果当季夏橙5斤");
+            tv.setText(lists.get(position).getTitle());
+//            tv.setText("橙子脐橙新鲜甜伦晚助农水果当季夏橙5斤");
             RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(new RoundedCornerCenterCrop(30));//图片圆角为30
+//            Glide.with(context).downloadOnly().load(lists.get(position).getMediaUr())
+//                    .into(new FileTarget(){
+//                        @Override
+//                        public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+//                            super.onResourceReady(resource, transition);
+//
+//                            LogUtil.i("Junwang", "onResourceReady resource="+resource.getAbsolutePath());
+//                            Glide.with(context).load(resource)
+//                                    .apply(options)
+//                                    .into(img);
+//                        }
+//                    });
             Glide.with(context).load(lists.get(position).getMediaUr())
                     .apply(options)
                     .into(img);
-//            Glide.with(context).load(lists.get(position).getMediaUr())
-//                    .centerCrop()
-//                    .into(img);
 
             return view;
         }
@@ -2305,14 +2319,15 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                                     String result = postVoteRequest("http://testxhs.supermms.cn/api/sms5g/my/viewProduct", mData.getmChatbotRcsdbMsgId(), position+1, false);
                                     ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                     if (sr != null) {
-                                        if (sr.getData().getIsValid() != 0) {
-                                            LogUtil.i("Junwang", "product recommend card is valid");
-                                            WebViewNewsActivity.start(getContext(), lists.get(position).getExtraData1());
+                                        if (sr.getData() != null && sr.getData().getIsValid() != 0) {
+                                            LogUtil.i("Junwang", "p  roduct recommend card is valid");
+                                            WebViewNewsActivity.start(getContext(), lists.get(position).getExtraData1(), lists.get(position).getTitle());
                                         } else {
                                             ChatbotInfoTableUtils.updateChatbotCardInvalidStatus(mData.getmChatbotRcsdbMsgId());
                                             getActivityFromView(mH5_content).runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
+//                                                    Snackbar.make(mH5_content, "消息已失效，已停止访问改内容", Snackbar.LENGTH_LONG).show();
                                                     Toast.makeText(getContext(), "消息已失效，已停止访问改内容", Toast.LENGTH_LONG).show();
                                                 }
                                             });
@@ -2504,7 +2519,8 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
 //                                        "http://vsms-material.eos-hunan-1.cmecloud.cn/vsms_api/2/5e41089ac63f0.jpg"
 //                                        "/sdcard/DCIM/Camera/WechatIMG238.jpeg"
 //                                        "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
-                                        "https://img-blog.csdnimg.cn/20200908155036276.jpg"
+//                                        "https://img-blog.csdnimg.cn/20200908155036276.jpg"
+                                            "https://img-blog.csdnimg.cn/20200917181548665.png"
 //                                          "/sdcard/DCIM/Camera/qrcode.jpg"
                                         )
                     .transform(new RoundedCornerFitCenter(30))
@@ -2516,7 +2532,8 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 public void onClick(View v) {
                     ImagePreview.getInstance().setContext(getContext())
                             .setImage(
-                                    "https://img-blog.csdnimg.cn/20200908155036276.jpg"
+//                                    "https://img-blog.csdnimg.cn/20200908155036276.jpg"
+                                    "https://img-blog.csdnimg.cn/20200917181548665.png"
 //                                    "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
                                     /*"/sdcard/DCIM/Camera/qrcode.jpg"*/)
                             .setZoomTransitionDuration(300)
@@ -2716,6 +2733,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                             tvRefresh.setVisibility(View.VISIBLE);
                             tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
                             tvVoteAction.setText("已投票");
+                            mData.setmChatbotVoteStatus(true);
                             BugleNotifications.markMessageAsVotedStatus(mData.getmChatbotRcsdbMsgId(), voteView.selectedItemPosition);
                             new Thread(new Runnable() {
                                 @Override
@@ -2910,9 +2928,8 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                                     String result = ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/seeVideo", params, "utf-8");
                                     ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                     if(sr != null){
-                                        if(sr.getData().getIsValid() != 0){
+                                        if(sr.getData() != null && sr.getData().getIsValid() != 0){
                                             LogUtil.i("Junwang", "video card is valid");
-//                                            ChatbotIntroduceActivity.start(getContext());
                                             ChatbotVideoNewsDetailsActivity.start(getContext(), cardcontent.getMedia().getMediaUrl(),
                                                     cardcontent.getTitle(), cardcontent.getDescription());
 //                                            ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/seeVideo", params, "utf-8");
@@ -3002,7 +3019,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         if(view != null) {
             TextView dateView = (TextView)view.findViewById(R.id.dateView);
             TextView activity_title = (TextView)view.findViewById(R.id.activity_title);
-//            activity_title.setText(cardcontent.getTitle());
+            activity_title.setText(cardcontent.getTitle());
             ((ImageView)view.findViewById(R.id.title_image)).setImageResource(R.drawable.icon_order);
 
 //            RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(new RoundedCorners(20));//图片圆角为30
@@ -3048,7 +3065,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                                         String result = ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/doAppoint", params, "utf-8");
                                         ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                         if(sr != null){
-                                            if(sr.getData().getIsValid() != 0){
+                                            if(sr.getData() != null && sr.getData().getIsValid() != 0){
                                                 LogUtil.i("Junwang", "subscribe card is valid");
                                             }else{
                                                 LogUtil.i("Junwang", "subscribe card is invalid");
@@ -4470,7 +4487,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             case ACTIVITY_SUB:
                 return loadActivitySubscribeChatbotMessage(R.layout.item_activity_subscribe_card, cc);
             case VOTE:
-                return loadPictureCardChatbotMessage(R.layout.item_chatbot_pic_card, cc);/*loadVoteCardChatbotMessage(R.layout.item_vote_card, cc);*/
+                return /*loadPictureCardChatbotMessage(R.layout.item_chatbot_pic_card, cc);*/loadVoteCardChatbotMessage(R.layout.item_vote_card, cc);
             case VIDEO_NEWS:
                 return loadVideoNewsChatbotMessage(R.layout.item_chatbot_video_news_card,cc);
 //            case PRODUCT_RECOMMEND:

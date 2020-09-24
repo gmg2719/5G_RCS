@@ -39,16 +39,21 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.text.BidiFormatter;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
@@ -57,7 +62,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.ActionMode;
 import android.view.Display;
@@ -186,6 +190,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
     private int mMenuCount;
     private ArrayList<ButtonMenu> mButtonMenu;
     private ChatbotMenuEntity mChatbotMenuEntity;
+    private View customView;
     //add by junwang
     private FloatingActionsMenu fam;
     private RapidFloatingActionLayout rfaLayout;
@@ -648,6 +653,8 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
         mDraftMessageDataModel =
                 BindingBase.createBindingReference(mComposeMessageView.getDraftDataModel());
         mDraftMessageDataModel.getData().addListener(this);
+        customView = ((LayoutInflater)
+                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.actionbar_message_view, null);
     }
 
     public void onAttachmentChoosen() {
@@ -834,6 +841,27 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
         //add by junwang
         conversation_fragment_view = view;
+//        view.setBackground(new Drawable() {
+//            @Override
+//            public void draw(@NonNull Canvas canvas) {
+//
+//            }
+//
+//            @Override
+//            public void setAlpha(int alpha) {
+//
+//            }
+//
+//            @Override
+//            public void setColorFilter(@Nullable ColorFilter colorFilter) {
+//
+//            }
+//
+//            @Override
+//            public int getOpacity() {
+//                return 0;
+//            }
+//        });
         final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setStackFromEnd(true);
         manager.setReverseLayout(false);
@@ -2287,27 +2315,33 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
         final int actionBarColor = ConversationDrawables.get().getActionbarColor();
 //        actionBar.setBackgroundDrawable(new ColorDrawable(actionBarColor));
 
-//        UiUtils.setStatusBarColor(getActivity(), actionBarColor);
-        setStatusBar();
+        UiUtils.setStatusBarColor(getActivity(), actionBarColor);
+//        setStatusBar();
     }
 
     public void updateActionBar(final ActionBar actionBar) {
         LogUtil.i("Junwang", "Conversation Fragment update ActionBar");
         if (mComposeMessageView == null || !mComposeMessageView.updateActionBar(actionBar)) {
+            LogUtil.i("Junwang", "Conversation Fragment update ActionBar1");
 //            actionBar.setDisplayHomeAsUpEnabled(true);
             updateActionAndStatusBarColor(actionBar);
             // We update this regardless of whether or not the action bar is showing so that we
             // don't get a race when it reappears.
-//            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            View customView = ((LayoutInflater)
-                    getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.actionbar_message_view, null);
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            if(customView == null) {
+                customView = ((LayoutInflater)
+                        getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.actionbar_message_view, null);
+            }
 
-//            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setDisplayShowCustomEnabled(true);
 //            actionBar.setDisplayShowTitleEnabled(false);
 //            ActionBar.LayoutParams layoutParams =new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
 //                    ActionBar.LayoutParams.MATCH_PARENT);
             actionBar.setHomeAsUpIndicator(R.drawable.back_normal);
             actionBar.setCustomView(customView/*, layoutParams*/);
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setHomeAsUpIndicator(null);
 //            Toolbar parent =(Toolbar) customView.getParent();
 //            parent.getOverflowIcon().setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
 //            parent.setOverflowIcon(getResources().getDrawable(R.drawable.icon_more));

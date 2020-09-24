@@ -12,24 +12,19 @@
         android:gravity="center_vertical"
         android:paddingRight="8dp"
         />
-    <ImageView
-        android:id="@+id/option_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:gravity="center_vertical"
-        android:src="@drawable/icon_more1"/>
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/actionbar_title"
+        android:layout_toRightOf="@id/actionbar_arrow"
         android:layout_centerInParent="true"
+        android:gravity="center"
         android:textSize="18sp"
         android:text="10086"
         android:ellipsize="end"
         android:textColor="#0D1333"
         android:lines="1"
-        android:maxLength="15"
         android:paddingRight="8dp"
         android:textStyle="bold"/>
 </RelativeLayout>

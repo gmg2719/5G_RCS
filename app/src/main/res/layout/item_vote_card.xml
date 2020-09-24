@@ -50,7 +50,7 @@
                 android:id="@+id/vote_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
                 android:text="投票"
@@ -65,7 +65,7 @@
                 android:textColor="#858898"
                 android:layout_toLeftOf="@id/vote_action"
                 android:layout_alignBaseline="@id/vote_action"
-                android:padding="8dp"
+                android:padding="16dp"
                 android:visibility="gone"/>
         </RelativeLayout>
 
