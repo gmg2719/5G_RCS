@@ -116,4 +116,9 @@
         <!--自定义展开折叠控件与顶部间距-->
         <attr name="tipMarginTop" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="CustomToolbar">
+        <attr name="leftButtonIcon" format="reference"/>
+        <attr name="rightButtonIcon" format="reference"/>
+        <attr name="myTitle" format="string"/>
+    </declare-styleable>
 </resources>

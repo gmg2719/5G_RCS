@@ -3,6 +3,7 @@ package com.android.messaging.ui.conversation.chatbot;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import com.alibaba.fastjson.JSON;
 import com.android.messaging.R;
 import com.android.messaging.datamodel.BugleDatabaseOperations;
 import com.android.messaging.datamodel.ChatbotInfoTableUtils;
+import com.android.messaging.datamodel.media.FileImageRequestDescriptor;
+import com.android.messaging.ui.ContactIconView;
 import com.android.messaging.ui.UIIntentsImpl;
 import com.android.messaging.ui.conversation.chatbot.chatbotconfig.ChatbotConfig;
 import com.android.messaging.util.LogUtil;
@@ -50,6 +53,8 @@ public class ChatbotIntroduceActivity extends AppCompatActivity implements View.
     private String backgroundUrl;
     private ChatbotEntity botEntity;
     private TextView tv_chatbotName;
+//    private ImageView chatbot_logo;
+    private ContactIconView chatbot_logo;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +103,14 @@ public class ChatbotIntroduceActivity extends AppCompatActivity implements View.
                 if (description != null) {
                     tv_introduce.setText(description);
                 }
+//                chatbot_logo = (ImageView)findViewById(R.id.busn_logo);
+//                chatbot_logo.setImageURI(Uri.parse(botEntity.getSms()));
+                LogUtil.i("Junwang", "botEntity.getSms()="+botEntity.getSms());
+                chatbot_logo = (ContactIconView) findViewById(R.id.busn_logo);
+                final Resources resources = this.getResources();
+                int mIconSize = (int) resources.getDimension(
+                        R.dimen.contact_icon_view_large_size);
+                chatbot_logo.setImageResourceId(new FileImageRequestDescriptor(botEntity.getSms(), mIconSize, mIconSize, true));
             }
             tv_chatbotName = (TextView)findViewById(R.id.chatbot_name);
             tv_chatbotName.setText(botEntity.getName());

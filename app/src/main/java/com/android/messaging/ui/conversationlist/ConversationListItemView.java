@@ -541,12 +541,14 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
         }
         //add by junwang end
         //add by junwang for chatbot
-        String chatbotSipUri = mData.getmChatbotSipUri();
+        String chatbotSipUri = mData.getOtherParticipantNormalizedDestination();//mData.getmChatbotSipUri();
         if(chatbotSipUri != null && chatbotSipUri.startsWith("sip:")){
             LogUtil.i("Junwang", "getChatbotLogo="+mData.getmChatbotSms());
             Uri iconUri_temp = null;
             if(mData.getmChatbotSms() != null) {
                 iconUri_temp = Uri.parse(mData.getmChatbotSms());
+//                iconUri_temp = Uri.parse(mData.getH5BusnLogo());
+//                mData.setmIsH5Msg(true);
                 LogUtil.i("Junwang", "mData.getChatbotLogo()="+mData.getmChatbotSms()+", iconUri_temp="+iconUri_temp);
             }
             if(iconUri_temp != null){

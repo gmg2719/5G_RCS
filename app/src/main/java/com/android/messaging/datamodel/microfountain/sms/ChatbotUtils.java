@@ -8,9 +8,11 @@ import android.text.TextUtils;
 import com.android.messaging.util.LogUtil;
 import com.microfountain.rcs.aidl.broadcast.RcsChatbotBroadcast;
 import com.microfountain.rcs.aidl.database.contract.RcsChatbotInfoTable;
+import com.microfountain.rcs.aidl.service.message.DownloadFileRequestParameter;
 import com.microfountain.rcs.rcskit.service.RcsSubscriptionInfo;
 import com.microfountain.rcs.rcskit.service.RcsSubscriptionManager;
 import com.microfountain.rcs.rcskit.service.chatbot.RcsChatbotService;
+import com.microfountain.rcs.rcskit.service.message.RcsMessageService;
 import com.microfountain.rcs.rcskit.service.security.CmccChallengeInfo;
 import com.microfountain.rcs.support.config.RcsServiceConfigXMLHelper;
 import com.microfountain.rcs.support.model.chatbot.ChatbotInfoQueryResult;
@@ -18,6 +20,7 @@ import com.microfountain.rcs.support.model.chatbot.ChatbotInfoQueryResultParser;
 
 import java.net.HttpURLConnection;
 
+import static com.microfountain.rcs.rcskit.service.RcsSubscriptionManager.getEnabledSubscriptionId;
 import static com.microfountain.rcs.rcskit.service.RcsSubscriptionManager.getEnabledSubscriptionInfo;
 
 public class ChatbotUtils {
@@ -35,6 +38,30 @@ public class ChatbotUtils {
         return null;
     }
 
+    public static String getPhoneNumber(){
+        int subscriptionId = getEnabledSubscriptionId();
+        if (subscriptionId > 0) {
+            RcsServiceConfigXMLHelper xmlHelper = ChatbotUtils.getRcsServiceConfigXMLHelper(subscriptionId);
+            if (xmlHelper != null) {
+                String phoneNumber = xmlHelper.getPhoneNumber();
+                LogUtil.i("Junwang", "ChatbotUtils phoneNumber = "+phoneNumber);
+                return phoneNumber;
+            }
+        }
+        return null;
+//        RcsSubscriptionInfo rcsSubscriptionInfo = RcsSubscriptionManager.getRcsSubscriptionInfo(subscriptionId);
+//        if (rcsSubscriptionInfo != null) {
+//            LogUtil.i("Junwang", "getRcsServiceConfigXMLHelper rcsSubscriptionInfo != null");
+//            int serviceConfigVersion = rcsSubscriptionInfo.getServiceConfigVersion();
+//            String rcsApplicationCharacteristicsXML = rcsSubscriptionInfo.getRcsApplicationCharacteristicsXML();
+//            String imsApplicationCharacteristicsXML = rcsSubscriptionInfo.getImsApplicationCharacteristicsXML();
+//            if (serviceConfigVersion > 0 && !TextUtils.isEmpty(rcsApplicationCharacteristicsXML) && !TextUtils.isEmpty(imsApplicationCharacteristicsXML)) {
+//                return RcsServiceConfigXMLHelper.getRcsServiceConfigXMLHelper(subscriptionId, serviceConfigVersion, rcsApplicationCharacteristicsXML, imsApplicationCharacteristicsXML).getPhoneNumber();
+//            }
+//        }
+//        return null;
+    }
+
     public static void requestChatbotInfo(String chatbotSipUri){
         RcsSubscriptionInfo rcsSubscriptionInfo = getEnabledSubscriptionInfo();
 
@@ -48,6 +75,18 @@ public class ChatbotUtils {
 
             LogUtil.e("Junwang", "requestChatbotInfo rcsSubscriptionInfo == null");
         }
+    }
+
+    public static boolean DownloadLogo(String logoUrl, String UriString, String taskIdentifier){
+        LogUtil.i("Junwang", "ChatbotUtils DownloadLogo.");
+        DownloadFileRequestParameter dfrp = new DownloadFileRequestParameter();
+        RcsSubscriptionInfo rcsSubscriptionInfo = getEnabledSubscriptionInfo();
+        dfrp.taskIdentifier = taskIdentifier;
+        dfrp.url = logoUrl;
+        dfrp.isThumb = false;
+        dfrp.subscriptionId = rcsSubscriptionInfo.subscriptionId;
+        dfrp.destinationUriString = UriString;
+        return RcsMessageService.downloadFile(dfrp);
     }
 
     public static String getChatbotDomain(){

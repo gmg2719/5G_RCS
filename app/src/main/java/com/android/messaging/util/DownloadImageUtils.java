@@ -5,6 +5,10 @@ import android.content.Context;
 import android.os.Looper;
 import android.provider.MediaStore;
 
+import com.android.messaging.datamodel.DataModel;
+import com.android.messaging.datamodel.DatabaseHelper;
+import com.android.messaging.datamodel.DatabaseWrapper;
+import com.android.messaging.datamodel.MessagingContentProvider;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.File;
@@ -24,17 +28,22 @@ public class DownloadImageUtils {
      * @param context
      * @param imagePath
      */
-    public static void saveImageToLocal(final Context context, final String imagePath){
+    public static void saveImageToLocal(final Context context, final String imagePath, String chatbotSipUri){
 
             Flowable.create(new FlowableOnSubscribe<File>() {
                 @Override
                 public void subscribe(FlowableEmitter<File> e) throws Exception {
-                    e.onNext(GlideApp.with(context).asFile()
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                            .load(imagePath)
-                            .downloadOnly(200, 200/*Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL*/)
-                            .get());
-                    e.onComplete();
+                    try {
+                        e.onNext(GlideApp.with(context).asFile()
+                                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                                .load(imagePath)
+                                .downloadOnly(200, 200/*Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL*/)
+                                .get());
+                        e.onComplete();
+                    }catch (Exception e1){
+//                        e.onError(e1);
+                        LogUtil.i("Junwang", "download image error imagePath="+imagePath);
+                    }
                 }
             }, BackpressureStrategy.BUFFER)
                     .subscribeOn(io.reactivex.schedulers.Schedulers.io())
@@ -43,17 +52,7 @@ public class DownloadImageUtils {
                         @Override
                         public void accept(File file) {
                             try {
-                                //系统相册目录
-//                            File appDir = new File(Environment.getExternalStorageDirectory()
-//                                    + File.separator + Environment.DIRECTORY_DCIM
-//                                    +File.separator+"Camera"+File.separator);
-//                            if (!appDir.exists()) {
-//                                appDir.mkdirs();
-//                            }
                                 File appDir = context.getFilesDir();
-//                                File appDir = new File(context.getCacheDir(), "mediascratchspace");
-//                            File appDir = context.getCacheDir();
-//                                String fileName = System.currentTimeMillis() + ".jpg";
                                 String fileName = imagePath.substring(imagePath.lastIndexOf("/")+1);
                                 File destFile = new File(appDir, fileName);
                                 if(destFile.exists()){
@@ -75,6 +74,9 @@ public class DownloadImageUtils {
 //                                    values.put(MediaStore.Images.Media.DATA, destFile.getAbsolutePath());
 //                                    context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                                     //Looper.prepare();
+                                    if(chatbotSipUri != null) {
+                                        updateChatbotInfoLogoPath(destFile.getAbsolutePath(), chatbotSipUri);
+                                    }
                                     LogUtil.i("Junwang", destFile+" 保存成功");
                                     //Looper.loop();
                                 } else {
@@ -166,5 +168,16 @@ public class DownloadImageUtils {
                         }
                     });
         }
+    }
+
+    public static void updateChatbotInfoLogoPath(String logoPath, String chatbotSipUri){
+        LogUtil.i("Junwang", "updateChatbotInfoLogoPath logoPath="+logoPath+", chatbotSipUri="+chatbotSipUri);
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_SMS, logoPath);
+        DatabaseWrapper mdbWrapper = DataModel.get().getDatabase();
+        mdbWrapper.update(DatabaseHelper.CHATBOT_INFO_TABLE, cv,
+                DatabaseHelper.ChatbotInfoColumns.CHATBOT_SIP_URI
+                        + " = ?", new String[]{chatbotSipUri});
+        MessagingContentProvider.notifyConversationListChanged();
     }
 }

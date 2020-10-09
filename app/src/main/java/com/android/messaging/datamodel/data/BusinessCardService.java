@@ -289,7 +289,7 @@ public class BusinessCardService extends Service {
 //                    }
                     ContentValues cv = new ContentValues();
                     temp_path = bc.getBusinessLogoPath();
-                    DownloadImageUtils.saveImageToLocal(BusinessCardService.this, temp_path);
+                    DownloadImageUtils.saveImageToLocal(BusinessCardService.this, temp_path, null);
 
                     String tempNumber = bc.getCodeNumber();
                     String addtodbnumber = null;
@@ -464,7 +464,7 @@ public class BusinessCardService extends Service {
 
         ContentValues cv = new ContentValues();
         String temp_path = bc.getBusinessLogoPath();
-        DownloadImageUtils.saveImageToLocal(BusinessCardService.this, temp_path);
+        DownloadImageUtils.saveImageToLocal(BusinessCardService.this, temp_path, null);
 
         String tempNumber = bc.getCodeNumber();
         String addtodbnumber = null;
@@ -516,7 +516,7 @@ public class BusinessCardService extends Service {
 
         ContentValues cv = new ContentValues();
         String temp_path = bc.getBusinessLogoPath();
-        DownloadImageUtils.saveImageToLocal(BusinessCardService.this, temp_path);
+        DownloadImageUtils.saveImageToLocal(BusinessCardService.this, temp_path, null);
 
         String tempNumber = bc.getCodeNumber();
         String addtodbnumber = null;

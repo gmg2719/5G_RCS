@@ -39,21 +39,15 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.text.BidiFormatter;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
@@ -127,6 +121,7 @@ import com.android.messaging.util.SafeAsyncTask;
 import com.android.messaging.util.TextUtil;
 import com.android.messaging.util.UiUtils;
 import com.android.messaging.util.UriUtil;
+import com.bumptech.glide.Glide;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
@@ -191,6 +186,8 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
     private ArrayList<ButtonMenu> mButtonMenu;
     private ChatbotMenuEntity mChatbotMenuEntity;
     private View customView;
+    private ImageView mSwitchButton;
+    private boolean mIsSwitchOnClickListenerSet;
     //add by junwang
     private FloatingActionsMenu fam;
     private RapidFloatingActionLayout rfaLayout;
@@ -328,9 +325,34 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
                             }
                         }
                     }
+                    try {
+                        if(getContext() != null) {
+                            Glide.with(getContext()).resumeRequests();
+                        }
+                    }
+                    catch (Exception e) {
+                        LogUtil.i("Junwang", "glide resumeRequests exception "+e.toString());
+                    }
                     //add by junwang end
                 } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     mRecyclerView.getItemAnimator().endAnimations();
+                    try {
+                        if(getContext() != null) {
+                            Glide.with(getContext()).pauseRequests();
+                        }
+                    }
+                    catch (Exception e) {
+                        LogUtil.i("Junwang", "glide pauseRequests exception "+e.toString());
+                    }
+                }else if(newState == RecyclerView.SCROLL_STATE_SETTLING){
+                    try {
+                        if(getContext() != null) {
+                            Glide.with(getContext()).pauseRequests();
+                        }
+                    }
+                    catch (Exception e) {
+                        LogUtil.i("Junwang", "glide pauseRequests2 exception "+e.toString());
+                    }
                 }
                 mScrollState = newState;
             }
@@ -837,6 +859,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState) {
+        LogUtil.i("Junwang", "ConversationFragment onCreateView");
         final View view = inflater.inflate(R.layout.conversation_fragment, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
         //add by junwang
@@ -1000,85 +1023,10 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
 
         mComposeMessageView = (ComposeMessageView)
                 view.findViewById(R.id.message_compose_view_container);
-        //add by junwang for chatbot menu start
-        String chatbotMenu = ((ConversationActivity)getActivity()).getmChatbotMenu();
-        if(chatbotMenu != null){
-            mChatbotMenuEntity = getChatbotMenuEntity(chatbotMenu);
-            int i= 0;
-            for(;i<mChatbotMenuEntity.getMenu().getEntries().length;i++){
-//                LogUtil.i("Junwang", "menuitem"+i+"="+mChatbotMenuEntity.getMenu().getEntries()[i].getMenu().getDisplayText());
-                i++;
-            }
-            mMenuCount = i;
-        }else{
-            mMenuCount = 0;
-        }
-        if(mChatbotMenuEntity != null){
-            int menuNumber = mChatbotMenuEntity.getMenu().getEntries().length;
-            LogUtil.i("Junwang", "menuNumber="+menuNumber);
-            if(menuNumber > 0){
-                final View mSwitchButton =
-                        (ImageView) mComposeMessageView.findViewById(R.id.switch_button);
-                mSwitchButton.setVisibility(View.VISIBLE);
-                mSwitchButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View clickView) {
-                        closeButtonMenu();
-                        LogUtil.i("junwang", "mAttachMediaButton onClicked.");
-                        ConversationInputManager cim = mComposeMessageView.getInputManager();
-                        if(cim != null){
-                            cim.hideAllInputs(false);
-                        }
-                        LogUtil.i("Junwang", "menuNumber="+menuNumber);
-                        if (menuNumber == 2) {
-                            startMenuSwitchAnimation(mComposeMessageView, mTwoButtonMenu);
-                        } else if (menuNumber == 3) {
-                            LogUtil.i("Junwang", "start switch from compose to menu");
-                            startMenuSwitchAnimation(mComposeMessageView, mThreeButtonMenu);
-                        }
-                    }
-                });
 
-                final View mDivider = (View)mComposeMessageView.findViewById(R.id.button_divider_margin);
-                mDivider.setVisibility(View.VISIBLE);
-
-                if(menuNumber == 2) {
-                    mTwoButtonMenu = (TwoButtonPopupMenuView) view.findViewById(R.id.two_button_menu_container);
-                    final View mTwoBtnSwitchButton = (ImageView) mTwoButtonMenu.findViewById(R.id.switch_to_composemsg);
-                    if(mChatbotMenuEntity != null) {
-                        mTwoButtonMenu.setMenu(mChatbotMenuEntity);
-                    }
-                    mTwoBtnSwitchButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(final View clickView) {
-                            closeButtonMenu();
-                            LogUtil.i("junwang", "mAttachMediaButton onClicked.");
-                            startMenuSwitchAnimation(mTwoButtonMenu, mComposeMessageView);
-                        }
-                    });
-                    mComposeMessageView.setVisibility(View.GONE);
-                    mTwoButtonMenu.setVisibility(View.VISIBLE);
-                }else if(menuNumber == 3) {
-                    mThreeButtonMenu = (ThreeButtonPopupMenuView) view.findViewById(R.id.three_button_menu_container);
-                    final View mThreeBtnSwitchButton = (ImageView) mThreeButtonMenu.findViewById(R.id.switch_to_composemsg);
-                    if(mChatbotMenuEntity != null) {
-                        mThreeButtonMenu.setMenu(mChatbotMenuEntity);
-                    }
-                    mThreeBtnSwitchButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(final View clickView) {
-                            closeButtonMenu();
-                            LogUtil.i("junwang", "mAttachMediaButton onClicked.");
-                            startMenuSwitchAnimation(mThreeButtonMenu, mComposeMessageView);
-                        }
-                    });
-                    mComposeMessageView.setVisibility(View.GONE);
-                    mThreeButtonMenu.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-        //add by junwang for chatbot menu end
-
+        mSwitchButton =
+                (ImageView) mComposeMessageView.findViewById(R.id.switch_button);
+        setSwitchButton();
         //add by junwang start
 
 //        String menuJson = ((ConversationActivity)getActivity()).getMenuJson();
@@ -1280,6 +1228,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
 
     private void selectMessage(final ConversationMessageView messageView,
             final MessagePartData attachment) {
+        LogUtil.i("Junwang", "ConversationFragment selectMessage");
         mSelectedMessage = messageView;
         if (mSelectedMessage == null) {
             mAdapter.setSelectedMessage(null);
@@ -1320,6 +1269,90 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
         }
     }
 
+    public void setSwitchButton(){
+        //add by junwang for chatbot menu start
+        String chatbotMenu = ((ConversationActivity)getActivity()).getmChatbotMenu();
+        if(chatbotMenu != null){
+            mChatbotMenuEntity = getChatbotMenuEntity(chatbotMenu);
+            int i= 0;
+            for(;i<mChatbotMenuEntity.getMenu().getEntries().length;i++){
+//                LogUtil.i("Junwang", "menuitem"+i+"="+mChatbotMenuEntity.getMenu().getEntries()[i].getMenu().getDisplayText());
+                i++;
+            }
+            mMenuCount = i;
+        }else{
+            mMenuCount = 0;
+        }
+//        mSwitchButton =
+//                (ImageView) mComposeMessageView.findViewById(R.id.switch_button);
+        if(mChatbotMenuEntity != null){
+            int menuNumber = mChatbotMenuEntity.getMenu().getEntries().length;
+            LogUtil.i("Junwang", "menuNumber="+menuNumber);
+            if(menuNumber > 0){
+                mSwitchButton.setVisibility(View.VISIBLE);
+                if(!mIsSwitchOnClickListenerSet) {
+                    mIsSwitchOnClickListenerSet = true;
+                    mSwitchButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View clickView) {
+                            closeButtonMenu();
+                            LogUtil.i("junwang", "mAttachMediaButton onClicked.");
+                            ConversationInputManager cim = mComposeMessageView.getInputManager();
+                            if (cim != null) {
+                                cim.hideAllInputs(false);
+                            }
+                            LogUtil.i("Junwang", "menuNumber=" + menuNumber);
+                            if (menuNumber == 2) {
+                                startMenuSwitchAnimation(mComposeMessageView, mTwoButtonMenu);
+                            } else if (menuNumber == 3) {
+                                LogUtil.i("Junwang", "start switch from compose to menu");
+                                startMenuSwitchAnimation(mComposeMessageView, mThreeButtonMenu);
+                            }
+                        }
+                    });
+
+                    final View mDivider = (View) mComposeMessageView.findViewById(R.id.button_divider_margin);
+                    mDivider.setVisibility(View.VISIBLE);
+
+                    if (menuNumber == 2) {
+                        mTwoButtonMenu = (TwoButtonPopupMenuView) conversation_fragment_view.findViewById(R.id.two_button_menu_container);
+                        final View mTwoBtnSwitchButton = (ImageView) mTwoButtonMenu.findViewById(R.id.switch_to_composemsg);
+                        if (mChatbotMenuEntity != null) {
+                            mTwoButtonMenu.setMenu(mChatbotMenuEntity);
+                        }
+                        mTwoBtnSwitchButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(final View clickView) {
+                                closeButtonMenu();
+                                LogUtil.i("junwang", "mAttachMediaButton onClicked.");
+                                startMenuSwitchAnimation(mTwoButtonMenu, mComposeMessageView);
+                            }
+                        });
+                        mComposeMessageView.setVisibility(View.GONE);
+                        mTwoButtonMenu.setVisibility(View.VISIBLE);
+                    } else if (menuNumber == 3) {
+                        mThreeButtonMenu = (ThreeButtonPopupMenuView) conversation_fragment_view.findViewById(R.id.three_button_menu_container);
+                        final View mThreeBtnSwitchButton = (ImageView) mThreeButtonMenu.findViewById(R.id.switch_to_composemsg);
+                        if (mChatbotMenuEntity != null) {
+                            mThreeButtonMenu.setMenu(mChatbotMenuEntity);
+                        }
+                        mThreeBtnSwitchButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(final View clickView) {
+                                closeButtonMenu();
+                                LogUtil.i("junwang", "mAttachMediaButton onClicked.");
+                                startMenuSwitchAnimation(mThreeButtonMenu, mComposeMessageView);
+                            }
+                        });
+                        mComposeMessageView.setVisibility(View.GONE);
+                        mThreeButtonMenu.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+        //add by junwang for chatbot menu end
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -1350,6 +1383,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
                 mConversationSelfIdChangeReceiver,
                 new IntentFilter(UIIntents.CONVERSATION_SELF_ID_CHANGE_BROADCAST_ACTION));
+
     }
 
     void setConversationFocus() {
@@ -2323,6 +2357,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
         LogUtil.i("Junwang", "Conversation Fragment update ActionBar");
         if (mComposeMessageView == null || !mComposeMessageView.updateActionBar(actionBar)) {
             LogUtil.i("Junwang", "Conversation Fragment update ActionBar1");
+            setSwitchButton();
 //            actionBar.setDisplayHomeAsUpEnabled(true);
             updateActionAndStatusBarColor(actionBar);
             // We update this regardless of whether or not the action bar is showing so that we

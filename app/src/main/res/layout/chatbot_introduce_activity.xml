@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/google_gray"
     android:id="@+id/introduce_layout"
     android:fitsSystemWindows="false">
@@ -35,12 +36,15 @@
                 android:layout_height="wrap_content"
                 android:padding="12dp"
                 android:orientation="horizontal">
-                <ImageView
+                <com.android.messaging.ui.ContactIconView
                     android:id="@+id/busn_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:src="@drawable/image_qianjiang"/>
+                    android:layout_width="@dimen/conversation_list_contact_icon_size"
+                    android:layout_height="@dimen/conversation_list_contact_icon_size"
+                    android:layout_marginLeft="10dp"
+                    android:importantForAccessibility="no"
+                    android:contentDescription="@null"
+                    app:iconSize="large"
+                    android:background="@android:color/transparent" />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -57,7 +61,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/icon_selected"/>
+                        android:src="@drawable/icon_chatbot_category"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -119,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:src="@drawable/ic_send_dark"
+                    android:src="@drawable/icon_enter_chatbot"
                     android:background="?android:attr/selectableItemBackground"
                     android:layout_alignParentRight="true"/>
                 <ImageView
@@ -128,7 +132,7 @@
                     android:layout_height="match_parent"
                     android:layout_toLeftOf="@id/goto_icon"
                     android:paddingRight="16dp"
-                    android:src="@drawable/ic_person_add_dark"
+                    android:src="@drawable/icon_chatbot_qrcode"
                     android:layout_alignBottom="@id/goto_icon"/>
             </RelativeLayout>
         </LinearLayout>

@@ -178,7 +178,10 @@ public class ContactIconView extends AsyncImageView {
 //                }else {
 //                    //add by junwang end
 //                    setImageResourceId(new AvatarRequestDescriptor(uri, mIconSize, mIconSize));
-                if(!mIsH5Contact) {
+                if(normalizedDestination != null){
+                    LogUtil.i("Junwang", "ContactIconView normalizedDestination="+normalizedDestination);
+                }
+                if(!mIsH5Contact && normalizedDestination != null && !normalizedDestination.startsWith("sip")) {
                     setImageResourceId(new AvatarRequestDescriptor(uri, mIconSize, mIconSize));
                 }else {
                     if(uri != null && uri.toString().startsWith("/data")) {

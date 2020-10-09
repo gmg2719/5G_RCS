@@ -44,16 +44,29 @@ public class ChatbotInfoTableUtils {
             cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_SMS, logoSavedPath);
 
             DatabaseWrapper mdbWrapper = DataModel.get().getDatabase();
-            mdbWrapper.insert(DatabaseHelper.CHATBOT_INFO_TABLE, null, cv);
             ChatbotInfoQueryResult chatbotInfoQueryResult = ChatbotInfoQueryResultParser.parse(jsonData);
             if(chatbotInfoQueryResult != null && chatbotInfoQueryResult.persistentMenu != null){
                 cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_MENU, chatbotInfoQueryResult.persistentMenu.toString());
+                mdbWrapper.insert(DatabaseHelper.CHATBOT_INFO_TABLE, null, cv);
+
             }else{
+                mdbWrapper.insert(DatabaseHelper.CHATBOT_INFO_TABLE, null, cv);
                 //get chatbot menu from our web server
                 getChatbotMenuFromServer();
             }
             MessagingContentProvider.notifyConversationListChanged();
         }
+    }
+
+    public static void updateChatbotInfoLogoPath(String logoPath, String chatbotSipUri){
+        LogUtil.i("Junwang", "updateChatbotInfoLogoPath logoPath="+logoPath+", chatbotSipUri="+chatbotSipUri);
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_SMS, logoPath);
+        DatabaseWrapper mdbWrapper = DataModel.get().getDatabase();
+        mdbWrapper.update(DatabaseHelper.CHATBOT_INFO_TABLE, cv,
+                DatabaseHelper.ChatbotInfoColumns.CHATBOT_SIP_URI
+                        + " = ?", new String[]{chatbotSipUri});
+        MessagingContentProvider.notifyConversationListChanged();
     }
 
     public static void updateChatbotInfoTable(Cursor cursor){
@@ -65,7 +78,7 @@ public class ChatbotInfoTableUtils {
 //            String jsonData = cursor.getString(cursor.getColumnIndex(RcsChatbotInfoTable.Columns.JSON_DATA));
             byte[] jsonData = cursor.getBlob(cursor.getColumnIndex(RcsChatbotInfoTable.Columns.JSON_DATA));
             String name = cursor.getString(cursor.getColumnIndex(RcsChatbotInfoTable.ExtendedColumns.NAME));
-            String sms = cursor.getString(cursor.getColumnIndex(RcsChatbotInfoTable.ExtendedColumns.SMS));
+//            String sms = cursor.getString(cursor.getColumnIndex(RcsChatbotInfoTable.ExtendedColumns.SMS));
 
             ContentValues cv = new ContentValues();
 
@@ -75,19 +88,21 @@ public class ChatbotInfoTableUtils {
             cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_ETAG, etag);
             cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_JSON, new String(jsonData));
             cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_NAME, name);
-            cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_SMS, sms);
+//            cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_SMS, sms);
 
             DatabaseWrapper mdbWrapper = DataModel.get().getDatabase();
-
-            mdbWrapper.update(DatabaseHelper.CHATBOT_INFO_TABLE, cv,
-//                    DatabaseHelper.ConversationColumns.OTHER_PARTICIPANT_NORMALIZED_DESTINATION
-                    DatabaseHelper.ChatbotInfoColumns.CHATBOT_SIP_URI
-                            + " = ?", new String[]{chatbotSipUri});
 
             ChatbotInfoQueryResult chatbotInfoQueryResult = ChatbotInfoQueryResultParser.parse(jsonData);
             if(chatbotInfoQueryResult != null && chatbotInfoQueryResult.persistentMenu != null){
                 cv.put(DatabaseHelper.ChatbotInfoColumns.CHATBOT_MENU, chatbotInfoQueryResult.persistentMenu.toString());
+                mdbWrapper.update(DatabaseHelper.CHATBOT_INFO_TABLE, cv,
+                        DatabaseHelper.ChatbotInfoColumns.CHATBOT_SIP_URI
+                                + " = ?", new String[]{chatbotSipUri});
             }else{
+                mdbWrapper.update(DatabaseHelper.CHATBOT_INFO_TABLE, cv,
+//                    DatabaseHelper.ConversationColumns.OTHER_PARTICIPANT_NORMALIZED_DESTINATION
+                        DatabaseHelper.ChatbotInfoColumns.CHATBOT_SIP_URI
+                                + " = ?", new String[]{chatbotSipUri});
                 //get chatbot menu from our web server
                 getChatbotMenuFromServer();
             }

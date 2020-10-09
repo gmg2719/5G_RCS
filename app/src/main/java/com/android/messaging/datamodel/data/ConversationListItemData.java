@@ -235,6 +235,11 @@ public class ConversationListItemData {
     public boolean isH5Msg(){
         return mIsH5Msg;
     }
+
+    public void setmIsH5Msg(boolean mIsH5Msg) {
+        this.mIsH5Msg = mIsH5Msg;
+    }
+
     public String getH5CodeNumber(){
         return mH5CodeNumber;
     }
