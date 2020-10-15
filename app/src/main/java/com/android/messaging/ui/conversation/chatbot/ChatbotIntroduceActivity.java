@@ -185,7 +185,10 @@ public class ChatbotIntroduceActivity extends AppCompatActivity implements View.
                 case 2:
                     String conversationId = (String)msg.obj;
                     LogUtil.i("Junwang", "conversationId="+conversationId);
-                    Intent intent = UIIntentsImpl.getConversationActivityIntent(ChatbotIntroduceActivity.this, conversationId, null, false);
+//                    Intent intent = UIIntentsImpl.getConversationActivityIntent(ChatbotIntroduceActivity.this, conversationId, null, false);
+                    Intent intent = UIIntentsImpl.getConversationActivityWithH5MsgInfoIntent(ChatbotIntroduceActivity.this, conversationId, null, false,
+                            0, null, null, null, null, 0,
+                            null, null, null, null, botEntity.getMenu());
                     startActivity(intent);
                     break;
                 default:
