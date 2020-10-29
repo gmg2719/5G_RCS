@@ -46,8 +46,13 @@ import com.android.messaging.datamodel.data.MessageData;
 import com.android.messaging.datamodel.data.MessagePartData;
 import com.android.messaging.datamodel.data.ParticipantData;
 import com.android.messaging.datamodel.media.VideoThumbnailRequest;
+import com.android.messaging.datamodel.microfountain.sms.RcsContant;
 import com.android.messaging.sms.MmsUtils;
 import com.android.messaging.ui.UIIntents;
+import com.android.messaging.ui.chatbotservice.CardContent;
+import com.android.messaging.ui.chatbotservice.ChatbotCard;
+import com.android.messaging.ui.chatbotservice.ChatbotMultiCard;
+import com.android.messaging.ui.chatbotservice.GeneralPurposeCardCarousel;
 import com.android.messaging.util.Assert;
 import com.android.messaging.util.AvatarUriUtil;
 import com.android.messaging.util.BugleGservices;
@@ -58,6 +63,7 @@ import com.android.messaging.util.LogUtil;
 import com.android.messaging.util.PendingIntentConstants;
 import com.android.messaging.util.UriUtil;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -389,6 +395,7 @@ public abstract class MessageNotificationState extends NotificationState {
         public int getIcon() {
             return R.drawable.ic_sms_multi_light;
         }
+
 
         @Override
         protected NotificationCompat.Style build(final Builder builder) {
@@ -812,6 +819,57 @@ public abstract class MessageNotificationState extends NotificationState {
         }
     }
 
+    private static String getSnippetTextFromMultiCard(String text){
+        try {
+            ChatbotMultiCard cbc = new Gson().fromJson(text, ChatbotMultiCard.class);
+            GeneralPurposeCardCarousel gpcc = cbc.getMessage().getGeneralPurposeCardCarousel();
+            String title = null;
+            if(gpcc != null) {
+                CardContent[] cardcontents = gpcc.getContent();
+                if((cardcontents != null) && (cardcontents.length>0)){
+//                    mChatbotMediaUrl = cardcontents[0].getMedia().getThumbnailUrl();
+                    return "[商品推荐]" + cardcontents[0].getTitle();
+                }else{
+//                    mChatbotMediaUrl = null;
+                }
+            }
+        }catch (Exception e){
+            LogUtil.i("Junwang", "parse multicard chatbot message exception "+e.toString());
+            return null;
+        }
+        return null;
+    }
+
+    private static String getSnippetTextFromSingleCard(String text){
+        try {
+            ChatbotCard cbc = new Gson().fromJson(text, ChatbotCard.class);
+            CardContent cc = cbc.getMessage().getGeneralPurposeCard().getContent();
+            if(cc != null){
+                LogUtil.i("Junwang", "load cardType "+cc.getCardType()+" chatbot view");
+//                mChatbotMediaUrl = cc.getMedia().getMediaUrl();
+                switch (RcsContant.CardType.valueOf(cc.getCardType())){
+                    case ACTIVITY_SUB:
+                        return "[活动预约]"+cc.getTitle();
+                    case VOTE:
+                        return "[参与投票]"+cc.getTitle();
+                    case VIDEO_NEWS:
+//                        mChatbotMediaUrl = cc.getMedia().getThumbnailUrl();
+                        return "[视频快讯]"+cc.getTitle();
+                    case SUB_ACTIVITY_START:
+                        return "[预约开始]"+cc.getTitle();
+                    case PRODUCT_ORDER:
+                        return "[下单成功]"+cc.getTitle();
+                    default:
+                        return null;
+                }
+            }
+        }catch (Exception e){
+            LogUtil.i("Junwang", "parse chatbot json exception "+e.toString());
+            return null;
+        }
+        return null;
+    }
+
     /**
      * Performs a query on the database.
      */
@@ -849,7 +907,25 @@ public abstract class MessageNotificationState extends NotificationState {
                     // First figure out if this is a valid message.
                     String authorFullName = convMessageData.getSenderFullName();
                     String authorFirstName = convMessageData.getSenderFirstName();
-                    final String messageText = convMessageData.getText();
+                    /*final*/ String messageText = convMessageData.getText();
+                    //add by junwang start
+                    LogUtil.i("Junwang", "notification text is " + messageText);
+                    if(messageText.startsWith("{")){
+                        if(messageText.indexOf("generalPurposeCardCarousel") != -1) {
+                            LogUtil.i("Junwang", "multi card chatbot message");
+                            String temp = getSnippetTextFromMultiCard(messageText);
+                            if(temp != null){
+                                messageText = temp;
+                            }
+                        }else if(messageText.indexOf("generalPurposeCard") != -1){
+                            LogUtil.i("Junwang", "single card chatbot message");
+                            String temp = getSnippetTextFromSingleCard(messageText);
+                            if(temp != null){
+                                messageText = temp;
+                            }
+                        }
+                    }
+                    //add by junwang end
 
                     final String convId = convMessageData.getConversationId();
                     final String messageId = convMessageData.getMessageId();

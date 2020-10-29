@@ -2518,9 +2518,9 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             Glide.with(this).load(/*cardContent.getMedia().getThumbnailUrl()*/
 //                                        "http://vsms-material.eos-hunan-1.cmecloud.cn/vsms_api/2/5e41089ac63f0.jpg"
 //                                        "/sdcard/DCIM/Camera/WechatIMG238.jpeg"
-//                                        "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
+                                        "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
 //                                        "https://img-blog.csdnimg.cn/20200908155036276.jpg"
-                                            "https://img-blog.csdnimg.cn/20200917181548665.png"
+//                                            "https://img-blog.csdnimg.cn/20200917181548665.png"
 //                                          "/sdcard/DCIM/Camera/qrcode.jpg"
                                         )
                     .transform(new RoundedCornerFitCenter(30))
@@ -2533,8 +2533,8 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     ImagePreview.getInstance().setContext(getContext())
                             .setImage(
 //                                    "https://img-blog.csdnimg.cn/20200908155036276.jpg"
-                                    "https://img-blog.csdnimg.cn/20200917181548665.png"
-//                                    "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
+//                                    "https://img-blog.csdnimg.cn/20200917181548665.png"
+                                    "https://img-blog.csdnimg.cn/20200907142854223.jpeg"
                                     /*"/sdcard/DCIM/Camera/qrcode.jpg"*/)
                             .setZoomTransitionDuration(300)
                             .setShowCloseButton(true)
@@ -2652,9 +2652,14 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             }
         }
         voteView.initVote(voteData);
-        if(mData.getIsChatbotVoted()){
+        if(mData.getmChatbotCardInvalid()){
+            tvVoteTitle.setText(cardcontent.getTitle());
+            tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
+            tvVoteAction.setText("已失效");
+//            tvRefresh.setVisibility(View.VISIBLE);
+        }else if(mData.getIsChatbotVoted()){
             voteView.setAnimationRate(600);
-//            tvVoteTitle.setText(cardcontent.getTitle());
+            tvVoteTitle.setText(cardcontent.getTitle());
 //            tvVoteDescription.setText(cardcontent.getDescription());
             tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
             tvVoteAction.setText("已投票");
@@ -2718,7 +2723,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         }else{
             voteView.setAnimationRate(600);
             tvVoteTitle.setText(cardcontent.getTitle());
-            tvVoteDescription.setText(cardcontent.getDescription());
+//            tvVoteDescription.setText(cardcontent.getDescription());
 
             tvVoteAction.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2727,31 +2732,47 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     if(mData.getmChatbotCardInvalid() ){
                         LogUtil.i("Junwang", "Card is invalid.");
                         popupCardInvalidPrompt();
+                        return;
                     }else{
                         if(voteView.selectView != null) {
                             voteView.notifyUpdateChildren(voteView.selectView, true, false);
-                            tvRefresh.setVisibility(View.VISIBLE);
-                            tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
-                            tvVoteAction.setText("已投票");
-                            mData.setmChatbotVoteStatus(true);
-                            BugleNotifications.markMessageAsVotedStatus(mData.getmChatbotRcsdbMsgId(), voteView.selectedItemPosition);
+//                            tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
+//                            mData.setmChatbotVoteStatus(true);
+//                            BugleNotifications.markMessageAsVotedStatus(mData.getmChatbotRcsdbMsgId(), voteView.selectedItemPosition);
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
+                                        int voteItemNumber = voteView.selectedItemPosition + 1;
+                                        LogUtil.i("Junwang", "post vote item is "+voteItemNumber);
                                         String result = postVoteRequest("http://testxhs.supermms.cn/api/sms5g/my/clickVote", mData.getmChatbotRcsdbMsgId(), voteView.selectedItemPosition + 1, true);
                                         ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                         if(sr != null){
-                                            if(sr.getData().getIsValid() != 0){
+                                            if(sr.getData() != null && sr.getData().getIsValid() != 0){
+                                                getActivityFromView(mH5_content).runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+//                                                        voteView.notifyUpdateChildren(voteView.selectView, true, false);
+                                                        tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
+                                                        mData.setmChatbotVoteStatus(true);
+                                                        BugleNotifications.markMessageAsVotedStatus(mData.getmChatbotRcsdbMsgId(), voteView.selectedItemPosition);
+                                                        tvVoteAction.setText("已投票");
+                                                        tvRefresh.setVisibility(View.VISIBLE);
+                                                    }
+                                                });
                                                 LogUtil.i("Junwang", "vote card is valid");
                                             }else{
+                                                mData.setmChatbotCardInvalid(true);
                                                 ChatbotInfoTableUtils.updateChatbotCardInvalidStatus(mData.getmChatbotRcsdbMsgId());
                                                 getActivityFromView(mH5_content).runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
+                                                        tvVoteAction.setText("已失效");
+                                                        tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
                                                         Toast.makeText(getContext(), "消息已失效，已停止访问改内容", Toast.LENGTH_LONG).show();
                                                     }
                                                 });
+                                                return;
                                             }
                                         }
                                     }catch (Exception e){
@@ -2811,7 +2832,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         View view = layoutInflater.inflate(resource, null);
         if(view != null) {
             TextView activity_title = (TextView)view.findViewById(R.id.activity_title);
-//            activity_title.setText(cardcontent.getTitle());
+            activity_title.setText(cardcontent.getTitle());
 
             Glide.with(this).load(cardcontent.getMedia().getMediaUrl())
                     .centerCrop()
@@ -2822,6 +2843,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 @Override
                 public void onClick(View v) {
                     closeButtonMenu();
+                    WebViewNewsActivity.start(getContext(), cardcontent.getExtraData1(), cardcontent.getDescription());
                 }
             });
             setTimeText(view);
@@ -2925,6 +2947,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                                 try {
                                     Map<String, String> params = new HashMap<>();
                                     params.put("msgId", mData.getmChatbotRcsdbMsgId());
+                                    LogUtil.i("Junwang", "post video card msgid="+mData.getmChatbotRcsdbMsgId());
                                     String result = ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/seeVideo", params, "utf-8");
                                     ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                     if(sr != null){
@@ -3043,14 +3066,19 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                 }
             });
             setTimeText(view);
-            if(mData.getIsChatbotSubscribed()){
+            if(mData.getmChatbotCardInvalid()){
+                TextView tv = mH5_content.getChildAt(0).findViewById(R.id.action_button);
+                tv.setText("已失效");
+                tv.setTextColor(Color.parseColor("#858898"));
+                tv.setBackgroundResource(R.drawable.border_textview_gray);
+            }
+            else if(mData.getIsChatbotSubscribed()){
                 updateSubscribeButton();
             }else {
                 ((TextView) view.findViewById(R.id.action_button)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         closeButtonMenu();
-                        updateSubscribeButton();
                         BugleNotifications.markMessageAsSubscribedStatus(mData.getmChatbotRcsdbMsgId());
                         if(mData.getmChatbotCardInvalid()){
                             LogUtil.i("Junwang", "Card is invalid.");
@@ -3066,13 +3094,24 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                                         ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                         if(sr != null){
                                             if(sr.getData() != null && sr.getData().getIsValid() != 0){
-                                                LogUtil.i("Junwang", "subscribe card is valid");
+                                                getActivityFromView(mH5_content).runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        TextView tv = mH5_content.getChildAt(0).findViewById(R.id.action_button);
+                                                        updateSubscribeButton();
+                                                        LogUtil.i("Junwang", "subscribe card is valid");
+                                                    }
+                                                });
                                             }else{
                                                 LogUtil.i("Junwang", "subscribe card is invalid");
                                                 ChatbotInfoTableUtils.updateChatbotCardInvalidStatus(mData.getmChatbotRcsdbMsgId());
                                                 getActivityFromView(mH5_content).runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
+                                                        TextView tv = mH5_content.getChildAt(0).findViewById(R.id.action_button);
+                                                        tv.setText("已失效");
+                                                        tv.setTextColor(Color.parseColor("#858898"));
+                                                        tv.setBackgroundResource(R.drawable.border_textview_gray);
                                                         Toast.makeText(getContext(), "消息已失效，已停止访问改内容", Toast.LENGTH_LONG).show();
                                                     }
                                                 });
@@ -4487,7 +4526,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             case ACTIVITY_SUB:
                 return loadActivitySubscribeChatbotMessage(R.layout.item_activity_subscribe_card, cc);
             case VOTE:
-                return /*loadPictureCardChatbotMessage(R.layout.item_chatbot_pic_card, cc);*/loadVoteCardChatbotMessage(R.layout.item_vote_card, cc);
+                return loadVoteCardChatbotMessage(R.layout.item_vote_card, cc);//loadPictureCardChatbotMessage(R.layout.item_chatbot_pic_card, cc);
             case VIDEO_NEWS:
                 return loadVideoNewsChatbotMessage(R.layout.item_chatbot_video_news_card,cc);
 //            case PRODUCT_RECOMMEND:

@@ -160,9 +160,9 @@ public class BaseInvokeChatbotInfo {
                     if(chatbotNumber != null) {
                         String uriString = MessagingContentProvider.CHATBOT_LOGOS_URI.toString();
                         LogUtil.i("Junwang", "download logo uriString="+uriString);
-                        if(ChatbotUtils.DownloadLogo(iconUrl, /*MessagingContentProvider.buildChatbotLogosUri(chatbotNumber)*/uriString, chatbotNumber + "Logo")){
-                            LogUtil.i("Junwang", "download chatbot logo from Maap url "+iconUrl);
-                        }else
+//                        if(ChatbotUtils.DownloadLogo(iconUrl, /*MessagingContentProvider.buildChatbotLogosUri(chatbotNumber)*/uriString, chatbotNumber + "Logo")){
+//                            LogUtil.i("Junwang", "download chatbot logo from Maap url "+iconUrl);
+//                        }else
                         {
                             DownloadImageUtils.saveImageToLocal(mContext, /*iconUrl*//*"https://sms-agent.oss-cn-hangzhou.aliyuncs.com/h5/favicon.ico"*/"https://img-blog.csdnimg.cn/2020093014454740.png", chatbotSipUri);
 //                            mLogoSavedPath = mContext.getFilesDir() + "/" + iconUrl.substring(iconUrl.lastIndexOf("/") + 1);

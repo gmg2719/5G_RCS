@@ -58,6 +58,7 @@ public class ChatbotFavoriteTableUtils {
             }
             //删除最后一个字符&，多了一个;主体设置完毕
             buffer.deleteCharAt(buffer.length() - 1);
+            LogUtil.i("Junwang", "post video card buffer="+buffer);
             //建立连接
             URL url = new URL(requesturl);
             HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();

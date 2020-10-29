@@ -801,8 +801,8 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
                     case VIDEO_NEWS:
                         mChatbotMediaUrl = cc.getMedia().getThumbnailUrl();
                         return "[视频快讯]"+cc.getTitle();
-//                    case SUB_ACTIVITY_START:
-//                        return "[预约开始]"+cc.getTitle();
+                    case SUB_ACTIVITY_START:
+                        return "[预约开始]"+cc.getTitle();
                     case PRODUCT_ORDER:
                         return "[下单成功]"+cc.getTitle();
                     default:
