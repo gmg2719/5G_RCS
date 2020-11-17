@@ -168,7 +168,7 @@ public class ChatbotMsgParseUtils {
                                     if (sr != null) {
                                         if (sr.getData().getIsValid() != 0) {
                                             LogUtil.i("Junwang", "product recommend card is valid");
-                                            WebViewNewsActivity.start(activity, lists.get(position).getExtraData1());
+                                            WebViewNewsActivity.start(activity, lists.get(position).getExtraData1(), lists.get(position).getTitle());
                                         } else {
                                             ChatbotInfoTableUtils.updateChatbotCardInvalidStatus(cmd.getmChatbotRcsdbMsgId());
                                             activity.runOnUiThread(new Runnable() {
@@ -320,7 +320,7 @@ public class ChatbotMsgParseUtils {
                                     String result = ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/seeVideo", params, "utf-8");
                                     ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                     if(sr != null){
-                                        if(sr.getData().getIsValid() != 0){
+                                        if(sr.getData() != null && sr.getData().getIsValid() != 0){
                                             LogUtil.i("Junwang", "video card is valid");
                                             ChatbotVideoNewsDetailsActivity.start(activity, cardcontent.getMedia().getMediaUrl(),
                                                     cardcontent.getTitle(), cardcontent.getDescription());
@@ -487,9 +487,14 @@ public class ChatbotMsgParseUtils {
                 }).start();
             }
         });
-        if(cmd.getIsChatbotVoted()){
+        if(cmd.getmChatbotCardInvalid()){
+            tvVoteTitle.setText(cardcontent.getTitle());
+            tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
+            tvVoteAction.setText("已失效");
+//            tvRefresh.setVisibility(View.VISIBLE);
+        }else if(cmd.getIsChatbotVoted()){
             voteView.setAnimationRate(600);
-//            tvVoteTitle.setText(cardcontent.getTitle());
+            tvVoteTitle.setText(cardcontent.getTitle());
 //            tvVoteDescription.setText(cardcontent.getDescription());
             tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
             tvVoteAction.setText("已投票");
@@ -515,7 +520,7 @@ public class ChatbotMsgParseUtils {
         }else{
             voteView.setAnimationRate(600);
             tvVoteTitle.setText(cardcontent.getTitle());
-            tvVoteDescription.setText(cardcontent.getDescription());
+//            tvVoteDescription.setText(cardcontent.getDescription());
 
             tvVoteAction.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -530,13 +535,13 @@ public class ChatbotMsgParseUtils {
                                 return;
                             }
                             voteView.notifyUpdateChildren(voteView.selectView, true, false);
-                            tvRefresh.setVisibility(View.VISIBLE);
-                            tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
-                            tvVoteAction.setText("已投票");
-
-                            BugleNotifications.markMessageAsVotedStatus(cmd.getmChatbotRcsdbMsgId(), voteView.selectedItemPosition);
-                            cmd.setmChatbotVoteStatus(true);
-                            cmd.setmChatbotVotedItemPosition(voteView.selectedItemPosition);
+//                            tvRefresh.setVisibility(View.VISIBLE);
+//                            tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
+//                            tvVoteAction.setText("已投票");
+//
+//                            BugleNotifications.markMessageAsVotedStatus(cmd.getmChatbotRcsdbMsgId(), voteView.selectedItemPosition);
+//                            cmd.setmChatbotVoteStatus(true);
+//                            cmd.setmChatbotVotedItemPosition(voteView.selectedItemPosition);
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -544,16 +549,31 @@ public class ChatbotMsgParseUtils {
                                         String result = postVoteRequest("http://testxhs.supermms.cn/api/sms5g/my/clickVote", cmd.getmChatbotRcsdbMsgId(), voteView.selectedItemPosition + 1, true);
                                         ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                         if(sr != null){
-                                            if(sr.getData().getIsValid() != 0){
+                                            if(sr.getData() != null && sr.getData().getIsValid() != 0){
+                                                activity.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+//                                                        voteView.notifyUpdateChildren(voteView.selectView, true, false);
+                                                        tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
+                                                        cmd.setmChatbotVoteStatus(true);
+                                                        cmd.setmChatbotVotedItemPosition(voteView.selectedItemPosition);
+                                                        BugleNotifications.markMessageAsVotedStatus(cmd.getmChatbotRcsdbMsgId(), voteView.selectedItemPosition);
+                                                        tvVoteAction.setText("已投票");
+                                                        tvRefresh.setVisibility(View.VISIBLE);
+                                                    }
+                                                });
                                                 LogUtil.i("Junwang", "vote card is valid");
                                             }else{
                                                 ChatbotInfoTableUtils.updateChatbotCardInvalidStatus(cmd.getmChatbotRcsdbMsgId());
                                                 activity.runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
+                                                        tvVoteAction.setText("已失效");
+                                                        tvVoteAction.setBackgroundResource(R.drawable.border_textview_gray);
                                                         Toast.makeText(activity, "消息已失效，已停止访问改内容", Toast.LENGTH_LONG).show();
                                                     }
                                                 });
+                                                return;
                                             }
                                         }
                                     }catch (Exception e){
@@ -758,7 +778,7 @@ public class ChatbotMsgParseUtils {
         if(view != null) {
             TextView dateView = (TextView)view.findViewById(R.id.dateView);
             TextView activity_title = (TextView)view.findViewById(R.id.activity_title);
-//            activity_title.setText(cardcontent.getTitle());
+            activity_title.setText(cardcontent.getTitle());
             ((ImageView)view.findViewById(R.id.title_image)).setImageResource(R.drawable.icon_order);
 
 //            RequestOptions options = new RequestOptions().error(R.drawable.msg_bubble_error).bitmapTransform(new RoundedCorners(20));//图片圆角为30
@@ -775,13 +795,18 @@ public class ChatbotMsgParseUtils {
             loadMoreAction(view, cardcontent, activity, cmd);
             contentParent.removeAllViews();
             contentParent.addView(view);
-            if(cmd.getIsChatbotSubscribed()){
+            if(cmd.getmChatbotCardInvalid()){
+                TextView tv = (TextView)view.findViewById(R.id.action_button);
+                tv.setText("已失效");
+                tv.setTextColor(Color.parseColor("#858898"));
+                tv.setBackgroundResource(R.drawable.border_textview_gray);
+            }
+            else if(cmd.getIsChatbotSubscribed()){
                 updateSubscribeButton(contentParent);
             }else {
                 ((TextView)view.findViewById(R.id.action_button)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        updateSubscribeButton(contentParent);
                         BugleNotifications.markMessageAsSubscribedStatus(cmd.getmChatbotRcsdbMsgId());
                         if(cmd.getmChatbotCardInvalid()){
                             LogUtil.i("Junwang", "Card is invalid.");
@@ -796,7 +821,13 @@ public class ChatbotMsgParseUtils {
                                         String result = ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/doAppoint", params, "utf-8");
                                         ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                         if(sr != null){
-                                            if(sr.getData().getIsValid() != 0){
+                                            if(sr.getData() != null && sr.getData().getIsValid() != 0){
+                                                activity.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        updateSubscribeButton(contentParent);
+                                                    }
+                                                });
                                                 LogUtil.i("Junwang", "subscribe card is valid");
                                             }else{
                                                 LogUtil.i("Junwang", "subscribe card is invalid");
@@ -804,6 +835,10 @@ public class ChatbotMsgParseUtils {
                                                 activity.runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
+                                                        TextView tv = (TextView)view.findViewById(R.id.action_button);
+                                                        tv.setText("已失效");
+                                                        tv.setTextColor(Color.parseColor("#858898"));
+                                                        tv.setBackgroundResource(R.drawable.border_textview_gray);
                                                         Toast.makeText(activity, "消息已失效，已停止访问改内容", Toast.LENGTH_LONG).show();
                                                     }
                                                 });

@@ -102,6 +102,8 @@ public class BuglePhotoViewController extends PhotoViewController {
         if (mShareActionProvider == null || mShareItem == null || adapter == null ||
                 cursor == null) {
             // Not enough stuff loaded to update the share action
+            mShareItem.setVisible(false);
+            mSaveItem.setVisible(false);
             return;
         }
         final String photoUri = adapter.getPhotoUri(cursor);
@@ -137,9 +139,9 @@ public class BuglePhotoViewController extends PhotoViewController {
         mShareItem = menu.findItem(R.id.action_share);
         //mShareActionProvider = (ShareActionProvider) mShareItem.getActionProvider();
         mShareActionProvider = (ShareActionProvider)MenuItemCompat.getActionProvider(mShareItem);
+        mSaveItem = menu.findItem(R.id.action_save);
         updateShareActionProvider();
 
-        mSaveItem = menu.findItem(R.id.action_save);
         return true;
     }
 

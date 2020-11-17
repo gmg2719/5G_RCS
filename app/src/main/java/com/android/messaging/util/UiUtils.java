@@ -262,6 +262,8 @@ public class UiUtils {
             ImmersionBar.with(activity)
                     .statusBarDarkFont(true)
                     .navigationBarDarkIcon(true)
+//                    .keyboardEnable(true)
+//                    .supportActionBar(true)
                     .init();
             activity.getWindow().setStatusBarColor(
                     /*Color.rgb(blendedRed, blendedGreen, blendedBlue)*/Color.parseColor("#FFFFFF"));

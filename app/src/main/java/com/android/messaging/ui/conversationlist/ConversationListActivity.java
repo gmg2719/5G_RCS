@@ -59,7 +59,9 @@ import android.widget.Toast;
 
 import com.android.messaging.R;
 import com.android.messaging.datamodel.DownloadBusnCardBroadcastReceiver;
+import com.android.messaging.datamodel.MessagingContentProvider;
 import com.android.messaging.datamodel.microfountain.sms.ChatbotUtils;
+import com.android.messaging.receiver.DownloadChatbotFileReceiver;
 import com.android.messaging.receiver.XYRCSMsgReceiver;
 import com.android.messaging.ui.ConversationDrawables;
 import com.android.messaging.ui.UIIntents;
@@ -100,6 +102,7 @@ public class  ConversationListActivity extends AbstractConversationListActivity 
     DownloadBusnCardBroadcastReceiver mReceiver;
     public static boolean isNormalConversationList = false;
     private XYRCSMsgReceiver mXYRCSMsgReceiver;
+    private DownloadChatbotFileReceiver mDownloadChatbotFileReceiver;
     private Handler mHandler = new Handler();
     private QueryHandler mQueryHandler;
     private String mChatbotSipUri;
@@ -518,6 +521,10 @@ public class  ConversationListActivity extends AbstractConversationListActivity 
             unregisterReceiver(mBroadcastReceiver);
             getContentResolver().unregisterContentObserver(mContentObserver);
         }
+        if(mDownloadChatbotFileReceiver != null){
+            this.unregisterReceiver(mDownloadChatbotFileReceiver);
+            mDownloadChatbotFileReceiver = null;
+        }
     }
 
     @Override
@@ -587,15 +594,16 @@ public class  ConversationListActivity extends AbstractConversationListActivity 
     }
 
     public void initRCSSDK(){
-        new ContextWrapper(this).grantUriPermission("com.microfountain.rcs.service", Uri.parse("content://xy_rcs/"), Intent.FLAG_GRANT_READ_URI_PERMISSION
+        new ContextWrapper(this).grantUriPermission("com.microfountain.rcs.service", /*Uri.parse("content://xy_rcs/")*/MessagingContentProvider.CHATBOT_LOGOS_URI, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        com.microfountain.rcs.rcskit. RcsKit.init(this, /*MessagingContentProvider.CONVERSATIONS_URI.toString()*//*SmsMessageContentProvider.CONTENT_AUTHORITY*/"content://xy_rcs/");
+        com.microfountain.rcs.rcskit. RcsKit.init(this, /*MessagingContentProvider.CONVERSATIONS_URI.toString()*//*SmsMessageContentProvider.CONTENT_AUTHORITY*//*"content://xy_rcs/"*/MessagingContentProvider.CHATBOT_LOGOS_URI.toString());
         Boolean isRCSRegister = RCSUtil.isSubscriptionRcsRegistered(PhoneUtils.getDefault()
                 .getDefaultSmsSubscriptionId()/*SubscriptionManager.getDefaultDataSubscriptionId()*/);
         Boolean isRCSSub = RCSUtil.isSubscriptionRcsEnabled(PhoneUtils.getDefault()
                 .getDefaultSmsSubscriptionId());
         LogUtil.i("Junwang", "isRCSSub = "+isRCSSub+", isRCSRegister="+isRCSRegister);
         registerRCSReceiver();
+        registerDownloadChatbotFileReceiver();
 
         RcsSubscriptionManager.addOnSubscriptionsChangedListener(new RcsSubscriptionManager.OnSubscriptionsChangedListener(){
             @Override
@@ -624,6 +632,12 @@ public class  ConversationListActivity extends AbstractConversationListActivity 
         registerReceiver(mBroadcastReceiver, intentFilter);
 
         getContentResolver().registerContentObserver(RcsChatbotInfoTable.CONTENT_URI, true, mContentObserver);
+    }
+
+    public void registerDownloadChatbotFileReceiver(){
+        mDownloadChatbotFileReceiver = new DownloadChatbotFileReceiver();
+        IntentFilter filter = new IntentFilter(RcsMessageBroadcast.INTENT_ACTION_MESSAGE_DOWNLOAD_RESULT);
+        registerReceiver(mDownloadChatbotFileReceiver, filter);
     }
 
     private void hideFragments(FragmentTransaction transaction) {

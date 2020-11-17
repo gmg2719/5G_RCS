@@ -10,7 +10,7 @@
     <include layout="@layout/include_card_title"/>
     <TextView
         android:id="@+id/vote_title"
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:paddingTop="8dp"

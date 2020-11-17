@@ -63,6 +63,7 @@ public class ReceiveSmsMessageAction extends Action implements Parcelable {
 
     @Override
     protected Object executeAction() {
+        LogUtil.i("Junwang", "Received an SMS.");
         final Context context = Factory.get().getApplicationContext();
         final ContentValues messageValues = actionParameters.getParcelable(KEY_MESSAGE_VALUES);
         final DatabaseWrapper db = DataModel.get().getDatabase();

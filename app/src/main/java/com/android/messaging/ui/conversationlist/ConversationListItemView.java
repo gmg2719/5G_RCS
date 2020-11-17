@@ -22,6 +22,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.text.BidiFormatter;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
 import android.text.TextPaint;
@@ -71,6 +72,9 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import cc.shinichi.library.ImagePreview;
+import cc.shinichi.library.glide.ImageLoader;
+
 /**
  * The view for a single entry in a conversation list.
  */
@@ -103,13 +107,27 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
     private final OnClickListener fullScreenPreviewClickListener = new OnClickListener() {
         @Override
         public void onClick(final View v) {
+            //add by junwang for chatbot msg
+            if(mIsChatbotMsg){
+                final Uri imagesUri = MessagingContentProvider
+                        .buildConversationImagesUri(mData.getConversationId());
+                final Rect previewImageBounds = UiUtils.getMeasuredBoundsOnScreen(v);
+                String photo = (ImageLoader.getGlideCacheFile(getContext(), mChatbotMediaUrl)).getAbsolutePath();
+                LogUtil.i("Junwang", "photo path="+photo);
+                Uri initphoto = Uri.parse(photo);
+                mHostInterface.startFullScreenPhotoViewer(
+                        Uri.parse(mChatbotMediaUrl), previewImageBounds, /*imagesUri*/Uri.parse(Environment.DIRECTORY_PICTURES + "/" + ImagePreview.getInstance().getFolderName()+"/1600678067506.png"));
+                return;
+            }
             final String previewType = mData.getShowDraft() ?
                     mData.getDraftPreviewContentType() : mData.getPreviewContentType();
             Assert.isTrue(ContentType.isImageType(previewType) ||
                     ContentType.isVideoType(previewType));
+            LogUtil.i("Junwang", "preview attachment onClicked.");
 
             final Uri previewUri = mData.getShowDraft() ?
                     mData.getDraftPreviewUri() : mData.getPreviewUri();
+
             if (ContentType.isImageType(previewType)) {
                 final Uri imagesUri = mData.getShowDraft() ?
                         MessagingContentProvider.buildDraftImagesUri(mData.getConversationId()) :
@@ -121,14 +139,7 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
             } else {
                 mHostInterface.startFullScreenVideoViewer(previewUri);
             }
-            //add by junwang for chatbot msg
-            if(mIsChatbotMsg){
-                final Uri imagesUri = MessagingContentProvider
-                        .buildConversationImagesUri(mData.getConversationId());
-                final Rect previewImageBounds = UiUtils.getMeasuredBoundsOnScreen(v);
-                mHostInterface.startFullScreenPhotoViewer(
-                        Uri.parse(mChatbotMediaUrl), previewImageBounds, imagesUri);
-            }
+
         }
     };
 
@@ -530,12 +541,14 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
         }
         //add by junwang end
         //add by junwang for chatbot
-        String chatbotSipUri = mData.getmChatbotSipUri();
+        String chatbotSipUri = mData.getOtherParticipantNormalizedDestination();//mData.getmChatbotSipUri();
         if(chatbotSipUri != null && chatbotSipUri.startsWith("sip:")){
             LogUtil.i("Junwang", "getChatbotLogo="+mData.getmChatbotSms());
             Uri iconUri_temp = null;
             if(mData.getmChatbotSms() != null) {
                 iconUri_temp = Uri.parse(mData.getmChatbotSms());
+//                iconUri_temp = Uri.parse(mData.getH5BusnLogo());
+//                mData.setmIsH5Msg(true);
                 LogUtil.i("Junwang", "mData.getChatbotLogo()="+mData.getmChatbotSms()+", iconUri_temp="+iconUri_temp);
             }
             if(iconUri_temp != null){
@@ -579,9 +592,15 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
         //add by junwang for chatbot
         if(mData.getmChatbotSipUri() != null){
             if(mIsChatbotMsg){
-                previewImageUri = Uri.parse(mChatbotMediaUrl);
-                previewImageVisibility = VISIBLE;
-                LogUtil.i("Junwang", "chatbot message mChatbotMediaUrl="+mChatbotMediaUrl+", previewImageUri="+previewImageUri.toString());
+                if(mChatbotMediaUrl != null && mChatbotMediaUrl.length() > 0){
+                    previewImageUri = Uri.parse(mChatbotMediaUrl);
+                    previewImageVisibility = VISIBLE;
+                    previewClickListener = fullScreenPreviewClickListener;
+                    LogUtil.i("Junwang", "chatbot message mChatbotMediaUrl="+mChatbotMediaUrl+", previewImageUri="+previewImageUri.toString());
+                }else{
+                    previewImageVisibility = GONE;
+                    previewClickListener = null;
+                }
             }
         }
 
@@ -756,6 +775,8 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
                 if((cardcontents != null) && (cardcontents.length>0)){
                     mChatbotMediaUrl = cardcontents[0].getMedia().getThumbnailUrl();
                     return "[商品推荐]" + cardcontents[0].getTitle();
+                }else{
+                    mChatbotMediaUrl = null;
                 }
             }
         }catch (Exception e){
@@ -780,8 +801,8 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
                     case VIDEO_NEWS:
                         mChatbotMediaUrl = cc.getMedia().getThumbnailUrl();
                         return "[视频快讯]"+cc.getTitle();
-//                    case SUB_ACTIVITY_START:
-//                        return "[预约开始]"+cc.getTitle();
+                    case SUB_ACTIVITY_START:
+                        return "[预约开始]"+cc.getTitle();
                     case PRODUCT_ORDER:
                         return "[下单成功]"+cc.getTitle();
                     default:
@@ -815,6 +836,7 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
         }
         //add by junwang for chatbot
         if(mData.getmChatbotSipUri() != null){
+            mChatbotMediaUrl = null;
             if(snippetText != null){
                 LogUtil.i("Junwang", "snippnet Text="+snippetText);
                 if(snippetText.startsWith("{")){

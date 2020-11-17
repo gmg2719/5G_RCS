@@ -178,7 +178,10 @@ public class ContactIconView extends AsyncImageView {
 //                }else {
 //                    //add by junwang end
 //                    setImageResourceId(new AvatarRequestDescriptor(uri, mIconSize, mIconSize));
-                if(!mIsH5Contact) {
+                if(normalizedDestination != null){
+                    LogUtil.i("Junwang", "ContactIconView normalizedDestination="+normalizedDestination);
+                }
+                if(!mIsH5Contact && normalizedDestination != null && !normalizedDestination.startsWith("sip")) {
                     setImageResourceId(new AvatarRequestDescriptor(uri, mIconSize, mIconSize));
                 }else {
                     if(uri != null && uri.toString().startsWith("/data")) {
@@ -228,7 +231,7 @@ public class ContactIconView extends AsyncImageView {
                     @Override
                     public void onClick(final View view) {
                         if(mNormalizedDestination.startsWith("sip:")){
-                            ChatbotIntroduceActivity.start(getContext(), mNormalizedDestination);
+                            ChatbotIntroduceActivity.start(getContext(), mNormalizedDestination, /*"https://img-blog.csdnimg.cn/2020091515144423.jpg"*/null);
                         }else {
                             ContactUtil.showOrAddContact(view, mContactId, mContactLookupKey,
                                     mAvatarUri, mNormalizedDestination);

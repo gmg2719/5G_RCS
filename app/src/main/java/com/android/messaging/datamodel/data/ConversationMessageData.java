@@ -522,6 +522,10 @@ public class ConversationMessageData {
         return mChatbotCardInvalid;
     }
 
+    public void setmChatbotCardInvalid(boolean ChatbotCardInvalid){
+        mChatbotCardInvalid = ChatbotCardInvalid;
+    }
+
     public String getmChatbotCardInvalidPrompt() {
         return mChatbotCardInvalidPrompt;
     }

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.android.messaging.datamodel.ChatbotInfoTableUtils;
+import com.android.messaging.datamodel.MessagingContentProvider;
 import com.android.messaging.datamodel.microfountain.sms.ChatbotUtils;
 import com.android.messaging.util.DownloadImageUtils;
 import com.android.messaging.util.LogUtil;
@@ -62,12 +63,12 @@ public class BaseInvokeChatbotInfo {
         LogUtil.v("Junwang", "BaseInvokeChatbotInfo onQueryResult");
         if(cursor != null) {
             if(!ChatbotInfoTableUtils.IsChatbotInfoExist(mChatbotSipUri)) {
-                downloadChatbotLogo(cursor);
                 ChatbotInfoTableUtils.insertChatbotInfoTable(cursor, mLogoSavedPath);
+                downloadChatbotLogo(cursor);
             }else{
                 LogUtil.i("Junwang", "start update chatbot info table");
-                downloadChatbotLogo(cursor);
                 ChatbotInfoTableUtils.updateChatbotInfoTable(cursor);
+                downloadChatbotLogo(cursor);
             }
         }
     }
@@ -152,8 +153,22 @@ public class BaseInvokeChatbotInfo {
                 String iconUrl = chatbot.getIconUrl();
                 if((iconUrl != null) && (iconUrl.length() > 0)) {
                     LogUtil.i("Junwang", "download chatbot logo from "+iconUrl);
-                    DownloadImageUtils.saveImageToLocal(mContext, iconUrl);
-                    mLogoSavedPath = mContext.getFilesDir()+"/"+iconUrl.substring(iconUrl.lastIndexOf("/")+1);
+                    String chatbotSipUri = cursor.getString(cursor.getColumnIndex(RcsChatbotInfoTable.Columns.CHATBOT_SIP_URI));
+                    String temp = chatbotSipUri.substring(4);
+                    int i = temp.indexOf("@");
+                    String chatbotNumber = temp.substring(0, i);
+                    if(chatbotNumber != null) {
+                        String uriString = MessagingContentProvider.CHATBOT_LOGOS_URI.toString();
+                        LogUtil.i("Junwang", "download logo uriString="+uriString);
+//                        if(ChatbotUtils.DownloadLogo(iconUrl, /*MessagingContentProvider.buildChatbotLogosUri(chatbotNumber)*/uriString, chatbotNumber + "Logo")){
+//                            LogUtil.i("Junwang", "download chatbot logo from Maap url "+iconUrl);
+//                        }else
+                        {
+                            DownloadImageUtils.saveImageToLocal(mContext, /*iconUrl*//*"https://sms-agent.oss-cn-hangzhou.aliyuncs.com/h5/favicon.ico"*/"https://img-blog.csdnimg.cn/2020093014454740.png", chatbotSipUri);
+//                            mLogoSavedPath = mContext.getFilesDir() + "/" + iconUrl.substring(iconUrl.lastIndexOf("/") + 1);
+//                            mLogoSavedPath = mContext.getFilesDir() + "/" + "favicon.ico";
+                        }
+                    }
                 }else{
                     LogUtil.e("Junwang", "chatbot logo url is null.");
                 }

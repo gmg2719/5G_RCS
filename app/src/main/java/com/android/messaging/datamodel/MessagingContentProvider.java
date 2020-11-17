@@ -96,6 +96,11 @@ public class MessagingContentProvider extends ContentProvider {
 
     private static final String DRAFT_IMAGES_QUERY = "draft_images";
 
+    //add by junwang
+    private static final String CHATBOG_LOGOS_QUERY = "chatbot_logos";
+    public static final Uri CHATBOT_LOGOS_URI = Uri.parse(CONTENT_AUTHORITY +
+            CHATBOG_LOGOS_QUERY);
+
     public static final Uri DRAFT_IMAGES_URI = Uri.parse(CONTENT_AUTHORITY +
             DRAFT_IMAGES_QUERY);
 
@@ -161,6 +166,8 @@ public class MessagingContentProvider extends ContentProvider {
     private static final int CONVERSATION_IMAGES_QUERY_CODE = 50;
     private static final int DRAFT_IMAGES_QUERY_CODE = 60;
     private static final int PARTICIPANTS_QUERY_CODE = 70;
+    //add by junwang
+    private static final int CHATBOT_LOGOS_QUERY_CODE = 80;
 
     // TODO: Move to a better structured URI namespace.
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -176,6 +183,9 @@ public class MessagingContentProvider extends ContentProvider {
                 CONVERSATION_IMAGES_QUERY_CODE);
         sURIMatcher.addURI(AUTHORITY, DRAFT_IMAGES_QUERY + "/*",
                 DRAFT_IMAGES_QUERY_CODE);
+        //add by junwang
+        sURIMatcher.addURI(AUTHORITY, CHATBOG_LOGOS_QUERY+"/*",
+                CHATBOT_LOGOS_QUERY_CODE);
     }
 
     /**
@@ -235,6 +245,12 @@ public class MessagingContentProvider extends ContentProvider {
         final Uri.Builder builder = CONVERSATION_IMAGES_URI.buildUpon();
         builder.appendPath(conversationId);
         return builder.build();
+    }
+
+    public static String buildChatbotLogosUri(final String sipNumber) {
+        final Uri.Builder builder = CONVERSATION_IMAGES_URI.buildUpon();
+        builder.appendPath(sipNumber);
+        return builder.build().getEncodedPath();
     }
 
     /**

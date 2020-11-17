@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -28,6 +29,8 @@ import com.alipay.sdk.app.H5PayCallback;
 import com.alipay.sdk.app.PayTask;
 import com.alipay.sdk.util.H5PayResultModel;
 import com.android.messaging.R;
+import com.android.messaging.datamodel.microfountain.sms.ChatbotUtils;
+import com.android.messaging.datamodel.microfountain.sms.SendRcsMsgUtils;
 import com.android.messaging.product.utils.StatusBarUtil;
 import com.android.messaging.ui.santiwebview.SantiWebChromeClient;
 import com.android.messaging.util.LogUtil;
@@ -50,6 +53,7 @@ import java.util.Map;
 public class WebViewNewsActivity extends Activity implements View.OnClickListener{
     public static final String URL = "url";
     public static final String TITLE= "title";
+    public static final String MSGID = "msgId";
 
     private ImageView mIVBack;
     private WebView mWebView;
@@ -57,18 +61,21 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
     private String mUrl;
     private String mTitle;
     private ProgressBar mPbLoading;
+    private String mMsgId;
 //    private boolean mUpdatedText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview_news_activity);
-        mTitle = getIntent().getStringExtra(TITLE);
+        Intent intent = getIntent();
+        mTitle = intent.getStringExtra(TITLE);
         initView();
-        mUrl = getIntent().getStringExtra(URL);
+        mUrl = intent.getStringExtra(URL);
         if(mUrl != null){
             initWebViewSetting();
         }
+        mMsgId = intent.getStringExtra(MSGID);
         UiUtils.setStatusBarColor(this, Color.parseColor("#FFFFFF"));
     }
 
@@ -263,7 +270,12 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
                             mWebView.loadUrl(url);
                             return false;
                         } else {
-                            view.loadUrl(url, extraHeaders);
+                            if(url.startsWith("http://") || url.startsWith("https://") || url.startsWith("rtsp://")) {
+                                view.loadUrl(url, extraHeaders);
+                            }else{
+                                startThirdpartyApp(url);
+                                return true;
+                            }
                         }
                     }
                     // ------- 处理结束 -------
@@ -478,6 +490,16 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
         context.startActivity(intent);
     }
 
+    public static void start(Context context, String url, String title, String msgId){
+        Intent intent = new Intent(context, WebViewNewsActivity.class);
+        LogUtil.i("Junwang", "WebViewNewsActivity url="+url);
+        intent.putExtra(URL, url);
+        intent.putExtra(TITLE, title);
+        intent.putExtra(MSGID, msgId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebViewSetting() {
         mWebView.setVerticalScrollBarEnabled(false);
@@ -487,7 +509,7 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
         webSetting.setAllowFileAccess(true);
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSetting.setSupportZoom(true);
-        webSetting.setBuiltInZoomControls(true);
+//        webSetting.setBuiltInZoomControls(true);
         webSetting.setUseWideViewPort(true);
         webSetting.setSupportMultipleWindows(false);
         webSetting.setLoadWithOverviewMode(true);
@@ -519,9 +541,29 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
      *  暴露出去给JS调用的Java对象
      */
     class JsInterfaceLogic {
+        private String phoneNumber;
         @JavascriptInterface
         public String getUserAccount() {
-            return "+8613777496301";
+            String phoneNumber = ChatbotUtils.getPhoneNumber();
+            return phoneNumber == null ? "+8613777496301" : phoneNumber;
+        }
+
+        public String getPhoneNumber(){
+            TelephonyManager phoneManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+//        try{
+//            phoneNumber = phoneManager.getLine1Number();
+//        }catch(SecurityException e){
+//            LogUtil.i("Junwang", "No permission to get phone number");
+//        }finally {
+//
+//        }
+            if(mMsgId != null) {
+                phoneNumber = SendRcsMsgUtils.getSelfNumber(mMsgId);
+            }
+            if(phoneNumber == null || phoneNumber.length() == 0){
+                phoneNumber = "+8613777496301";
+            }
+            return phoneNumber;
         }
     }
 }
