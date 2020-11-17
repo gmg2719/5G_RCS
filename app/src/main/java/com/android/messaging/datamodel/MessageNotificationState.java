@@ -53,6 +53,7 @@ import com.android.messaging.ui.chatbotservice.CardContent;
 import com.android.messaging.ui.chatbotservice.ChatbotCard;
 import com.android.messaging.ui.chatbotservice.ChatbotMultiCard;
 import com.android.messaging.ui.chatbotservice.GeneralPurposeCardCarousel;
+import com.android.messaging.ui.conversation.chatbot.ChatbotEntity;
 import com.android.messaging.util.Assert;
 import com.android.messaging.util.AvatarUriUtil;
 import com.android.messaging.util.BugleGservices;
@@ -909,6 +910,13 @@ public abstract class MessageNotificationState extends NotificationState {
                     String authorFirstName = convMessageData.getSenderFirstName();
                     /*final*/ String messageText = convMessageData.getText();
                     //add by junwang start
+                    String normalDes = convMessageData.getSenderNormalizedDestination();
+                    ChatbotEntity botEntity = null;
+                    if(normalDes != null && normalDes.startsWith("sip:")){
+                        botEntity = ChatbotInfoTableUtils.queryChatbotInfoTable(normalDes);
+                        authorFullName = botEntity.getName();
+//                        authorFirstName = botEntity.getName();
+                    }
                     LogUtil.i("Junwang", "notification text is " + messageText);
                     if(messageText.startsWith("{")){
                         if(messageText.indexOf("generalPurposeCardCarousel") != -1) {
@@ -961,6 +969,9 @@ public abstract class MessageNotificationState extends NotificationState {
                                 convMessageData.getSenderFullName(),
                                 convMessageData.getSenderNormalizedDestination(),
                                 convMessageData.getSenderContactLookupKey());
+//                        if(botEntity != null){
+//                            avatarUri = Uri.parse(botEntity.getSms());
+//                        }
                         currConvInfo = new ConversationLineInfo(convId,
                                 convData.getIsGroup(),
                                 groupConversationName,
@@ -1141,18 +1152,36 @@ public abstract class MessageNotificationState extends NotificationState {
                 // user the new message in the ticker.
                 state = new MultiConversationNotificationState(convList, state);
             } else {
+                String tempName = convInfo.getLatestMessageLineInfo().mAuthorFirstName;
                 // For now, only show avatars for notifications for a single conversation.
-                if (convInfo.mAvatarUri != null) {
-                    if (state.mParticipantAvatarsUris == null) {
-                        state.mParticipantAvatarsUris = new ArrayList<Uri>(1);
+                LogUtil.i("Junwang", "notification tempName="+tempName);
+                if(tempName != null && tempName.startsWith("sip:")){
+                    ChatbotEntity botEntity = ChatbotInfoTableUtils.queryChatbotInfoTable(tempName);
+                    if(botEntity != null){
+                        if (state.mParticipantAvatarsUris == null) {
+                            state.mParticipantAvatarsUris = new ArrayList<Uri>(1);
+                        }
+                        state.mParticipantAvatarsUris.add(Uri.parse(botEntity.getSms()));
                     }
-                    state.mParticipantAvatarsUris.add(convInfo.mAvatarUri);
-                }
-                if (convInfo.mContactUri != null) {
-                    if (state.mParticipantContactUris == null) {
-                        state.mParticipantContactUris = new ArrayList<Uri>(1);
+                    if (convInfo.mContactUri != null) {
+                        if (state.mParticipantContactUris == null) {
+                            state.mParticipantContactUris = new ArrayList<Uri>(1);
+                        }
+                        state.mParticipantContactUris.add(Uri.parse(botEntity.getSms()));
                     }
-                    state.mParticipantContactUris.add(convInfo.mContactUri);
+                }else{
+                    if (convInfo.mAvatarUri != null) {
+                        if (state.mParticipantAvatarsUris == null) {
+                            state.mParticipantAvatarsUris = new ArrayList<Uri>(1);
+                        }
+                        state.mParticipantAvatarsUris.add(convInfo.mAvatarUri);
+                    }
+                    if (convInfo.mContactUri != null) {
+                        if (state.mParticipantContactUris == null) {
+                            state.mParticipantContactUris = new ArrayList<Uri>(1);
+                        }
+                        state.mParticipantContactUris.add(convInfo.mContactUri);
+                    }
                 }
             }
         }

@@ -44,7 +44,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.text.util.LinkifyCompat;
 import android.support.v4.view.ViewPager;
@@ -115,8 +114,10 @@ import com.android.messaging.datamodel.ChatbotFavoriteTableUtils;
 import com.android.messaging.datamodel.ChatbotInfoTableUtils;
 import com.android.messaging.datamodel.DataModel;
 import com.android.messaging.datamodel.DatabaseHelper;
+import com.android.messaging.datamodel.MessagingContentProvider;
 import com.android.messaging.datamodel.ServerResponse;
 import com.android.messaging.datamodel.action.DeleteMessageAction;
+import com.android.messaging.datamodel.action.InsertNewMessageAction;
 import com.android.messaging.datamodel.data.BusinessCardService;
 import com.android.messaging.datamodel.data.CardTemplate;
 import com.android.messaging.datamodel.data.ConversationMessageData;
@@ -193,12 +194,7 @@ import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.common.base.Predicate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -221,7 +217,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -240,7 +235,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cc.shinichi.library.ImagePreview;
-import cc.shinichi.library.glide.FileTarget;
 import io.reactivex.functions.Consumer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -2745,6 +2739,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                                     try {
                                         int voteItemNumber = voteView.selectedItemPosition + 1;
                                         LogUtil.i("Junwang", "post vote item is "+voteItemNumber);
+                                        insertPressButtonMessage("投票");
                                         String result = postVoteRequest("http://testxhs.supermms.cn/api/sms5g/my/clickVote", mData.getmChatbotRcsdbMsgId(), voteView.selectedItemPosition + 1, true);
                                         ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                         if(sr != null){
@@ -3032,6 +3027,13 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
 //        return true;
 //    }
 
+    private void insertPressButtonMessage(String buttonName){
+        MessageData message = MessageData.createDraftSmsMessage(mData.getConversationId(), mData.getSelfParticipantId(), buttonName);
+        message.mStatus = MessageData.BUGLE_STATUS_OUTGOING_COMPLETE;
+        InsertNewMessageAction.insertNewMessage(message);
+        MessagingContentProvider.notifyConversationListChanged();
+    }
+
     private boolean loadActivitySubscribeChatbotMessage(int resource, CardContent cardcontent){
         if(cardcontent == null){
             return false;
@@ -3090,6 +3092,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                                     try {
                                         Map<String, String> params = new HashMap<>();
                                         params.put("msgId", mData.getmChatbotRcsdbMsgId());
+                                        insertPressButtonMessage("预约");
                                         String result = ChatbotFavoriteTableUtils.postRequest("http://testxhs.supermms.cn/api/sms5g/my/doAppoint", params, "utf-8");
                                         ServerResponse sr = new Gson().fromJson(result, ServerResponse.class);
                                         if(sr != null){

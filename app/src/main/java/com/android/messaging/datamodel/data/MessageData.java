@@ -110,7 +110,7 @@ public class MessageData implements Parcelable {
     private String mMmsContentLocation;
     private long mMmsExpiry;
     private int mRawStatus;
-    private int mStatus;
+    public int mStatus;
     private final ArrayList<MessagePartData> mParts;
     private long mRetryStartTimestamp;
 

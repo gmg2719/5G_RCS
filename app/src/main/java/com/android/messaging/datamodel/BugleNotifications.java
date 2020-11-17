@@ -83,6 +83,7 @@ import com.android.messaging.util.RingtoneUtil;
 import com.android.messaging.util.ThreadUtil;
 import com.android.messaging.util.UriUtil;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -420,6 +421,24 @@ public class BugleNotifications {
         }
     }
 
+    private static Bitmap getDiskBitmap(String pathString)
+    {
+        Bitmap bitmap = null;
+        try
+        {
+            File file = new File(pathString);
+            if(file.exists())
+            {
+                bitmap = BitmapFactory.decodeFile(pathString);
+            }
+        } catch (Exception e)
+        {
+            // TODO: handle exception
+        }
+
+        return bitmap;
+    }
+
     private static void processAndSend(final NotificationState state, final boolean silent,
             final boolean softSound) {
         final Context context = Factory.get().getApplicationContext();
@@ -527,6 +546,9 @@ public class BugleNotifications {
                     Bitmap avatarBitmap = Bitmap.createBitmap(avatarImage.getBitmap());
                     Bitmap avatarHiResBitmap = (avatarHiRes != null) ?
                             Bitmap.createBitmap(avatarHiRes.getBitmap()) : null;
+//                    if(state.mParticipantAvatarsUris.get(0).toString() != null) {
+//                        avatarBitmap = getDiskBitmap(state.mParticipantAvatarsUris.get(0).toString());
+//                    }
                     sendNotification(state, avatarBitmap, avatarHiResBitmap);
                     return;
                 } finally {
