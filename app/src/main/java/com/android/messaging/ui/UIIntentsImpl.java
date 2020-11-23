@@ -135,11 +135,13 @@ public class UIIntentsImpl extends UIIntents {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         //add by junwang for chatbot
-        DatabaseWrapper dbwrapper = DataModel.get().getDatabase();
-        final ConversationListItemData conversation =
-                ConversationListItemData.getExistingConversation(dbwrapper, conversationId);
-        if(conversation.getmChatbotMenu() != null){
-            intent.putExtra("chatbotMenu", conversation.getmChatbotMenu());
+        if(conversationId != null) {
+            DatabaseWrapper dbwrapper = DataModel.get().getDatabase();
+            final ConversationListItemData conversation =
+                    ConversationListItemData.getExistingConversation(dbwrapper, conversationId);
+            if (conversation.getmChatbotMenu() != null) {
+                intent.putExtra("chatbotMenu", conversation.getmChatbotMenu());
+            }
         }
         return intent;
     }
