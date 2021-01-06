@@ -537,6 +537,13 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
         mWebView.addJavascriptInterface(new JsInterfaceLogic(), "app");
     }
 
+    @Override
+    protected void onDestroy() {
+        mWebView.stopLoading();
+        mWebView.destroy();
+        super.onDestroy();
+    }
+
     /**
      *  暴露出去给JS调用的Java对象
      */
@@ -545,7 +552,7 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
         @JavascriptInterface
         public String getUserAccount() {
             String phoneNumber = ChatbotUtils.getPhoneNumber();
-            return phoneNumber == null ? "+8613777496301" : phoneNumber;
+            return phoneNumber == null ? /*"+8613777496301"*/"+8615735796495" : phoneNumber;
         }
 
         public String getPhoneNumber(){
@@ -561,7 +568,7 @@ public class WebViewNewsActivity extends Activity implements View.OnClickListene
                 phoneNumber = SendRcsMsgUtils.getSelfNumber(mMsgId);
             }
             if(phoneNumber == null || phoneNumber.length() == 0){
-                phoneNumber = "+8613777496301";
+                phoneNumber = /*"+8613777496301"*/"+8615735796495";
             }
             return phoneNumber;
         }

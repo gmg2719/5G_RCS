@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -194,6 +195,7 @@ public class ChatbotVideoNewsDetailsActivity extends AppCompatActivity implement
 //        });
         mTVTitle = (TextView)findViewById(R.id.video_title);
         mTVDetails = (TextView)findViewById(R.id.video_details);
+        mTVDetails.setMovementMethod(ScrollingMovementMethod.getInstance());
         mTVTitle.setText(mTitle);
         mTVDetails.setText(mDetails);
         mCloseImage = (ImageView)findViewById(R.id.close_img);
@@ -217,11 +219,11 @@ public class ChatbotVideoNewsDetailsActivity extends AppCompatActivity implement
             }
         });
 
-        mCoverImage = (ImageView)findViewById(R.id.iv_img);
-        mCoverImage.setAlpha(0.5f);
-                    Glide.with(this).load("http://sms-agent.oss-cn-hangzhou.aliyuncs.com/sms_agent_temp/100001040/5f22963bad14f.jpg")
-                    .centerCrop()
-                    .into(mCoverImage);
+//        mCoverImage = (ImageView)findViewById(R.id.iv_img);
+//        mCoverImage.setAlpha(0.5f);
+//                    Glide.with(this).load("http://sms-agent.oss-cn-hangzhou.aliyuncs.com/sms_agent_temp/100001040/5f22963bad14f.jpg")
+//                    .centerCrop()
+//                    .into(mCoverImage);
 //        mTVTitle.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
 //            @Override
 //            public void onSystemUiVisibilityChange(int i) {

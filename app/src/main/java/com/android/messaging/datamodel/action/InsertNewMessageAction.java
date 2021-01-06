@@ -192,6 +192,69 @@ public class InsertNewMessageAction extends Action implements Parcelable {
         return message;
     }
 
+    //add by junwang for insert RCS msg to conversation table
+    private MessageData createRCSMessage() {
+        // First find the thread id for this list of participants.
+        final String recipientsList = actionParameters.getString(KEY_RECIPIENTS);
+        final String messageText = actionParameters.getString(KEY_MESSAGE_TEXT);
+        final String subjectText = actionParameters.getString(KEY_SUBJECT_TEXT);
+        final int subId = actionParameters.getInt(
+                KEY_SUB_ID, ParticipantData.DEFAULT_SELF_SUB_ID);
+
+        final ArrayList<ParticipantData> participants = new ArrayList<>();
+        for (final String recipient : recipientsList.split(",")) {
+            participants.add(ParticipantData.getFromRawPhoneBySimLocale(recipient, subId));
+        }
+        if (participants.size() == 0) {
+            Assert.fail("InsertNewMessage: Empty participants");
+            return null;
+        }
+
+        final DatabaseWrapper db = DataModel.get().getDatabase();
+        BugleDatabaseOperations.sanitizeConversationParticipants(participants);
+        final ArrayList<String> recipients =
+                BugleDatabaseOperations.getRecipientsFromConversationParticipants(participants);
+        if (recipients.size() == 0) {
+            Assert.fail("InsertNewMessage: Empty recipients");
+            return null;
+        }
+
+        final long threadId = MmsUtils.getOrCreateThreadId(Factory.get().getApplicationContext(),
+                recipients);
+
+        if (threadId < 0) {
+            Assert.fail("InsertNewMessage: Couldn't get threadId in SMS db for these recipients: "
+                    + recipients.toString());
+            // TODO: How do we fail the action?
+            return null;
+        }
+
+        final String conversationId = BugleDatabaseOperations.getOrCreateConversation(db, threadId,
+                false, participants, false, false, null);
+
+//        final ParticipantData self = BugleDatabaseOperations.getOrCreateSelf(db, subId);
+////
+////        if (TextUtils.isEmpty(subjectText)) {
+////            return MessageData.createDraftSmsMessage(conversationId, self.getId(), messageText);
+////        } else {
+////            return MessageData.createDraftMmsMessage(conversationId, self.getId(), messageText,
+////                    subjectText);
+////        }
+        return null;
+    }
+    public void insertRCStoConversationTable(){
+        LogUtil.i(TAG, "insertRCStoConversationTable");
+        MessageData message = actionParameters.getParcelable(KEY_MESSAGE);
+        if (message == null) {
+            LogUtil.i(TAG, "insertRCStoConversationTable: Creating MessageData with provided data");
+            message = createRCSMessage();
+            if (message == null) {
+                LogUtil.w(TAG, "insertRCStoConversationTable: Could not create MessageData");
+            }
+        }
+    }
+
+
     private ParticipantData getSelf(
             final DatabaseWrapper db, final String conversationId, final MessageData message) {
         ParticipantData self;

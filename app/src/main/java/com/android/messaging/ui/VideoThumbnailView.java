@@ -60,7 +60,7 @@ public class VideoThumbnailView extends FrameLayout {
     private final int mMode;
     private final boolean mPlayOnLoad;
     private final boolean mAllowCrop;
-    private final VideoView mVideoView;
+    public final VideoView mVideoView;
     private final ImageButton mPlayButton;
     private final AsyncImageView mThumbnailImage;
     private int mVideoWidth;
@@ -68,6 +68,8 @@ public class VideoThumbnailView extends FrameLayout {
     private Uri mVideoSource;
     private boolean mAnimating;
     private boolean mVideoLoaded;
+    //add by junwang
+    private VideoView mAttachment_videoview;
 
     public VideoThumbnailView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
@@ -80,7 +82,7 @@ public class VideoThumbnailView extends FrameLayout {
         mPlayOnLoad = typedAttributes.getBoolean(R.styleable.VideoThumbnailView_playOnLoad, false);
         final boolean loop =
                 typedAttributes.getBoolean(R.styleable.VideoThumbnailView_loop, false);
-        mMode = typedAttributes.getInt(R.styleable.VideoThumbnailView_mode, MODE_IMAGE_THUMBNAIL);
+        mMode = MODE_PLAYABLE_VIDEO;//typedAttributes.getInt(R.styleable.VideoThumbnailView_mode, /*MODE_IMAGE_THUMBNAIL*/MODE_PLAYABLE_VIDEO);
         mAllowCrop = typedAttributes.getBoolean(R.styleable.VideoThumbnailView_allowCrop, false);
 
         mVideoWidth = ImageRequest.UNSPECIFIED_SIZE;
@@ -210,6 +212,10 @@ public class VideoThumbnailView extends FrameLayout {
         mPlayButton.setVisibility(View.GONE);
         mThumbnailImage.setVisibility(View.GONE);
         mVideoView.start();
+    }
+
+    public void stop(){
+        mVideoView.stopPlayback();
     }
 
     // TODO: The check could be added to MessagePartData itself so that all users of MessagePartData

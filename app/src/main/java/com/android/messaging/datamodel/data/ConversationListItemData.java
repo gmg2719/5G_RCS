@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
+import com.android.messaging.datamodel.DataModel;
 import com.android.messaging.datamodel.DatabaseHelper;
 import com.android.messaging.datamodel.DatabaseHelper.ChatbotInfoColumns;
 import com.android.messaging.datamodel.DatabaseHelper.ConversationColumns;
@@ -849,6 +850,19 @@ public class ConversationListItemData {
          }
          return false;
      }
+
+     //add by junwang
+    public static String getChatbotMenu(final String conversationId){
+        if(conversationId != null) {
+            DatabaseWrapper dbwrapper = DataModel.get().getDatabase();
+            final ConversationListItemData conversation =
+                    ConversationListItemData.getExistingConversation(dbwrapper, conversationId);
+            if (conversation != null) {
+                return conversation.getmChatbotMenu();
+            }
+        }
+        return null;
+    }
 
     /**
      * Get a conversation from the local DB based on the conversation id.

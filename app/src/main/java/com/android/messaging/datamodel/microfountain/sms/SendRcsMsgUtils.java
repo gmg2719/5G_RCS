@@ -58,9 +58,9 @@ public class SendRcsMsgUtils {
 //        }finally {
 //
 //        }
-        phoneNumber = getSelfNumber(nativeAppDBMsgId);
+        phoneNumber = ChatbotUtils.getPhoneNumber();//getSelfNumber(nativeAppDBMsgId);
         if(phoneNumber == null || phoneNumber.length() == 0){
-            phoneNumber = "+8613777496301";
+            phoneNumber = /*"+8613777496301"*/"+8615735796495";
         }
         LogUtil.i("Junwang", "phoneNumber="+phoneNumber);
         values.put(RcsMessageTable.Columns.FROM_URI, "tel:"+
@@ -136,6 +136,7 @@ public class SendRcsMsgUtils {
 
     public static int sendTextMessage(Context context, String contactUri, String conversationUuid, String
             contributionUuid, String text, int contactIdentityType, int subscriptionId, String nativeAppDBMsgId) {
+        LogUtil.i("Junwang", "send RCS text message.");
         //构建消息
         ContentValues values = buildMessageContentValues(context, conversationUuid,
                 contributionUuid, contactUri, contactIdentityType, text, subscriptionId, nativeAppDBMsgId);

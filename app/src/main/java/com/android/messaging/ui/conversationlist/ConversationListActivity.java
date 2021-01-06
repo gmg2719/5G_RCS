@@ -738,6 +738,9 @@ public class  ConversationListActivity extends AbstractConversationListActivity 
             case R.id.my_favorite:
                 ChatbotFavoriteActivity.start(this);
                 return true;
+            case R.id.action_search_chatbot:
+                ChatbotSearchActivity.start(this);
+                break;
 //            case R.id.action_debug_options:
 //                onActionBarDebug();
 //                return true;
@@ -908,9 +911,10 @@ public class  ConversationListActivity extends AbstractConversationListActivity 
 
     @Override
     protected void onDestroy() {
-        if(mReceiver != null){
-            stopReceiver();
-        }
+//        if(mReceiver != null){
+//            stopReceiver();
+//        }
+        stopReceiver();
         super.onDestroy();
     }
 }

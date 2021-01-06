@@ -145,6 +145,7 @@ dependencies {
     implementation 'cn.yc:YCBannerLib:1.4.0'
     implementation 'cn.yc:YCSlideLib:1.1.2'
     implementation 'cn.yc:YCStatusBarLib:1.4.3'
+    implementation 'com.hyman:flowlayout-lib:1.1.2'
 
 //第三方依赖库配置
     implementation 'com.google.code.gson:gson:2.8.5'

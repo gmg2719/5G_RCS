@@ -97,6 +97,7 @@ import com.android.messaging.ui.BugleActionBarActivity;
 import com.android.messaging.ui.ConversationDrawables;
 import com.android.messaging.ui.SnackBar;
 import com.android.messaging.ui.UIIntents;
+import com.android.messaging.ui.VideoThumbnailView;
 import com.android.messaging.ui.animation.PopupTransitionAnimation;
 import com.android.messaging.ui.appsettings.H5WLDatabaseHelper;
 import com.android.messaging.ui.chatbotservice.ChatbotMenuEntity;
@@ -301,10 +302,28 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
                     mScrollToDismissHandled = false;
                     //add by junwang start
                     int lastVisibleItem = ((LinearLayoutManager) mRecyclerView
-                            .getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                            .getLayoutManager()).findLastVisibleItemPosition();
                     int firstVisibleItem = ((LinearLayoutManager) mRecyclerView
-                            .getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-                    if(lastVisibleItem > 0){
+                            .getLayoutManager()).findFirstVisibleItemPosition();
+                    int itemCount = ((LinearLayoutManager) mRecyclerView
+                            .getLayoutManager()).getItemCount();
+                    ConversationMessageView conMsgView = (ConversationMessageView)((LinearLayoutManager) mRecyclerView
+                            .getLayoutManager()).getFocusedChild();
+                    LogUtil.i("junwang", "onScrollStateChanged SCROLL_STATE_IDLE firstVisibleItem="+firstVisibleItem+", lastVisibleItem="+lastVisibleItem+", itemCount="+itemCount);
+                    if(conMsgView != null){
+                        for (int j = 0, size = conMsgView.mMessageAttachmentsView.getChildCount(); j < size; j++) {
+                            final View attachmentView = conMsgView.mMessageAttachmentsView.getChildAt(j);
+                            if (attachmentView instanceof VideoThumbnailView
+                                && attachmentView.getVisibility() == View.VISIBLE) {
+                                final VideoThumbnailView videoView = (VideoThumbnailView) attachmentView;
+                                if(videoView != null){
+                                    videoView.mVideoView.seekTo(0);
+                                    videoView.start();
+                                }
+                            }
+                        }
+                    }else if(lastVisibleItem >= 0){
+                        LogUtil.i("junwang", "onScrollStateChanged lastVisibleItem >= 0");
                         int i = 0;
                         if(firstVisibleItem >= 0){
                             i = firstVisibleItem;
@@ -312,16 +331,53 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
                         for(; i<= lastVisibleItem; i++) {
                             RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(i);
                             if (holder != null && holder.itemView != null) {
+                                LogUtil.i("junwang", "onScrollStateChanged holder.itemView != null");
                                 ConversationMessageView cmv = (ConversationMessageView) (holder.itemView);
                                 if (cmv != null) {
-                                    LogUtil.i("junwang", "SantiVideoView onScrollStateChanged videoview visiable");
+                                    LogUtil.i("junwang", "onScrollStateChanged SantiVideoView videoview visiable");
                                     SantiVideoView svv = cmv.getVideoView();
                                     if(svv != null){
-                                        svv.setMute(true);
-                                        svv.start();
+                                        if(!isCover(svv)) {
+                                            svv.setMute(true);
+                                            svv.start();
+                                        }else{
+                                            svv.pause();
+                                        }
+                                    }
+                                    for (int j = 0, size = cmv.mMessageAttachmentsView.getChildCount(); j < size; j++) {
+                                        final View attachmentView = cmv.mMessageAttachmentsView.getChildAt(j);
+                                        if (attachmentView instanceof VideoThumbnailView
+                                                /*&& attachmentView.getVisibility() == View.VISIBLE*/) {
+                                            LogUtil.i("junwang", "onScrollStateChanged attachmentView instanceof VideoThumbnailView");
+                                            final VideoThumbnailView videoView = (VideoThumbnailView) attachmentView;
+//                                            if(videoView.mVideoView.getVisibility() == View.VISIBLE) {
+//                                                if (videoView != null) {
+////                                                videoView.mVideoView.seekTo(0);
+//                                                    LogUtil.i("junwang", "onScrollStateChanged videoView.start");
+//                                                    videoView.start();
+//                                                }
+//                                            }else{
+//                                                LogUtil.i("junwang", "onScrollStateChanged videoView.stop");
+//                                                if (videoView != null) {
+//                                                    videoView.stop();
+//                                                }
+//                                            }
+                                            if(videoView != null){
+                                                if(!isCover(videoView.mVideoView)){
+                                                    LogUtil.i("junwang", "onScrollStateChanged videoView.start");
+                                                    videoView.start();
+                                                }else{
+                                                    LogUtil.i("junwang", "onScrollStateChanged videoView.stop");
+                                                    if(videoView.mVideoView.isPlaying()) {
+                                                        videoView.mVideoView.pause();
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
 
                                 }
+
                             }
                         }
                     }
@@ -377,6 +433,32 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
                 }
             }
     };
+
+    /**
+     * 检测是否被遮住显示不全
+     * @return
+     */
+    public static boolean isCover(View view) {
+        boolean cover = false;
+        Rect rect = new Rect();
+        cover = view.getGlobalVisibleRect(rect);
+//        int[] location = new int[2];
+//        mComposeMessageView.getLocationOnScreen(location);
+//        int x = location[0]; // view距离 屏幕左边的距离（即x轴方向）
+//        int y = location[1]; // view距离 屏幕顶边的距离（即y轴方向）
+
+        LogUtil.i("Junwang", "isCover rect.top="+rect.top+", rect.bottom="+rect.bottom+", view.top="+view.getTop()
+            +", view.bottom="+view.getBottom());
+        if (cover) {
+            if (rect.width() >= view.getMeasuredWidth() && rect.height() >= view.getMeasuredHeight()
+                && rect.top > 200 && rect.bottom < /*location[1]*/1721) {
+                return !cover;
+            }
+        }
+        return true;
+    }
+
+
 
     /*add by junwang start*/
     static String mConversationContactName;
@@ -1378,7 +1460,7 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
         setConversationFocus();
 
         // On resume, invalidate all message views to show the updated timestamp.
-//        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
                 mConversationSelfIdChangeReceiver,
@@ -1632,24 +1714,47 @@ public class ConversationFragment extends Fragment implements ConversationDataLi
     //add by junwang
     public void destroyWebview(){
         final LinearLayoutManager lm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-        final int pos = lm.findFirstVisibleItemPosition();
-        if (pos == RecyclerView.NO_POSITION) {
-            return;
-        }
-        final ViewHolder vh = mRecyclerView.findViewHolderForAdapterPosition(pos);
-        if (vh == null) {
-            // This can happen if the messages update while we're dragging the thumb.
-            return;
-        }
-        final ConversationMessageView messageView = (ConversationMessageView) vh.itemView;
-        if ((messageView != null) && messageView.mMessageWebView != null) {
-            messageView.mMessageWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-            messageView.mMessageWebView.clearHistory();
+//        final int pos = lm.findFirstVisibleItemPosition();
+//        if (pos == RecyclerView.NO_POSITION) {
+//            return;
+//        }
+//        final ViewHolder vh = mRecyclerView.findViewHolderForAdapterPosition(pos);
+//        if (vh == null) {
+//            // This can happen if the messages update while we're dragging the thumb.
+//            return;
+//        }
+//        final ConversationMessageView messageView = (ConversationMessageView) vh.itemView;
+//        if ((messageView != null) && messageView.mMessageWebView != null) {
+//            messageView.mMessageWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+//            messageView.mMessageWebView.clearHistory();
+////            messageView.mMessageWebView.clearCache(true);
+//
+//            ((ViewGroup) messageView.mMessageWebView.getParent()).removeView(messageView.mMessageWebView);
+//            messageView.mMessageWebView.destroy();
+//            messageView.mMessageWebView = null;
+//        }
+
+        final int itemCount = lm.getItemCount();
+        for(int i=0; i<itemCount; i++){
+            final ViewHolder vh = mRecyclerView.findViewHolderForAdapterPosition(i);
+            if (vh == null) {
+                // This can happen if the messages update while we're dragging the thumb.
+                return;
+            }
+            final ConversationMessageView messageView = (ConversationMessageView) vh.itemView;
+            if ((messageView != null) && messageView.mMessageWebView != null) {
+                messageView.mMessageWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+                messageView.mMessageWebView.clearHistory();
 //            messageView.mMessageWebView.clearCache(true);
 
-            ((ViewGroup) messageView.mMessageWebView.getParent()).removeView(messageView.mMessageWebView);
-            messageView.mMessageWebView.destroy();
-            messageView.mMessageWebView = null;
+                ((ViewGroup) messageView.mMessageWebView.getParent()).removeView(messageView.mMessageWebView);
+                messageView.mMessageWebView.destroy();
+                messageView.mMessageWebView = null;
+            }
+            if(messageView != null && messageView.vv_video != null){
+                messageView.vv_video.release();
+                messageView.vv_video = null;
+            }
         }
     }
 

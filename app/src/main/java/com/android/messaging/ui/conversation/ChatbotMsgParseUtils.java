@@ -108,7 +108,7 @@ public class ChatbotMsgParseUtils {
                     }
                 }
                 dataBeans.add(new MultiCardItemDataBean(cardcontents[i].getTitle(), cardcontents[i].getMedia().getMediaContentType(),
-                        cardcontents[i].getMedia().getMediaUrl(), cardcontents[i].getTitle(), cardcontents[i].getDescription(), cardcontents[i].getExtraData1()));
+                        cardcontents[i].getMedia().getMediaUrl(), cardcontents[i].getTitle(), cardcontents[i].getDescription(), cardcontents[i].getExtraData1(), cardcontents[i]));
             }
         }
         return dataBeans;

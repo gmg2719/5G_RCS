@@ -1,5 +1,7 @@
 package com.android.messaging.ui.conversation.chatbot;
 
+import android.support.annotation.Nullable;
+
 import com.android.messaging.util.LogUtil;
 
 public class ChatbotFavoriteEntity {
@@ -84,5 +86,19 @@ public class ChatbotFavoriteEntity {
 
     public void setChatbot_fav_conversation_id(String chatbot_fav_conversation_id) {
         this.chatbot_fav_conversation_id = chatbot_fav_conversation_id;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null || !(obj instanceof ChatbotFavoriteEntity)) {
+            return false;
+        }
+        //地址相同必相等
+        if (obj == this) {
+            return true;
+        }
+        ChatbotFavoriteEntity entity = (ChatbotFavoriteEntity) obj;
+        //地址不同比较值是否相同
+        return entity.getChatbot_fav_name().equals(this.getChatbot_fav_name());
     }
 }

@@ -411,7 +411,7 @@ public class SantiVideoView extends DanmuVideoView implements View.OnTouchListen
         LogUtil.i("SantiVideoView", "isCover cover="+cover+"l="+rect.left+", r="+rect.right+", t="+rect.top+", b="+rect.bottom);
         if (cover) {
 //            if (rect.width() >= view.getMeasuredWidth() && rect.height() >= view.getMeasuredHeight()) {
-            if((rect.top > 200)&& rect.height() == view.getMeasuredHeight()){
+            if((rect.top > 200)&& rect.height() >= view.getMeasuredHeight()){
                 return true;
             }
         }

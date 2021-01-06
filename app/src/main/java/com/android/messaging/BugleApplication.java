@@ -48,6 +48,7 @@ import com.android.messaging.util.LogUtil;
 import com.android.messaging.util.OsUtil;
 import com.android.messaging.util.PhoneUtils;
 import com.android.messaging.util.RCSUtil;
+import com.android.messaging.util.RestartAPPTool;
 import com.android.messaging.util.Trace;
 import com.google.common.annotations.VisibleForTesting;
 import com.lwy.smartupdate.Config;
@@ -339,17 +340,17 @@ public class BugleApplication extends Application implements UncaughtExceptionHa
                 }
             });
         } else {
-            sSystemUncaughtExceptionHandler.uncaughtException(thread, ex);
+//            sSystemUncaughtExceptionHandler.uncaughtException(thread, ex);
 
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
-//                    LaunchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(LaunchIntent);
-//                }
-//            }, 1000);// 1秒钟后重启应用
-//            RestartAPPTool.restartAPP(getApplicationContext(),100);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
+                    LaunchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(LaunchIntent);
+                }
+            }, 1000);// 1秒钟后重启应用
+            RestartAPPTool.restartAPP(getApplicationContext(),100);
         }
     }
 

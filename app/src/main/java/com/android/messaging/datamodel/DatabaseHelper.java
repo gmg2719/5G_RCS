@@ -65,6 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CUSTOMERS_TABLE = "customers";
     public static final String CHATBOT_INFO_TABLE = "chatbot_info";
     public static final String CHATBOT_FAVORITE_TABLE = "chatbot_favorite";
+    public static final String CHATBOT_SEARCH_HISTORY_TABLE = "chatbot_search_history";
 
     // Views
     static final String DRAFT_PARTS_VIEW = "draft_parts_view";
@@ -193,6 +194,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + ChatbotInfoColumns.CHATBOT_MENU + " TEXT DEFAULT(NULL)"
             + ")";
     private static final String CREATE_CHATBOT_FAVORITE_TABLE_SQL = "CREATE TABLE " + CHATBOT_FAVORITE_TABLE +" ("
+            + "_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_SIP_URI + " TEXT DEFAULT(NULL), "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_NAME + " TEXT DEFAULT(NULL), "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_LOGO + " TEXT DEFAULT(NULL), "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_CARD_DESCRIPTION + " TEXT DEFAULT(NULL), "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_IMAGE_URL + " TEXT DEFAULT(NULL), "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_SAVED_DATE + " INT DEFAULT(0), "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_CHANNEL_ID + " TEXT DEFAULT(NULL), "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_MSG_ID + " TEXT DEFAULT(NULL), "
+            + ChatbotFavoriteColumns.CHATBOT_FAV_CONVERSATION_ID + " TEXT DEFAULT(NULL)"
+            + ")";
+    private static final String CREATE_CHATBOT_SEARCH_HISTORY_TABLE_SQL = "CREATE TABLE " + CHATBOT_SEARCH_HISTORY_TABLE +" ("
             + "_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "
             + ChatbotFavoriteColumns.CHATBOT_FAV_SIP_URI + " TEXT DEFAULT(NULL), "
             + ChatbotFavoriteColumns.CHATBOT_FAV_NAME + " TEXT DEFAULT(NULL), "
@@ -684,6 +697,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         CREATE_H5WL_TABLE_SQL,
         CREATE_CHATBOT_INFO_TABLE_SQL,
         CREATE_CHATBOT_FAVORITE_TABLE_SQL,
+        CREATE_CHATBOT_SEARCH_HISTORY_TABLE_SQL,
     };
 
     // List of all our indices

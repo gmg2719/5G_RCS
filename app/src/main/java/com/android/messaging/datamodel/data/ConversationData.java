@@ -54,6 +54,7 @@ import com.android.messaging.util.LogUtil;
 import com.android.messaging.util.OsUtil;
 import com.android.messaging.util.PhoneUtils;
 import com.android.messaging.util.SafeAsyncTask;
+import com.android.messaging.widget.WidgetConversationProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -212,12 +213,12 @@ public class ConversationData extends BindableData {
                     // Close the conversation, no meta data means conversation was deleted
                     LogUtil.w(TAG, "Meta data loader returned nothing for mConversationId = " +
                             mConversationId);
-                    //mListeners.closeConversation(mConversationId);
+                    mListeners.closeConversation(mConversationId);
                     // Notify the widget the conversation is deleted so it can go into its
                     // configure state.
-//                    WidgetConversationProvider.notifyConversationDeleted(
-//                            Factory.get().getApplicationContext(),
-//                            mConversationId);
+                    WidgetConversationProvider.notifyConversationDeleted(
+                            Factory.get().getApplicationContext(),
+                            mConversationId);
                 }
             } else {
                 LogUtil.w(TAG, "Meta data loader finished after unbinding mConversationId = " +

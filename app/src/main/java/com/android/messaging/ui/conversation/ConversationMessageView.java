@@ -256,7 +256,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
 
     private final ConversationMessageData mData;
 
-    private LinearLayout mMessageAttachmentsView;
+    public LinearLayout mMessageAttachmentsView;
     private MultiAttachmentLayout mMultiAttachmentView;
     private AsyncImageView mMessageImageView;
     private TextView mMessageTextView;
@@ -266,7 +266,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
     private HorizontalScrollView mHorizontalSV;
     public LinearLayout mLL_webview_container;
     private LinearLayout mH5_content;
-    private SantiVideoView vv_video;
+    public SantiVideoView vv_video;
     private boolean mIsH5Expand;
     private static ArrayList<String> mWebUrls;
     private String mSelectedMessageId;
@@ -398,7 +398,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
 
         mMessageImageView = (AsyncImageView) findViewById(R.id.message_image);
         mMessageImageView.setOnClickListener(this);
-//        mMessageImageView.setOnLongClickListener(this);
+        mMessageImageView.setOnLongClickListener(this);
 //        mMessageImageView.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override
 //            public boolean onLongClick(View arg0) {
@@ -2288,7 +2288,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
                     }
                 }
                 dataBeans.add(new MultiCardItemDataBean(cardcontents[i].getTitle(), cardcontents[i].getMedia().getMediaContentType(),
-                        cardcontents[i].getMedia().getMediaUrl(), cardcontents[i].getTitle(), cardcontents[i].getDescription(), cardcontents[i].getExtraData1()));
+                        cardcontents[i].getMedia().getMediaUrl(), cardcontents[i].getTitle(), cardcontents[i].getDescription(), cardcontents[i].getExtraData1(), cardcontents[i]));
             }
         }
         return dataBeans;
@@ -2373,6 +2373,8 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
     }
 
     private void loadChatbotMulticardView(CardContent[] cardcontents){
+        mChatbotTime.setVisibility(View.VISIBLE);
+        mChatbotTime.setText(mData.getFormattedReceivedTimeStamp());
         mChatbotRV.setVisibility(View.VISIBLE);
         mChatbotRV.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         List<MultiCardItemDataBean> dataBeans = new ArrayList<>();
@@ -2382,37 +2384,43 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             SuggestionActionWrapper[] saw;
             for(int i=0; i<cardcontents.length; i++){
                 LogUtil.i("Junwang", "chatbot cardType="+cardcontents[i].getCardType()+", extraData1="+cardcontents[i].getExtraData1());
-                ChatbotExtraData[] ced = cardcontents[i].getExtraData();
-                if((ced != null) && (ced.length > 0)){
-                    for(int k=0; k<ced.length; k++) {
-                        LogUtil.i("Junwang", "extraData["+k+"].itemContent="+ced[k].getItemContent()+", extraData["+k+"].itemCount="+ced[k].getItemCount());
-                    }
-                }
+//                ChatbotExtraData[] ced = cardcontents[i].getExtraData();
+//                if((ced != null) && (ced.length > 0)){
+//                    for(int k=0; k<ced.length; k++) {
+//                        LogUtil.i("Junwang", "extraData["+k+"].itemContent="+ced[k].getItemContent()+", extraData["+k+"].itemCount="+ced[k].getItemCount());
+//                    }
+//                }
                 saw = cardcontents[i].getSuggestionActionWrapper();
-                for (int j = 0; j < saw.length; i++) {
-                    if ((saw[i].action != null) && (saw[i].action.urlAction != null)) {
-                        buttonDisplayText = saw[i].action.displayText;
-                        buttonActionData = saw[i].action.urlAction.openUrl.url;
-                        LogUtil.i("Junwang", "chatbot card message url action displayText is " + buttonDisplayText +", url="+buttonActionData);
-                    }else if((saw[i].action != null) && (saw[i].action.dialerAction != null)){
-                        buttonDisplayText = saw[i].action.displayText;
-                        buttonActionData = saw[i].action.dialerAction.dialPhoneNumber.phoneNumber;
-                        LogUtil.i("Junwang", "chatbot card message dial action displayText is " + buttonDisplayText+", dialerNumber="+buttonActionData);
-                    }else if((saw[i].action != null) && (saw[i].action.mapAction != null)){
-                        buttonDisplayText = saw[i].action.displayText;
-                        LogUtil.i("Junwang", "chatbot card message map action displayText is " + buttonDisplayText);
+                if(saw != null && saw.length > 0){
+                    for (int j = 0; j < saw.length; i++) {
+                        if ((saw[i].action != null) && (saw[i].action.urlAction != null)) {
+                            buttonDisplayText = saw[i].action.displayText;
+                            buttonActionData = saw[i].action.urlAction.openUrl.url;
+                            LogUtil.i("Junwang", "chatbot card message url action displayText is " + buttonDisplayText +", url="+buttonActionData);
+                        }else if((saw[i].action != null) && (saw[i].action.dialerAction != null)){
+                            buttonDisplayText = saw[i].action.displayText;
+                            buttonActionData = saw[i].action.dialerAction.dialPhoneNumber.phoneNumber;
+                            LogUtil.i("Junwang", "chatbot card message dial action displayText is " + buttonDisplayText+", dialerNumber="+buttonActionData);
+                        }else if((saw[i].action != null) && (saw[i].action.mapAction != null)){
+                            buttonDisplayText = saw[i].action.displayText;
+                            LogUtil.i("Junwang", "chatbot card message map action displayText is " + buttonDisplayText);
+                        }
+                        if(saw[i].reply != null){
+                            LogUtil.i("Junwang", "chatbot card message reply displayText is " + saw[i].reply.displayText+", postback.data="+saw[i].reply.postback.data);
+                        }
                     }
-                    if(saw[i].reply != null){
-                        LogUtil.i("Junwang", "chatbot card message reply displayText is " + saw[i].reply.displayText+", postback.data="+saw[i].reply.postback.data);
-                    }
+                    dataBeans.add(new MultiCardItemDataBean(cardcontents[i].getTitle(), cardcontents[i].getMedia().getMediaContentType(),
+                            cardcontents[i].getMedia().getMediaUrl(), saw[0].action.displayText, saw[0].action.urlAction.openUrl.url, null, cardcontents[i]));
+                }else{
+                    dataBeans.add(new MultiCardItemDataBean(cardcontents[i].getTitle(), cardcontents[i].getMedia().getMediaContentType(),
+                            cardcontents[i].getMedia().getMediaUrl(), null, null, null, cardcontents[i]));
                 }
-                dataBeans.add(new MultiCardItemDataBean(cardcontents[i].getTitle(), cardcontents[i].getMedia().getMediaContentType(),
-                        cardcontents[i].getMedia().getMediaUrl(), saw[0].action.displayText, saw[0].action.urlAction.openUrl.url, null));
             }
         }
-        MultiCardItemViewAdapter listAdapter = new MultiCardItemViewAdapter(dataBeans,getContext());
+        MultiCardItemViewAdapter listAdapter = new MultiCardItemViewAdapter(dataBeans,getContext(), R.layout.chatbot_multicard_itemview, getActivityFromView(mMessageTextView));
         setTimeText(mChatbotRV);
         mChatbotRV.setAdapter(listAdapter);
+        mIsCardMsg = true;
     }
 
     private void loadChatbotView(CardContent[] cardcontents){
@@ -4232,7 +4240,68 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         });
     }
 
-    private void setSuggestionsView(CardContent cardcontent, View text_suggestion_view){
+    public static void addSuggestions(Context context, CardContent cardcontent, View text_suggestion_view, Activity activity) {
+        SuggestionActionWrapper[] saw = cardcontent.getSuggestionActionWrapper();
+        if (saw != null && saw.length > 0) {
+            LinearLayout ll1 = (LinearLayout) text_suggestion_view.findViewById(R.id.text_suggestion_layout);
+            int i = 0;
+            int j = 2;
+            TextView tv1;
+            for (; i < saw.length; i++) {
+                if (saw[i].action != null) {
+                    tv1 = new TextView(context);
+//                    tv1.setPadding(0,4,0,0);
+                    tv1.setText(saw[i].action.displayText);
+//                    tv1.setWidth(120);
+                    tv1.setTextColor(Color.GREEN);
+                    tv1.setGravity(Gravity.CENTER);
+                    tv1.setPadding(0, 15, 0, 0);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    ll1.addView(tv1, j, lp);
+//                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(120, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                        tv1.setLayoutParams(lp);
+                    SuggestionAction sa = saw[i].action;
+                    if ((sa != null) && (sa.urlAction != null)) {
+                        tv1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                WebViewNewsActivity.start(context, sa.urlAction.openUrl.url);
+                            }
+                        });
+                    } else if ((sa != null) && (sa.dialerAction != null)) {
+                        tv1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                NativeFunctionUtil.callNativeFunction(CardTemplate.NativeActionType.PHONE_CALL, /*getActivityFromView(mMessageTextView)*/activity,
+                                        null, null, sa.dialerAction.dialPhoneNumber.phoneNumber);
+                            }
+                        });
+                    } else if ((sa != null) && (sa.mapAction != null)) {
+                        tv1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                NativeFunctionUtil.openLocation(sa.mapAction.showLocation.location.label, sa.mapAction.showLocation.location.latitude,
+                                        sa.mapAction.showLocation.location.longitude, /*getActivityFromView(mMessageTextView)*/activity);
+                            }
+                        });
+                    }
+                }
+                if (saw[i].reply != null) {
+                    tv1 = new TextView(context);
+//                    tv1.setPadding(0,4,0,0);
+                    tv1.setText(saw[i].reply.displayText);
+                    tv1.setTextColor(Color.GREEN);
+                    tv1.setGravity(Gravity.CENTER);
+                    tv1.setPadding(0, 15, 0, 0);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    ll1.addView(tv1, j, lp);
+//                    tv1.setLayoutParams(lp);
+                }
+            }
+        }
+    }
+
+    private void setSuggestionsView(Context context, CardContent cardcontent, View text_suggestion_view){
         SuggestionActionWrapper[] saw = cardcontent.getSuggestionActionWrapper();
         if(saw != null && saw.length>0){
             LinearLayout ll1 = (LinearLayout)text_suggestion_view.findViewById(R.id.text_suggestion_layout);
@@ -4241,7 +4310,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             TextView tv1;
             for(; i<saw.length; i++){
                 if(saw[i].action != null) {
-                    tv1 = new TextView(getContext());
+                    tv1 = new TextView(context);
 //                    tv1.setPadding(0,4,0,0);
                     tv1.setText(saw[i].action.displayText);
 //                    tv1.setWidth(120);
@@ -4311,7 +4380,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             }else{
                 ll.addView(text_suggestion_view,0);
             }
-            setSuggestionsView(cardcontent, text_suggestion_view);
+            setSuggestionsView(getContext(), cardcontent, text_suggestion_view);
 
             tv_title.setText(cardcontent.getTitle());
             tv_description.setText(cardcontent.getDescription());
@@ -4338,6 +4407,31 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         return false;
     }
 
+    public static boolean loadTitleAndSuggestion(Context context, int resource, boolean isImageTop, CardContent cardcontent, Activity activity){
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View view = layoutInflater.inflate(resource, null);
+//        view.setMinimumWidth(300);
+        if(view != null) {
+            LogUtil.i("Junwang", "loadVerticalCard");
+            View text_suggestion_view = layoutInflater.inflate(R.layout.item_chatbot_text_suggestions_layout, null);
+            TextView tv_title = (TextView)text_suggestion_view.findViewById(R.id.hor_title);
+            TextView tv_description = (TextView)text_suggestion_view.findViewById(R.id.hor_description);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout ll = (LinearLayout)view.findViewById(R.id.hori_relativelayout);
+            if(isImageTop){
+                ll.addView(text_suggestion_view,1, lp);
+            }else{
+                ll.addView(text_suggestion_view,0, lp);
+            }
+            addSuggestions(context, cardcontent, text_suggestion_view, activity);
+
+            tv_title.setText(cardcontent.getTitle());
+            tv_description.setText(cardcontent.getDescription());
+            return true;
+        }
+        return false;
+    }
+
     private boolean loadVerticalCard(int resource, CardContent cardcontent, boolean isImageTop){
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View view = layoutInflater.inflate(resource, null);
@@ -4354,7 +4448,7 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             }else{
                 ll.addView(text_suggestion_view,0, lp);
             }
-            setSuggestionsView(cardcontent, text_suggestion_view);
+            setSuggestionsView(getContext(), cardcontent, text_suggestion_view);
 
             tv_title.setText(cardcontent.getTitle());
             tv_description.setText(cardcontent.getDescription());
@@ -4567,6 +4661,44 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
         return false;
     }
 
+    private boolean ParseStandardMultiCardChatbotMsg(String text){
+        try {
+            ChatbotMultiCard cbc = new Gson().fromJson(text, ChatbotMultiCard.class);
+            GeneralPurposeCardCarousel gpcc = cbc.getMessage().getGeneralPurposeCardCarousel();
+            String title = null;
+            if(gpcc != null) {
+                CardContent[] cardcontents = gpcc.getContent();
+                CardLayout cl = gpcc.getLayout();
+                if((cardcontents != null) && (cardcontents.length>0)){
+//                    loadProductRecommendCard(cardcontents);
+//                    loadProductRecommendChatbotMessage(cardcontents);
+                    loadChatbotMulticardView(cardcontents);
+//                    loadChatbotView(cardcontents);
+//                    for(int i=0; i<cardcontents.length; i++){
+//                        title = cardcontents[i].getTitle();
+//                        LogUtil.i("Junwang", "card " + i + " media url="+cardcontents[i].getMedia().getMediaUrl()+", media type="+cardcontents[i].getMedia().getMediaContentType());
+//                        SuggestionActionWrapper[] sa = cardcontents[i].getSuggestionActionWrapper();
+//                        if((sa != null) && (sa.length > 0)){
+//                            for (int j = 0; j < sa.length; j++) {
+//                                if ((sa[j].action != null) && (sa[j].action.urlAction != null)) {
+//                                    LogUtil.i("Junwang", "chatbot card message url action displayText is " + sa[j].action.displayText+", url="+sa[j].action.urlAction.openUrl.url);
+//                                }else if((sa[j].action != null) && (sa[j].action.dialerAction != null)){
+//                                    LogUtil.i("Junwang", "chatbot card message dial action displayText is " + sa[j].action.displayText+", postback="+sa[j].action.postback.data);
+//                                }else if((sa[j].action != null) && (sa[j].action.mapAction != null)){
+//                                    LogUtil.i("Junwang", "chatbot card message map action displayText is " + sa[j].action.displayText);
+//                                }
+//                            }
+//                        }
+//                    }
+                }
+            }
+        }catch (Exception e){
+            LogUtil.i("Junwang", "parse multicard chatbot message exception "+e.toString());
+            return false;
+        }
+        return true;
+    }
+
     private boolean ParseMultiCardChatbotMsg(String text){
         try {
             ChatbotMultiCard cbc = new Gson().fromJson(text, ChatbotMultiCard.class);
@@ -4575,9 +4707,9 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
             if(gpcc != null) {
                 CardContent[] cardcontents = gpcc.getContent();
                 if((cardcontents != null) && (cardcontents.length>0)){
-                    loadProductRecommendCard(cardcontents);
+//                    loadProductRecommendCard(cardcontents);
 //                    loadProductRecommendChatbotMessage(cardcontents);
-//                    loadChatbotMulticardView(cardcontents);
+                    loadChatbotMulticardView(cardcontents);
 //                    loadChatbotView(cardcontents);
 //                    for(int i=0; i<cardcontents.length; i++){
 //                        title = cardcontents[i].getTitle();
@@ -5200,7 +5332,19 @@ public class ConversationMessageView extends FrameLayout implements View.OnClick
     final AttachmentViewBinder mVideoViewBinder = new AttachmentViewBinder() {
         @Override
         public void bindView(final View view, final MessagePartData attachment) {
-            ((VideoThumbnailView) view).setSource(attachment, mData.getIsIncoming());
+            VideoThumbnailView videoView = (VideoThumbnailView) view;
+            videoView.setSource(attachment, mData.getIsIncoming());
+            videoView.start();
+            LogUtil.i("junwang", "AttachmentViewBinder videoView.start");
+//            if(!ConversationFragment.isCover(videoView.mVideoView)){
+//                LogUtil.i("junwang", "onScrollStateChanged videoView.start");
+//                videoView.start();
+//            }else{
+//                LogUtil.i("junwang", "onScrollStateChanged videoView.pause");
+//                if(videoView.mVideoView.isPlaying()) {
+//                    videoView.mVideoView.pause();
+//                }
+//            }
         }
 
         @Override

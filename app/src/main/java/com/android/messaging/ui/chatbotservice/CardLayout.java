@@ -5,6 +5,7 @@ import java.util.List;
 public class CardLayout {
     String cardOrientation;
     String imageAlignment;
+    String cardWidth;
     List<String> titleFontStyle;
     List<String> descriptionFontStyle;
     String style;
@@ -15,5 +16,9 @@ public class CardLayout {
 
     public String getImageAlignment() {
         return imageAlignment;
+    }
+
+    public String getCardWidth() {
+        return cardWidth;
     }
 }

@@ -42,11 +42,8 @@ import android.text.TextUtils;
 import com.android.ex.photo.Intents.PhotoViewIntentBuilder;
 import com.android.messaging.R;
 import com.android.messaging.datamodel.ConversationImagePartsView;
-import com.android.messaging.datamodel.DataModel;
-import com.android.messaging.datamodel.DatabaseWrapper;
 import com.android.messaging.datamodel.MediaScratchFileProvider;
 import com.android.messaging.datamodel.MessagingContentProvider;
-import com.android.messaging.datamodel.data.ConversationListItemData;
 import com.android.messaging.datamodel.data.MessageData;
 import com.android.messaging.datamodel.data.MessagePartData;
 import com.android.messaging.datamodel.data.ParticipantData;
@@ -135,12 +132,19 @@ public class UIIntentsImpl extends UIIntents {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         //add by junwang for chatbot
-        DatabaseWrapper dbwrapper = DataModel.get().getDatabase();
-        final ConversationListItemData conversation =
-                ConversationListItemData.getExistingConversation(dbwrapper, conversationId);
-        if(conversation.getmChatbotMenu() != null){
-            intent.putExtra("chatbotMenu", conversation.getmChatbotMenu());
-        }
+//        if(conversationId != null) {
+//            DatabaseWrapper dbwrapper = DataModel.get().getDatabase();
+//            final ConversationListItemData conversation =
+//                    ConversationListItemData.getExistingConversation(dbwrapper, conversationId);
+//            if (conversation.getmChatbotMenu() != null) {
+//                intent.putExtra("chatbotMenu", conversation.getmChatbotMenu());
+//            }
+//        }
+        //marked by junwang
+//        String chatbotMenu = ConversationListItemData.getChatbotMenu(conversationId);
+//        if (chatbotMenu != null) {
+//            intent.putExtra("chatbotMenu", chatbotMenu);
+//        }
         return intent;
     }
 

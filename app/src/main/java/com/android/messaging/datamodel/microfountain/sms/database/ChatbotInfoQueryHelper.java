@@ -1,10 +1,13 @@
 package com.android.messaging.datamodel.microfountain.sms.database;
 
+import android.content.Intent;
 import android.text.TextUtils;
 
+import com.android.messaging.BuildConfig;
 import com.android.messaging.datamodel.microfountain.sms.ChatbotUtils;
 import com.android.messaging.util.LogUtil;
 import com.microfountain.rcs.aidl.database.contract.RcsChatbotInfoTable;
+import com.microfountain.rcs.aidl.service.chatbot.DiscoveryRequestParameter;
 import com.microfountain.rcs.rcskit.service.RcsSubscriptionInfo;
 import com.microfountain.rcs.rcskit.service.chatbot.RcsChatbotService;
 import com.microfountain.rcs.support.config.RcsServiceConfigXMLHelper;
@@ -16,6 +19,7 @@ public class ChatbotInfoQueryHelper {
     private QueryHandler mQueryHandler;
     private String mDomain;
     private String mChatbotSipUri;
+    public static String INTENT_ACTION_DISCOVERY_CHATBOT_LIST = "intent_action_discovery_chatbot_list";
 
     public ChatbotInfoQueryHelper(QueryHandler mQueryHandler, String mDomain, String mChatbotSipUri) {
         this.mQueryHandler = mQueryHandler;
@@ -90,5 +94,19 @@ public class ChatbotInfoQueryHelper {
         initData(mDomain, mChatbotSipUri);
         requestChatbotInfo(mChatbotSipUri);
         startQuery();
+    }
+
+    public static void SearchChatbot(String keyString){
+        //构建搜索参数
+        DiscoveryRequestParameter parameter = new DiscoveryRequestParameter(); //关键字
+        parameter.queryString = keyString;
+        //分段开始的位置，如果为 0 则默认从第一项开始;如:已搜索了50个Chatbot，搜索下一段应传50
+        parameter.startIndex = 0;
+        //客户端请求的分段数据量，如果为0，服务端视配置默认返回一定数量的结果
+        parameter.expectedNumberOfResults = 20; //自定义通知Intent，接收搜索结果
+        Intent pendingIntent = new Intent(/*RcsReceiverHelper.*/INTENT_ACTION_DISCOVERY_CHATBOT_LIST);
+        pendingIntent.setPackage(BuildConfig.APPLICATION_ID); //RCS可用SIM卡订阅ID
+        int subscriptionId = getEnabledSubscriptionId();
+        RcsChatbotService.discoverChatbotList(subscriptionId, parameter, pendingIntent);
     }
 }

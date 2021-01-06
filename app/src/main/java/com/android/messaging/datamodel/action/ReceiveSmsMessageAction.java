@@ -101,6 +101,7 @@ public class ReceiveSmsMessageAction extends Action implements Parcelable {
 //            LogUtil.w(TAG, "Received an SMS with an address not exists in H5 White List.");
 //            ConversationListActivity.setNormalConversationList(true);
 //        }
+//        address = "中文码号";
         final ParticipantData rawSender = ParticipantData.getFromRawPhoneBySimLocale(
                 address, subId);
 
@@ -191,9 +192,9 @@ public class ReceiveSmsMessageAction extends Action implements Parcelable {
                     context.startService(intent);
                 }
                 if(normalizedDestination != null && normalizedDestination.startsWith("sip:")){
-                    BaseInvokeChatbotInfo bici = new BaseInvokeChatbotInfo(ChatbotUtils.getChatbotDomain(), normalizedDestination, context);
+                    BaseInvokeChatbotInfo bici = new BaseInvokeChatbotInfo(ChatbotUtils.getChatbotDomain(), normalizedDestination/*"sip:12520040106@botplatform.rcs.chinamobile.com"*/, context);
                     QueryHandler mQueryHandler = new QueryHandler(Factory.get().getApplicationContext().getContentResolver(), bici);
-                    ChatbotInfoQueryHelper ciqh = new ChatbotInfoQueryHelper(mQueryHandler, ChatbotUtils.getChatbotDomain(), normalizedDestination);
+                    ChatbotInfoQueryHelper ciqh = new ChatbotInfoQueryHelper(mQueryHandler, ChatbotUtils.getChatbotDomain(), normalizedDestination/*"sip:12520040106@botplatform.rcs.chinamobile.com"*/);
                     ciqh.execQuery();
                 }
                 //add by junwang

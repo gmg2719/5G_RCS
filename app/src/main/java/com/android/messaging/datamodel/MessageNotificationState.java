@@ -914,7 +914,9 @@ public abstract class MessageNotificationState extends NotificationState {
                     ChatbotEntity botEntity = null;
                     if(normalDes != null && normalDes.startsWith("sip:")){
                         botEntity = ChatbotInfoTableUtils.queryChatbotInfoTable(normalDes);
-                        authorFullName = botEntity.getName();
+                        if(botEntity != null) {
+                            authorFullName = botEntity.getName();
+                        }
 //                        authorFirstName = botEntity.getName();
                     }
                     LogUtil.i("Junwang", "notification text is " + messageText);
@@ -1161,13 +1163,22 @@ public abstract class MessageNotificationState extends NotificationState {
                         if (state.mParticipantAvatarsUris == null) {
                             state.mParticipantAvatarsUris = new ArrayList<Uri>(1);
                         }
-                        state.mParticipantAvatarsUris.add(Uri.parse(botEntity.getSms()));
+                        if(botEntity.getSms() != null) {
+                            state.mParticipantAvatarsUris.add(Uri.parse(botEntity.getSms()));
+                        }else{
+                            state.mParticipantAvatarsUris.add(Uri.parse("https://img-blog.csdnimg.cn/2020093014454740.png"));
+                        }
                     }
                     if (convInfo.mContactUri != null) {
                         if (state.mParticipantContactUris == null) {
                             state.mParticipantContactUris = new ArrayList<Uri>(1);
                         }
-                        state.mParticipantContactUris.add(Uri.parse(botEntity.getSms()));
+                        if(botEntity.getSms() != null) {
+                            state.mParticipantContactUris.add(Uri.parse(botEntity.getSms()));
+                        }
+                        else{
+                            state.mParticipantContactUris.add(Uri.parse("https://img-blog.csdnimg.cn/2020093014454740.png"));
+                        }
                     }
                 }else{
                     if (convInfo.mAvatarUri != null) {

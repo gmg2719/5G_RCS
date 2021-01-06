@@ -847,10 +847,6 @@ public class ConversationMessageData {
             + " as " + ConversationMessageViewColumns.RAW_TELEPHONY_STATUS + ", "
             + DatabaseHelper.MESSAGES_TABLE + '.' + MessageColumns.SELF_PARTICIPANT_ID
             + " as " + ConversationMessageViewColumns.SELF_PARTICIPANT_ID + ", "
-            //add by junwang start
-//            + DatabaseHelper.MESSAGES_TABLE + '.' + MessageColumns.JSON
-//            + " as " + ConversationMessageViewColumns.JSONSTRING + ", "
-            //add by junwang end
             + DatabaseHelper.PARTICIPANTS_TABLE + '.' + ParticipantColumns.FULL_NAME
             + " as " + ConversationMessageViewColumns.SENDER_FULL_NAME + ", "
             + DatabaseHelper.PARTICIPANTS_TABLE + '.' + ParticipantColumns.FIRST_NAME

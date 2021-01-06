@@ -145,7 +145,7 @@ public class SendMessageAction extends Action implements Parcelable {
             if((recipients != null) && (recipients.size() == 1)){
                 LogUtil.i("Junwang", "recipients = "+recipients.get(0));
             }
-            if((recipients != null) && (recipients.size() == 1) && (recipients.get(0).startsWith("sip:"))){
+            if((recipients != null) && (recipients.size() == 1) && (recipients.get(0).startsWith("sip:") || recipients.get(0).startsWith("12520040106"))){
                 if(isSms) {
                     SendRcsMsgUtils.sendTextMessage(BugleApplication.getContext(), recipients.get(0),
                             UUID.randomUUID().toString(), UUID.randomUUID().toString(),
@@ -153,9 +153,11 @@ public class SendMessageAction extends Action implements Parcelable {
                                     .getDefaultSmsSubscriptionId(), messageId);
                     return true;
                 }else{
+                    LogUtil.i("Junwang", "send RCS multimedia message.");
                     for (final MessagePartData partData : message.getParts()) {
                         if (partData.isAttachment()) {
                             final Uri uri = partData.getContentUri();
+                            LogUtil.i("Junwang", "send RCS multimedia message uri="+uri);
                             if (partData.isImage()) {
                                 SendRcsMsgUtils.sendImageMessage(BugleApplication.getContext(), recipients.get(0),
                                         UUID.randomUUID().toString(), UUID.randomUUID().toString(), uri, "imageName",

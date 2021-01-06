@@ -218,6 +218,7 @@ public class BugleDatabaseOperations {
         String conversationId = BugleDatabaseOperations.getExistingConversation(db, threadId,
                 false);
 
+        LogUtil.i("Junwang", "getOrCreateConversation conversationId =  "+ conversationId+", threadId = "+threadId);
         if (conversationId == null) {
             final String conversationName = ConversationListItemData.generateConversationName(
                     participants);

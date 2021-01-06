@@ -29,6 +29,7 @@ public class ChatbotInfoTableUtils {
             byte[] jsonData = cursor.getBlob(cursor.getColumnIndex(RcsChatbotInfoTable.Columns.JSON_DATA));
 //            String jsonData = cursor.getString(cursor.getColumnIndex(RcsChatbotInfoTable.Columns.JSON_DATA));
             String name = cursor.getString(cursor.getColumnIndex(RcsChatbotInfoTable.ExtendedColumns.NAME));
+            LogUtil.i("Junwang", "insertChatbotInfoTable chatbot name = "+name);
             String sms = cursor.getString(cursor.getColumnIndex(RcsChatbotInfoTable.ExtendedColumns.SMS));
 
             ContentValues cv = new ContentValues();

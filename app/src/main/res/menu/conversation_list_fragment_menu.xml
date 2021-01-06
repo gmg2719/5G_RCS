@@ -24,11 +24,14 @@
         android:icon="@drawable/icon_more1"
         android:visible="true"
         appcompat:showAsAction="never" />
+    <item android:id="@+id/action_search_chatbot"
+        android:orderInCategory="9000"
+        android:title="搜索服务号"
+        appcompat:showAsAction="never"/>
     <item android:id="@+id/my_favorite"
         android:orderInCategory="9900"
         android:title="我的收藏"
         appcompat:showAsAction="never"/>
-
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="400"

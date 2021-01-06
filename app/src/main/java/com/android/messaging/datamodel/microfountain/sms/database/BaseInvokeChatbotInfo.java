@@ -63,6 +63,7 @@ public class BaseInvokeChatbotInfo {
         LogUtil.v("Junwang", "BaseInvokeChatbotInfo onQueryResult");
         if(cursor != null) {
             if(!ChatbotInfoTableUtils.IsChatbotInfoExist(mChatbotSipUri)) {
+                LogUtil.i("Junwang", "start insert chatbot info to table");
                 ChatbotInfoTableUtils.insertChatbotInfoTable(cursor, mLogoSavedPath);
                 downloadChatbotLogo(cursor);
             }else{
@@ -70,6 +71,8 @@ public class BaseInvokeChatbotInfo {
                 ChatbotInfoTableUtils.updateChatbotInfoTable(cursor);
                 downloadChatbotLogo(cursor);
             }
+        }else{
+            LogUtil.v("Junwang", "BaseInvokeChatbotInfo onQueryResult cursor==null");
         }
     }
 
@@ -171,6 +174,8 @@ public class BaseInvokeChatbotInfo {
                     }
                 }else{
                     LogUtil.e("Junwang", "chatbot logo url is null.");
+                    String chatbotSipUri = cursor.getString(cursor.getColumnIndex(RcsChatbotInfoTable.Columns.CHATBOT_SIP_URI));
+                    DownloadImageUtils.saveImageToLocal(mContext, "https://img-blog.csdnimg.cn/2020093014454740.png", chatbotSipUri);
                 }
             }
         }
